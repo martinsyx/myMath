@@ -31,7 +31,7 @@ export default function SkipCountingGame() {
     
     // 创建带缺失数字的序列
     const displaySequence = [...sequence];
-    displaySequence[missingIndex] = null;
+    // displaySequence[missingIndex] = null;
     
     return {
       sequence: displaySequence,

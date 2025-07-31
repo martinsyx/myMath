@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 interface Question {
-  sequence: number[];
+  sequence: (number | null)[];
   pattern: string;
   missingIndex: number;
   userAnswer: number | null;
@@ -27,21 +27,21 @@ export default function SequencesGame() {
     
     const pattern = patterns[Math.floor(Math.random() * patterns.length)];
     const start = Math.floor(Math.random() * 5) + 1;
-    const sequence = [start];
+    const sequence: (number | null)[] = [start];  // 明确声明类型
     
     for (let i = 1; i < 5; i++) {
-      if (pattern.type === 'add') {
-        sequence.push(sequence[i-1] + pattern.value);
-      } else {
-        sequence.push(sequence[i-1] * pattern.value);
-      }
-    }
+  const previousNumber = sequence[i-1] as number; // Add type assertion
+  if (pattern.type === 'add') {
+    sequence.push(previousNumber + pattern.value);
+  } else {
+    sequence.push(previousNumber * pattern.value);
+  }
+}
     
-    const missingIndex = Math.floor(Math.random() * 3) + 1; // 1, 2, 3
+    const missingIndex = Math.floor(Math.random() * 3) + 1;
     const correctAnswer = sequence[missingIndex];
     
-    // 创建带缺失数字的序列
-    const displaySequence = [...sequence];
+    const displaySequence: (number | null)[] = [...sequence];  // 明确声明类型
     displaySequence[missingIndex] = null;
     
     return {
@@ -67,9 +67,10 @@ export default function SequencesGame() {
 
   const handleAnswer = (answer: number) => {
     const currentQ = questions[currentQuestion];
-    const correctAnswer = currentQ.sequence[0] + (currentQ.pattern.includes('加') ? 
-      parseInt(currentQ.pattern.match(/\d+/)?.[0] || '0') * currentQ.missingIndex :
-      currentQ.sequence[0] * Math.pow(parseInt(currentQ.pattern.match(/\d+/)?.[0] || '0'), currentQ.missingIndex));
+    const firstNumber = currentQ.sequence[0] as number;
+    const correctAnswer = currentQ.pattern.includes('加') 
+      ? firstNumber + (parseInt(currentQ.pattern.match(/\d+/)?.[0] || '0') * currentQ.missingIndex)
+      : firstNumber * Math.pow(parseInt(currentQ.pattern.match(/\d+/)?.[0] || '0'), currentQ.missingIndex);
     
     const isCorrect = answer === correctAnswer;
     
@@ -166,11 +167,11 @@ export default function SequencesGame() {
               {currentQ.isCorrect ? (
                 <div className="text-2xl text-green-600 font-bold">✓ 正确！</div>
               ) : (
-                <div className="text-2xl text-red-600 font-bold">
-                  ✗ 错误！正确答案是 {currentQ.sequence[0] + (currentQ.pattern.includes('加') ? 
-                    parseInt(currentQ.pattern.match(/\d+/)?.[0] || '0') * currentQ.missingIndex :
-                    currentQ.sequence[0] * Math.pow(parseInt(currentQ.pattern.match(/\d+/)?.[0] || '0'), currentQ.missingIndex))}
-                </div>
+            <div className="text-2xl text-red-600 font-bold">
+              ✗ 错误！正确答案是 {(currentQ.sequence[0] as number) + (currentQ.pattern.includes('加') ? 
+                parseInt(currentQ.pattern.match(/\d+/)?.[0] || '0') * currentQ.missingIndex :
+                (currentQ.sequence[0] as number) * Math.pow(parseInt(currentQ.pattern.match(/\d+/)?.[0] || '0'), currentQ.missingIndex))}
+            </div>
               )}
             </div>
           )}
@@ -208,4 +209,4 @@ export default function SequencesGame() {
       </div>
     </div>
   );
-} 
+}
