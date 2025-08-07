@@ -43,7 +43,7 @@ export default function RootLayout({
         </header>
         {/* 主体内容和左侧菜单栏 */}
         <div className="flex flex-row min-h-[calc(100vh-4rem)]">
-          <Sidebar />
+          {/* <Sidebar /> */}
           <main className="flex-1 p-8">{children}</main>
         </div>
       </body>

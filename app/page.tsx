@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <div className="max-w-2xl mx-auto mt-12 bg-white rounded shadow p-8">
-      <h1 className="text-3xl font-bold mb-6 text-blue-700 text-center">欢迎来到 EasyMath</h1>
+      <h1 title="kids math games" className="text-3xl font-bold mb-6 text-blue-700 text-center">欢迎来到 EasyMath</h1>
       <p className="text-lg text-gray-600 mb-8 text-center">
         一个专为数学学习设计的互动平台
       </p>
