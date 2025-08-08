@@ -20,7 +20,7 @@ export default function FruitMatchingGame() {
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState<'playing' | 'completed'>('playing');
 
-  // 生成10道题，每题1-10个水果
+  // Generate 10 questions, each with 1-10 fruits
   const generateQuestions = () => {
     const newQuestions: Question[] = [];
     for (let i = 0; i < 10; i++) {
@@ -68,7 +68,7 @@ export default function FruitMatchingGame() {
 
   const currentQ = questions[currentQuestion];
 
-  // 渲染水果，始终一行5列，超出部分在第二行
+  // Render fruits, always 5 columns per row, overflow to second row
   const renderFruits = (count: number) => {
     const fruits = [];
     for (let i = 0; i < count; i++) {
@@ -78,7 +78,7 @@ export default function FruitMatchingGame() {
         </div>
       );
     }
-    // 填充空格使每行5列
+    // Fill empty spaces to make 5 columns per row
     while (fruits.length < 5) fruits.push(<div key={"empty1-"+fruits.length} className="w-12 h-12" />);
     const firstRow = fruits.slice(0, 5);
     const secondRow = fruits.slice(5);
@@ -91,7 +91,7 @@ export default function FruitMatchingGame() {
     );
   };
 
-  // 生成9个选项，保证正确答案在其中
+  // Generate 9 options, ensure correct answer is included
   const getOptions = (answer: number) => {
     const options = new Set<number>();
     options.add(answer);
@@ -105,8 +105,8 @@ export default function FruitMatchingGame() {
   return (
     <div className="max-w-xl mx-auto mt-12 bg-white rounded shadow p-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-blue-700 mb-4">数水果</h1>
-        <p className="text-gray-600">数一数有多少个水果，点击下方选项作答</p>
+        <h1 className="text-3xl font-bold text-blue-700 mb-4">Fruit Counting Game - Kids Math</h1>
+        <p className="text-gray-600">Count the fruits and choose the correct answer below!</p>
       </div>
 
       <div className="flex justify-center mb-8">
@@ -115,10 +115,10 @@ export default function FruitMatchingGame() {
 
       <div className="flex justify-center space-x-8 mb-8">
         <div className="text-lg">
-          得分: <span className="font-bold text-green-600">{score}</span>
+          Score: <span className="font-bold text-green-600">{score}</span>
         </div>
         <div className="text-lg">
-          题目: <span className="font-bold text-blue-600">{currentQuestion + 1}/10</span>
+          Question: <span className="font-bold text-blue-600">{currentQuestion + 1}/10</span>
         </div>
       </div>
 
@@ -146,10 +146,10 @@ export default function FruitMatchingGame() {
       {currentQ && currentQ.userAnswer !== null && (
         <div className="text-center mb-8">
           {currentQ.isCorrect ? (
-            <div className="text-2xl text-green-600 font-bold">✓ 正确！</div>
+            <div className="text-2xl text-green-600 font-bold">✓ Correct!</div>
           ) : (
             <div className="text-2xl text-red-600 font-bold">
-              ✗ 错误！正确答案是 {currentQ.count}
+              ✗ Incorrect! The correct answer is {currentQ.count}
             </div>
           )}
         </div>
@@ -158,13 +158,13 @@ export default function FruitMatchingGame() {
       {gameState === 'completed' && (
         <div className="text-center mb-8">
           <div className="text-4xl mb-4">🎉</div>
-          <h2 className="text-2xl font-bold text-green-600 mb-4">游戏完成！</h2>
-          <p className="text-gray-600 mb-6">你的最终得分：{score}/100</p>
+          <h2 className="text-2xl font-bold text-green-600 mb-4">Game Complete!</h2>
+          <p className="text-gray-600 mb-6">Your final score: {score}/100</p>
           <button
             onClick={resetGame}
             className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors"
           >
-            再玩一次
+            Play Again
           </button>
         </div>
       )}
@@ -174,15 +174,15 @@ export default function FruitMatchingGame() {
           onClick={resetGame}
           className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors mr-4"
         >
-          重新开始
+          Restart
         </button>
         <Link 
           href="/number-sense"
           className="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
         >
-          返回数感学习
+          Back to Number Sense
         </Link>
       </div>
     </div>
   );
-} 
+}

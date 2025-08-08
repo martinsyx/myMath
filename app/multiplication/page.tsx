@@ -1,6 +1,6 @@
 import React from "react";
 
-// 生成10道乘法题
+// Generate 10 multiplication questions
 function generateMultiplicationQuestions(count = 10) {
   const questions = [];
   while (questions.length < count) {
@@ -15,7 +15,9 @@ export default function MultiplicationPage() {
   const questions = generateMultiplicationQuestions(10);
   return (
     <div className="max-w-xl mx-auto mt-12 bg-white rounded shadow p-8">
-      <h1 className="text-2xl font-bold mb-6 text-blue-700">乘法学习</h1>
+      <h1 className="text-2xl font-bold mb-6 text-blue-700">
+        Multiplication Practice - Kids Math Game
+      </h1>
       <ul className="space-y-4">
         {questions.map((q, idx) => (
           <li key={idx} className="flex items-center text-lg">
@@ -27,11 +29,11 @@ export default function MultiplicationPage() {
             <input
               type="text"
               className="border-b-2 border-blue-200 focus:border-blue-500 outline-none w-16 text-center text-blue-700 bg-transparent"
-              placeholder="?"
+              placeholder="Your answer"
             />
           </li>
         ))}
       </ul>
     </div>
   );
-} 
+}

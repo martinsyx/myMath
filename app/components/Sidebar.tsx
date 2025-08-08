@@ -3,11 +3,11 @@ import Link from 'next/link';
 
 const Sidebar = () => {
   const menuItems = [
-    { name: '数感学习', href: '/number-sense' },
-    { name: '加法学习', href: '/addition' },
-    { name: '减法学习', href: '/subtraction' },
-    { name: '乘法学习', href: '/multiplication' },
-    { name: '除法学习', href: '/division' },
+    { name: 'Number Sense - Kids Math', href: '/number-sense' },
+    { name: 'Addition Practice - Kids Math Game', href: '/addition' },
+    // { name: 'Subtraction Practice - Kids Math Game', href: '/subtraction' },
+    // { name: 'Multiplication Practice - Kids Math Game', href: '/multiplication' },
+    // { name: 'Division Practice - Kids Math Game', href: '/division' },
   ];
   return (
     <aside className="w-48 bg-gray-100 h-full p-4 border-r flex flex-col space-y-4">
@@ -24,4 +24,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;
