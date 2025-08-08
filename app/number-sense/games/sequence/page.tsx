@@ -86,16 +86,16 @@ export default function SequenceGame() {
   return (
     <div className="max-w-4xl mx-auto mt-12 bg-white rounded shadow p-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-blue-700 mb-4">数字排序</h1>
-        <p className="text-gray-600">将数字按从小到大的顺序排列</p>
+        <h1 className="text-3xl font-bold text-blue-700 mb-4">Number Sequencing Game - Kids Math</h1>
+        <p className="text-gray-600">Arrange the numbers in ascending order</p>
       </div>
 
       <div className="flex justify-center space-x-8 mb-8">
         <div className="text-lg">
-          得分: <span className="font-bold text-green-600">{score}</span>
+          Score: <span className="font-bold text-green-600">{score}</span>
         </div>
         <div className="text-lg">
-          关卡: <span className="font-bold text-blue-600">{level}</span>
+          Level: <span className="font-bold text-blue-600">{level}</span>
         </div>
       </div>
 
@@ -125,13 +125,13 @@ export default function SequenceGame() {
           onClick={checkOrder}
           className="bg-green-600 text-white px-8 py-3 rounded-lg text-lg font-bold hover:bg-green-700 transition-colors mr-4"
         >
-          检查顺序
+          Check Order
         </button>
         <button
           onClick={resetGame}
           className="bg-blue-600 text-white px-8 py-3 rounded-lg text-lg font-bold hover:bg-blue-700 transition-colors"
         >
-          重新开始
+          Restart
         </button>
       </div>
 
@@ -140,9 +140,9 @@ export default function SequenceGame() {
           href="/number-sense"
           className="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
         >
-          返回数感学习
+          Back to Number Sense
         </Link>
       </div>
     </div>
   );
-} 
+}

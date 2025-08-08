@@ -5,6 +5,7 @@ import Logo from "./components/Logo";
 import UserInfo from "./components/UserInfo";
 import Breadcrumb from "./components/Breadcrumb";
 import Sidebar from "./components/Sidebar";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -18,7 +19,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "EasyMath - Kids Math Games",
-  description: "EasyMath is a fun and interactive math website for kids, featuring engaging games, visual learning tools, and practice activities. Help children master number sense, patterns, and problem-solving with step-by-step guidance and playful challenges.",
+  description:
+    "EasyMath is a fun and interactive math website for kids, featuring engaging games, visual learning tools, and practice activities. Help children master number sense, patterns, and problem-solving with step-by-step guidance and playful challenges.",
 };
 
 export default function RootLayout({
@@ -28,7 +30,23 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable}`}>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white min-h-screen`}>
+      <head>
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-9QQG8FQB50"
+          strategy="afterInteractive"
+        />
+        <Script id="gtag-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-9QQG8FQB50');
+          `}
+        </Script>
+      </head>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white min-h-screen`}
+      >
         <header className="w-full h-16 flex items-center justify-between px-8 border-b bg-white shadow-sm">
           <div className="flex items-center space-x-8 w-1/3">
             <Logo />
@@ -47,4 +65,4 @@ export default function RootLayout({
       </body>
     </html>
   );
-} 
+}
