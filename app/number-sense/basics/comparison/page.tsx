@@ -114,7 +114,7 @@ export default function ComparisonGame() {
                   : 'bg-blue-600 text-white hover:bg-blue-700'
               }`}
             >
-              Greater
+              {">"}
             </button>
             <button
               onClick={() => handleAnswer('less')}
@@ -127,7 +127,7 @@ export default function ComparisonGame() {
                   : 'bg-purple-600 text-white hover:bg-purple-700'
               }`}
             >
-              Less
+                {"<"}
             </button>
             <button
               onClick={() => handleAnswer('equal')}
@@ -140,7 +140,7 @@ export default function ComparisonGame() {
                   : 'bg-green-600 text-white hover:bg-green-700'
               }`}
             >
-              Equal
+                {"="}
             </button>
           </div>
 
