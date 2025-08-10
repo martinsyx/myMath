@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Head from "next/head";
 
 interface Question {
   num1: number;
@@ -78,6 +79,9 @@ export default function ComparisonGame() {
 
   return (
     <div className="max-w-2xl mx-auto mt-12 bg-white rounded shadow p-8">
+      <Head>
+        <link rel="canonical" href="https://kids-math.com/number-sense/basics/comparison" />
+      </Head>
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-purple-700 mb-4">Number Comparison - Kids Math Game</h1>
         <p className="text-gray-600">Compare the size of two numbers</p>

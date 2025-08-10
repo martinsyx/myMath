@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function CountingGame() {
   const [count, setCount] = useState(0);
@@ -103,6 +104,9 @@ export default function CountingGame() {
         >
           Back to Number Sense
         </Link>
+      <Head>
+        <link rel="canonical" href="https://kids-math.com/number-sense/games/counting" />
+      </Head>
       </div>
     </div>
   );

@@ -34,6 +34,7 @@ export default function MultiplicationPage() {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(schemaData) }}
         />
+        <link rel="canonical" href="https://kids-math.com/multiplication" />
       </Head>
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-9QQG8FQB50" strategy="afterInteractive" />
       <Script id="gtag-init" strategy="afterInteractive">

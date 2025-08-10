@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Head from "next/head";
 
 const FRUIT = "🍎";
 
@@ -103,7 +104,11 @@ export default function FruitMatchingGame() {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-12 bg-white rounded shadow p-8">
+    <>
+      <Head>
+        <link rel="canonical" href="https://kids-math.com/number-sense/games/matching" />
+      </Head>
+      <div className="max-w-xl mx-auto mt-12 bg-white rounded shadow p-8">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-blue-700 mb-4">Fruit Counting Game - Kids Math</h1>
         <p className="text-gray-600">Count the fruits and choose the correct answer below!</p>
@@ -183,6 +188,7 @@ export default function FruitMatchingGame() {
           Back to Number Sense
         </Link>
       </div>
-    </div>
+      </div>
+    </>
   );
 }

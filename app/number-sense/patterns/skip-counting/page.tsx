@@ -1,3 +1,4 @@
+import Head from "next/head";
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -13,6 +14,9 @@ interface Question {
 export default function SkipCountingGame() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+      <Head>
+        <link rel="canonical" href="https://kids-math.com/number-sense/patterns/skip-counting" />
+      </Head>
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState<'playing' | 'completed'>('playing');
 
