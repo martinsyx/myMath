@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-
+import Head from "next/head";
 interface Question {
   dots: number;
   userAnswer: number | null;

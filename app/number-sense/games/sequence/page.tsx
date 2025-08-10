@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-
+import Head from "next/head";
 interface NumberItem {
   id: number;
   value: number;
