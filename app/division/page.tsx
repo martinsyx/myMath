@@ -24,7 +24,7 @@ const schemaData = {
   inLanguage: "en",
   publisher: {
     "@type": "Organization",
-    name: "EasyMath",
+    name: "KidsMath",
   },
 };
 
