@@ -12,11 +12,13 @@ export default function CountingGame() {
   const handleCount = () => {
     const newCount = count + 1;
     setCount(newCount);
-    
-    if (newCount === target) {
+  };
+
+  const handleCheck = () => {
+    if (count === target) {
       setGameState('success');
       setScore(score + 10);
-    } else if (newCount > target) {
+    } else {
       setGameState('failed');
     }
   };
@@ -51,13 +53,21 @@ export default function CountingGame() {
       </div>
 
       {gameState === 'playing' && (
-        <div className="text-center">
+        <div className="text-center space-y-4">
           <button
             onClick={handleCount}
             className="bg-blue-600 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-blue-700 transition-colors"
           >
             Count
           </button>
+          <div>
+            <button
+              onClick={handleCheck}
+              className="bg-green-600 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-green-700 transition-colors"
+            >
+              Check Answer
+            </button>
+          </div>
         </div>
       )}
 
