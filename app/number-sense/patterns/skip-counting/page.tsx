@@ -18,9 +18,7 @@ interface Question {
 export default function SkipCountingGame() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
-      <Head>
-        {/* <link rel="canonical" href="https://kids-math.com/number-sense/patterns/skip-counting" /> */}
-      </Head>
+
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState<'playing' | 'completed'>('playing');
   const [showHint, setShowHint] = useState(false);
@@ -99,20 +97,20 @@ export default function SkipCountingGame() {
 
   const handleAnswer = (answer: number) => {
     const currentQ = questions[currentQuestion];
-    const correctAnswer = currentQ.sequence[0] + currentQ.pattern * currentQ.missingIndex;
-    const isCorrect = answer === correctAnswer;
+    // const correctAnswer = currentQ.sequence[0] + currentQ.pattern * currentQ.missingIndex;
+    // const isCorrect = answer === correctAnswer;
     
     const newQuestions = [...questions];
     newQuestions[currentQuestion] = {
       ...currentQ,
       userAnswer: answer,
-      isCorrect
+      // isCorrect
     };
     setQuestions(newQuestions);
 
-    if (isCorrect) {
-      setScore(score + 10);
-    }
+    // if (isCorrect) {
+    //   setScore(score + 10);
+    // }
 
     setTimeout(() => {
       if (currentQuestion < questions.length - 1) {
@@ -142,9 +140,6 @@ export default function SkipCountingGame() {
 
   return (
     <>
-      <Head>
-        {/* <link rel="canonical" href="https://kids-math.com/number-sense/patterns/skip-counting" /> */}
-      </Head>
     <div className="max-w-4xl mx-auto mt-12 bg-white rounded shadow p-8">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-green-700 mb-4">Skip Counting Patterns - Kids Math Game</h1>
@@ -197,7 +192,7 @@ export default function SkipCountingGame() {
                 <div className="text-2xl text-green-600 font-bold">✓ Correct!</div>
               ) : (
                 <div className="text-2xl text-red-600 font-bold">
-                  ✗ Incorrect! The correct answer is {currentQ.sequence[0] + currentQ.pattern * currentQ.missingIndex}
+                  ✗ Incorrect! The correct answer is 
                 </div>
               )}
             </div>
