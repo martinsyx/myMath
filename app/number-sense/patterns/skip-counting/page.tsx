@@ -35,7 +35,7 @@ export default function SkipCountingGame() {
     const missingIndex = Math.floor(Math.random() * 3) + 1; // 1, 2, 3
     const correctAnswer = sequence[missingIndex];
     
-    // 创建带缺失数字的序列
+    // Create sequence with missing numbers
     const displaySequence = [...sequence];
     // displaySequence[missingIndex] = null;
     

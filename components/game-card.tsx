@@ -22,7 +22,7 @@ export function GameCard({ category, delay }: GameCardProps) {
       className={`game-card ${category.bgColor} ${category.borderColor} border-2 rounded-3xl p-8 text-center shadow-lg hover:shadow-2xl`}
       style={{ animationDelay: `${delay}s` }}
     >
-      {/* 图标 */}
+      {/* Icon */}
       <div className="mb-6">
         <div
           className={`w-20 h-20 mx-auto rounded-full bg-gradient-to-r ${category.color} flex items-center justify-center text-3xl shadow-lg float`}
@@ -31,11 +31,11 @@ export function GameCard({ category, delay }: GameCardProps) {
         </div>
       </div>
 
-      {/* 标题和描述 */}
+      {/* Title and Description */}
       <h3 className="text-2xl font-display font-bold text-gray-800 mb-4">{category.title}</h3>
       <p className="text-gray-600 mb-8 leading-relaxed">{category.description}</p>
 
-      {/* 游戏按钮 */}
+      {/* Game Buttons */}
       <div className="space-y-3">
         {category.games.map((game) => (
           <Link

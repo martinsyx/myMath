@@ -172,7 +172,7 @@ import { FloatingElements } from "@/components/floating-elements"
 
       <div className="relative z-10">
         <main className="container mx-auto px-4 py-8">
-          {/* 页面标题 */}
+          {/* Page Title */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-display font-bold text-gray-800 mb-4 bounce-gentle">
               Number Sense - Kids Math Games
@@ -182,14 +182,14 @@ import { FloatingElements } from "@/components/floating-elements"
             </p>
           </div>
 
-          {/* 游戏卡片网格 */}
+          {/* Game Card Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto mb-12">
             {gameCategories.map((category, index) => (
               <GameCard key={category.id} category={category} delay={index * 0.2} />
             ))}
           </div>
 
-          {/* 返回按钮 */}
+          {/* Back Button */}
           <div className="text-center">
             <Link href="/" className="inline-block bg-gray-600 hover:bg-gray-700 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg transition-colors">
               🏠 Back to Home

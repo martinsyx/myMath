@@ -17,7 +17,11 @@ const fredoka = Fredoka({
 })
 
 export const metadata: Metadata = {
-  title: "EasyMath - Kids Math Games",
+  metadataBase: new URL('https://kids-math.com'),
+  title: {
+    template: '%s | Kids Math Game',
+    default: 'Kids Math Game - Fun Interactive Math Games for Children',
+  },
   description: "A fun and interactive platform for kids to learn math through games and activities",
   generator: "v0.dev",
 }
@@ -29,6 +33,41 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${fredoka.variable} antialiased`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': ['WebSite', 'WebApplication'],
+              name: 'Kids Math Game',
+              description: 'A fun and interactive platform designed for kids to learn math through games and activities.',
+              applicationCategory: 'EducationalApplication',
+              offers: {
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'USD'
+              },
+              audience: {
+                '@type': 'EducationalAudience',
+                educationalRole: 'student',
+                ageRange: '5-12'
+              },
+              teaches: [
+                'Number Sense',
+                'Addition',
+                'Subtraction',
+                'Multiplication',
+                'Division'
+              ],
+              publisher: {
+                '@type': 'Organization',
+                name: 'EasyMath'
+              }
+            })
+          }}
+        />
+      </head>
       <body className="font-sans">
         <header className="bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-10">
           <div className="container mx-auto px-4 py-2 flex items-center justify-between">

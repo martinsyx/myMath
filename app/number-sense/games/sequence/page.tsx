@@ -16,7 +16,7 @@ export default function SequenceGame() {
 
   const generateNumbers = (count: number) => {
     const nums = Array.from({ length: count }, (_, i) => i + 1);
-    // 随机打乱
+    // Shuffle randomly
     for (let i = nums.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [nums[i], nums[j]] = [nums[j], nums[i]];
@@ -30,7 +30,7 @@ export default function SequenceGame() {
   };
 
   const initializeGame = () => {
-    const count = Math.min(5 + level, 10); // 最多10个数字
+    const count = Math.min(5 + level, 10); // Maximum 10 numbers
     setNumbers(generateNumbers(count));
   };
 
@@ -56,7 +56,7 @@ export default function SequenceGame() {
     const draggedIndex = newNumbers.findIndex(item => item.id === draggedItem.id);
     const targetIndex = newNumbers.findIndex(item => item.id === targetItem.id);
 
-    // 交换位置
+    // Swap positions
     [newNumbers[draggedIndex], newNumbers[targetIndex]] = [newNumbers[targetIndex], newNumbers[draggedIndex]];
     
     setNumbers(newNumbers);

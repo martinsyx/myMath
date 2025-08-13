@@ -7,7 +7,7 @@ function generateSubtractionQuestions(count = 10) {
   const questions = [];
   while (questions.length < count) {
     const a = Math.floor(Math.random() * 50) + 10; // 10-59
-    const b = Math.floor(Math.random() * a) + 1; // 确保结果为正数
+    const b = Math.floor(Math.random() * a) + 1; // Ensure positive result
     questions.push({ a, b });
   }
   return questions;
