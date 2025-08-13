@@ -115,7 +115,28 @@ export default function CountingGame() {
           Back to Number Sense
         </Link>
       <Head>
+        <title>Counting Game - Kids Math | Learn Numbers Through Fun</title>
+        <meta name="description" content="Interactive counting game for kids to practice number recognition and counting skills through engaging activities." />
         <link rel="canonical" href="https://kids-math.com/number-sense/games/counting" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "LearningResource",
+              "name": "Counting Game - Kids Math",
+              "description": "Interactive counting game for kids to practice number recognition and counting skills.",
+              "educationalLevel": "Elementary",
+              "learningResourceType": "Game",
+              "interactivityType": "Interactive",
+              "audience": {
+                "@type": "EducationalAudience",
+                "educationalRole": "student",
+                "ageRange": "5-12"
+              }
+            })
+          }}
+        />
       </Head>
       </div>
     </div>

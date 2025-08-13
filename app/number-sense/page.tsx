@@ -88,12 +88,15 @@ import Link from "next/link";
 import { GameCard } from "@/components/game-card"
 import { FloatingElements } from "@/components/floating-elements"
 
-const schemaData = {
+  const schemaData = {
   "@context": "https://schema.org",
-  "@type": "EducationalWebPage",
+  "@type": ["EducationalWebPage", "WebPage"],
   "name": "Number Sense - Kids Math Games",
   "description": "Build number sense with fun and engaging math games for kids. Practice counting, matching, sequencing, patterns, comparison, and estimation.",
   "inLanguage": "en",
+  "learningResourceType": "Game",
+  "educationalLevel": "Elementary",
+  "keywords": "number sense, counting games, number matching, number sequences, math games for kids",
   "about": {
     "@type": "EducationalAudience",
     "educationalRole": "student",
@@ -101,11 +104,15 @@ const schemaData = {
   },
   "publisher": {
     "@type": "Organization",
-    "name": "KidsMath"
+    "name": "KidsMath",
+    "url": "https://kids-math.com"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
   }
-};
-
-export default function NumberSensePage() {
+};export default function NumberSensePage() {
   const gameCategories = [
     {
       id: "number-games",
