@@ -138,7 +138,7 @@ import { FloatingElements } from "@/components/floating-elements"
       borderColor: "border-green-200",
       games: [
         { name: "Odd & Even", icon: "⚡", href: "/number-sense/patterns/odd-even" },
-        { name: "Skip Counting", icon: "🦘", href: "/number-sense/patterns/skip-counting" },
+        // { name: "Skip Counting", icon: "🦘", href: "/number-sense/patterns/skip-counting" },
         { name: "Number Sequences", icon: "🔗", href: "/number-sense/patterns/sequences" },
       ],
     },

@@ -10,6 +10,7 @@ const pageMetadata = {
   title: "Kids Math Game - Fun Interactive Math Games for Children",
   description: "A fun and interactive platform designed for kids to learn math through games and activities. Practice number sense, addition, subtraction, multiplication, and division.",
   path: "/",
+  canonical: "https://kids-math.com",  // 添加这一行
   schemaData: {
     "@type": ["WebSite", "WebApplication"],
     "alternateType": "EducationalApplication",

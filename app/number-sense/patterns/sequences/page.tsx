@@ -18,11 +18,11 @@ export default function SequencesGame() {
 
   const generateQuestion = (): Question => {
     const patterns = [
-      { type: 'add', value: 2, name: '每次加2' },
-      { type: 'add', value: 3, name: '每次加3' },
-      { type: 'add', value: 5, name: '每次加5' },
-      { type: 'multiply', value: 2, name: '每次乘2' },
-      { type: 'multiply', value: 3, name: '每次乘3' }
+      { type: 'add', value: 2, name: '+2' },
+      { type: 'add', value: 3, name: '+3' },
+      { type: 'add', value: 5, name: '+5' },
+      { type: 'multiply', value: 2, name: '*2' },
+      { type: 'multiply', value: 3, name: '*3' }
     ];
     
     const pattern = patterns[Math.floor(Math.random() * patterns.length)];

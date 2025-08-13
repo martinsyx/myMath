@@ -6,45 +6,82 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 
 interface Question {
-  sequence: number[];
+  sequence: (number | null)[];
   pattern: number;
   missingIndex: number;
   userAnswer: number | null;
   isCorrect: boolean | null;
+  hint: string;
+  options: number[];
 }
 
 export default function SkipCountingGame() {
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
       <Head>
-        <link rel="canonical" href="https://kids-math.com/number-sense/patterns/skip-counting" />
+        {/* <link rel="canonical" href="https://kids-math.com/number-sense/patterns/skip-counting" /> */}
       </Head>
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState<'playing' | 'completed'>('playing');
+  const [showHint, setShowHint] = useState(false);
 
   const generateQuestion = (): Question => {
     const patterns = [2, 3, 5, 10];
     const pattern = patterns[Math.floor(Math.random() * patterns.length)];
     const start = Math.floor(Math.random() * 10) + 1;
-    const sequence = [];
+    const sequence: (number | null)[] = [];
     
     for (let i = 0; i < 5; i++) {
       sequence.push(start + i * pattern);
     }
     
     const missingIndex = Math.floor(Math.random() * 3) + 1; // 1, 2, 3
-    const correctAnswer = sequence[missingIndex];
+    const correctAnswer = sequence[missingIndex] as number;
     
     // Create sequence with missing numbers
     const displaySequence = [...sequence];
-    // displaySequence[missingIndex] = null;
+    displaySequence[missingIndex] = null;
+    
+    // 生成选项列表（确保正确答案一定存在且选项合理）
+    const options = new Set([correctAnswer]);
+    
+    // 生成与正确答案相关的选项
+    const baseNumbers = [
+      correctAnswer - pattern * 2,
+      correctAnswer - pattern,
+      correctAnswer + pattern,
+      correctAnswer + pattern * 2,
+      correctAnswer - 1,
+      correctAnswer + 1,
+      Math.floor(correctAnswer / 2),
+      correctAnswer * 2
+    ];
+    
+    baseNumbers.forEach(num => {
+      if (num > 0 && !options.has(num)) {
+        options.add(num);
+      }
+    });
+    
+    // 补足剩余选项
+    while (options.size < 9) {
+      const randomOffset = Math.floor(Math.random() * 10) - 5;
+      const randomNum = correctAnswer + randomOffset;
+      if (randomNum > 0 && !options.has(randomNum)) {
+        options.add(randomNum);
+      }
+    }
+    
+    const shuffledOptions = Array.from(options).sort(() => Math.random() - 0.5);
     
     return {
       sequence: displaySequence,
       pattern,
       missingIndex,
       userAnswer: null,
-      isCorrect: null
+      isCorrect: null,
+      hint: `每次加 ${pattern}`,
+      options: shuffledOptions
     };
   };
 
@@ -106,7 +143,7 @@ export default function SkipCountingGame() {
   return (
     <>
       <Head>
-        <link rel="canonical" href="https://kids-math.com/number-sense/patterns/skip-counting" />
+        {/* <link rel="canonical" href="https://kids-math.com/number-sense/patterns/skip-counting" /> */}
       </Head>
     <div className="max-w-4xl mx-auto mt-12 bg-white rounded shadow p-8">
       <div className="text-center mb-8">
@@ -135,7 +172,7 @@ export default function SkipCountingGame() {
           <div className="mb-8">
             <div className="text-lg mb-4">Choose your answer:</div>
             <div className="grid grid-cols-3 gap-4 max-w-md mx-auto">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(num => (
+              {currentQ.options.map((num: number) => (
                 <button
                   key={num}
                   onClick={() => handleAnswer(num)}
@@ -200,4 +237,4 @@ export default function SkipCountingGame() {
     </div>
     </>
   );
-} 
+}
