@@ -1,4 +1,3 @@
-
 import Script from "next/script";
 import Head from "next/head";
 import React from "react";
@@ -33,7 +32,7 @@ export default function HomePage() {
   const mathGames = [
     {
       title: "Number Sense",
-      description: "Build number sense with simple addition games",
+      description: "Build number sense with simple addition games. Cool math games for kids to learn counting and number recognition.",
       color: "bg-blue-100 border-blue-200",
       buttonColor: "bg-blue-500 hover:bg-blue-600",
       icon: "🔢",
@@ -41,7 +40,7 @@ export default function HomePage() {
     },
     {
       title: "Addition Practice",
-      description: "Practice addition up to 20 with fun math games",
+      description: "Practice addition up to 20 with fun math games. Free and fun addition games online for kids.",
       color: "bg-green-100 border-green-200",
       buttonColor: "bg-green-500 hover:bg-green-600",
       icon: "➕",
@@ -49,7 +48,7 @@ export default function HomePage() {
     },
     {
       title: "Subtraction Practice",
-      description: "Learn subtraction skills with interactive games",
+      description: "Learn subtraction skills with interactive games. Easy math for kids to master subtraction.",
       color: "bg-orange-100 border-orange-200",
       buttonColor: "bg-orange-500 hover:bg-orange-600",
       icon: "➖",
@@ -57,7 +56,7 @@ export default function HomePage() {
     },
     {
       title: "Multiplication Mastery",
-      description: "Master multiplication tables with kids math games",
+      description: "Master multiplication tables with kids math games. Fun maths counting games for multiplication practice.",
       color: "bg-purple-100 border-purple-200",
       buttonColor: "bg-purple-500 hover:bg-purple-600",
       icon: "✖️",
@@ -65,7 +64,7 @@ export default function HomePage() {
     },
     {
       title: "Division Practice",
-      description: "Discover division through fun and engaging activities",
+      description: "Discover division through fun and engaging activities. Counting game for kids to learn division.",
       color: "bg-red-100 border-red-200",
       buttonColor: "bg-red-500 hover:bg-red-600",
       icon: "➗",
@@ -96,6 +95,9 @@ export default function HomePage() {
               <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">
                 Welcome to Kids Math!
               </h2>
+              <p className="text-gray-700 text-lg mb-4">
+                Welcome to <span className="font-bold">Cool Math Games for Kids</span>! Enjoy <span className="font-bold">free</span>, <span className="font-bold">fun</span>, and <span className="font-bold">easy math</span> games designed to make learning enjoyable.
+              </p>
               <div className="flex justify-center gap-3 mb-2">
                 <span className="text-3xl animate-bounce">🎯</span>
                 <span className="text-3xl animate-bounce delay-100">🎮</span>
@@ -116,14 +118,14 @@ export default function HomePage() {
             {mathGames.map((game, index) => (
               <Card
                 key={index}
-                className={`${game.color} border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group`}
+                className={`${game.color} border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group flex flex-col`}
               >
                 <CardHeader className="text-center pb-3">
                   <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">{game.icon}</div>
                   <CardTitle className="text-lg font-bold text-gray-800 mb-2">{game.title}</CardTitle>
                   <CardDescription className="text-gray-600 text-sm leading-relaxed">{game.description}</CardDescription>
                 </CardHeader>
-                <CardContent className="text-center pt-0">
+                <CardContent className="text-center pt-0 flex justify-center">
                   <Link href={game.href}>
                     <Button
                       className={`${game.buttonColor} text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all text-sm`}
@@ -132,11 +134,16 @@ export default function HomePage() {
                     </Button>
                   </Link>
                 </CardContent>
+                
               </Card>
             ))}
           </div>
 
           <div className="text-center mt-8">
+              <p className="text-gray-700 text-lg mb-4">
+                Explore our cool math games for kids! We offer a wide range of free and fun games to help children learn and practice essential math skills. From easy math for kids to more challenging maths counting games, we have something for everyone.
+              </p>
+            <p className="text-gray-700 text-lg mb-4">Explore a variety of fun and engaging math games designed to help kids learn and practice essential math skills. From number sense to division, we have got you covered!</p>
             <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
               A fun and interactive platform designed for kids to learn math through exciting games and activities!
             </p>
@@ -176,6 +183,9 @@ export default function HomePage() {
               <span className="text-lg font-bold">Kids Math Game</span>
             </div>
             <p className="text-gray-400">Making math fun for kids everywhere!</p>
+            <p className="text-gray-500 mt-2">
+              Copyright &copy; 2025 Easy Math for Kids. All rights reserved.
+            </p>
           </div>
         </footer>
       </div>

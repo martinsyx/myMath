@@ -55,6 +55,7 @@ export function Metadata({ title, description, path, schemaData }: MetadataProps
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={imageUrl} />
+      <meta property="og:image:alt" content={description} />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />

@@ -38,8 +38,8 @@ export default function CountingGame() {
   return (
     <div className="max-w-2xl mx-auto mt-12 bg-white rounded shadow p-8">
       <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-blue-700 mb-4">Counting Game - Kids Math</h1>
-        <p className="text-gray-600">Click the button to count up to the target number!</p>
+        <h1 className="text-3xl font-bold text-blue-700 mb-4">Math Games Counting - Counting Game for Kids</h1>
+        <p className="text-gray-600">Play this <span className="font-bold">counting game for kids</span>! It's a fun and <span className="font-bold">free</span> way to learn <span className="font-bold">maths counting games</span> and improve number recognition. This <span className="font-bold">counting game</span> is perfect for <span className="font-bold">easy math for kids</span>!</p>
       </div>
 
       <div className="text-center mb-8">
@@ -54,13 +54,13 @@ export default function CountingGame() {
 
       {gameState === 'playing' && (
         <div className="text-center space-y-4">
-          <button
-            onClick={handleCount}
-            className="bg-blue-600 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-blue-700 transition-colors"
-          >
-            Count
-          </button>
-          <div>
+          <div className="flex justify-center space-x-4">
+            <button
+              onClick={handleCount}
+              className="bg-blue-600 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-blue-700 transition-colors"
+            >
+              Count
+            </button>
             <button
               onClick={handleCheck}
               className="bg-green-600 text-white px-8 py-4 rounded-lg text-xl font-bold hover:bg-green-700 transition-colors"
@@ -108,37 +108,37 @@ export default function CountingGame() {
       )}
 
       <div className="mt-8 text-center">
-        <Link 
+        <Link
           href="/number-sense"
           className="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
         >
           Back to Number Sense
         </Link>
-      <Head>
-        <title>Counting Game - Kids Math | Learn Numbers Through Fun</title>
-        <meta name="description" content="Interactive counting game for kids to practice number recognition and counting skills through engaging activities." />
-        <link rel="canonical" href="https://kids-math.com/number-sense/games/counting" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "LearningResource",
-              "name": "Counting Game - Kids Math",
-              "description": "Interactive counting game for kids to practice number recognition and counting skills.",
-              "educationalLevel": "Elementary",
-              "learningResourceType": "Game",
-              "interactivityType": "Interactive",
-              "audience": {
-                "@type": "EducationalAudience",
-                "educationalRole": "student",
-                "ageRange": "5-12"
-              }
-            })
-          }}
-        />
-      </Head>
+        <Head>
+          <title>Math Games Counting - Counting Game for Kids | Easy Math Fun</title>
+          <meta name="description" content="Play our fun counting game for kids! This free maths counting game helps children learn to count with easy math activities. Perfect for early learners!" />
+          <link rel="canonical" href="https://kids-math.com/number-sense/games/counting" />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "LearningResource",
+                "name": "Counting Game - Kids Math",
+                "description": "Interactive counting game for kids to practice number recognition and counting skills. This fun maths counting game is perfect for easy math learning.",
+                "educationalLevel": "Elementary",
+                "learningResourceType": "Game",
+                "interactivityType": "Interactive",
+                "audience": {
+                  "@type": "EducationalAudience",
+                  "educationalRole": "student",
+                  "ageRange": "5-12"
+                }
+              })
+            }}
+          />
+        </Head>
       </div>
     </div>
   );
-} 
+}
