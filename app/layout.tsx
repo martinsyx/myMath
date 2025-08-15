@@ -24,6 +24,9 @@ export const metadata: Metadata = {
   },
   description: "A fun and interactive platform for kids to learn math through games and activities",
   generator: "v0.dev",
+  alternates: {
+    canonical: '/number-sense/basics/comparison',
+  },
 }
 
 export default function RootLayout({
@@ -33,7 +36,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${fredoka.variable} antialiased`}>
-      <head>
+      {/* <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -67,7 +70,7 @@ export default function RootLayout({
             })
           }}
         />
-      </head>
+      </head> */}
       <body className="font-sans">
         <header className="bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-10">
           <div className="container mx-auto px-4 py-2 flex items-center justify-between">
