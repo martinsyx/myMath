@@ -2,13 +2,15 @@ interface MetadataProps {
   title: string;
   description: string;
   path: string;
+  canonical?: string;
   schemaData?: Record<string, unknown>;
 }
 
-export function Metadata({ title, description, path, schemaData }: MetadataProps) {
+export function Metadata({ title, description, path, canonical, schemaData }: MetadataProps) {
   const siteUrl = "https://kids-math.com";
+  const canonicalUrl = canonical || `${siteUrl}${path}`;
   const imageUrl = `${siteUrl}/og-image.jpg`;
-  
+
   const defaultSchema = {
     "@context": "https://schema.org",
     "@type": ["WebSite", "WebApplication"],
@@ -51,19 +53,19 @@ export function Metadata({ title, description, path, schemaData }: MetadataProps
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
-      <meta property="og:url" content={`${siteUrl}${path}`} />
+      <meta property="og:url" content={canonicalUrl} />
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={imageUrl} />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
-      <meta name="twitter:url" content={`${siteUrl}${path}`} />
+      <meta name="twitter:url" content={canonicalUrl} />
       <meta name="twitter:title" content={title} />
       <meta name="twitter:description" content={description} />
       <meta name="twitter:image" content={imageUrl} />
       
-      <link rel="canonical" href={`${siteUrl}${path}`} />
+      <link rel="canonical" href={canonicalUrl} />
       
       <script
         type="application/ld+json"
