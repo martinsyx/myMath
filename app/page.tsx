@@ -76,6 +76,7 @@ export default function HomePage() {
   return (
     <>
       <Head>
+        <link rel="canonical" href="https://kids-math.com" />
         <Metadata {...pageMetadata} />
       </Head>
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-9QQG8FQB50" strategy="afterInteractive" />
