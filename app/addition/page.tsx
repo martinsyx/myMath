@@ -1,13 +1,14 @@
+'use client';
 import Script from "next/script";
 import Head from "next/head";
-import React from "react";
+import React, { useState } from "react";
 
-// Generate 10 addition questions within 20
-function generateAdditionQuestions(count = 10) {
+// Generate addition questions with configurable parameters
+function generateAdditionQuestions(count = 10, maxNumber = 20) {
   const questions = [];
   while (questions.length < count) {
-    const a = Math.floor(Math.random() * 20) + 1;
-    const b = Math.floor(Math.random() * 20) + 1;
+    const a = Math.floor(Math.random() * maxNumber) + 1;
+    const b = Math.floor(Math.random() * maxNumber) + 1;
     questions.push({ a, b });
   }
   return questions;
@@ -26,7 +27,14 @@ const schemaData = {
 };
 
 export default function AdditionPage() {
-  const questions = generateAdditionQuestions(10);
+  const [questions, setQuestions] = useState(() => generateAdditionQuestions(10, 20));
+  const [questionCount, setQuestionCount] = useState(10);
+  const [maxNumber, setMaxNumber] = useState(20);
+
+  const handleGenerateQuestions = () => {
+    setQuestions(generateAdditionQuestions(questionCount, maxNumber));
+  };
+
   return (
     <>
       <Head>
@@ -49,6 +57,48 @@ export default function AdditionPage() {
         <h1 className="text-2xl font-bold mb-6 text-blue-700">
           Addition Practice - Kids Math Game
         </h1>
+        
+        <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+          <h2 className="text-lg font-semibold mb-4 text-gray-700">Generation Settings</h2>
+          <div className="grid grid-cols-2 gap-4 mb-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Number of Questions
+              </label>
+              <select
+                value={questionCount}
+                onChange={(e) => setQuestionCount(Number(e.target.value))}
+                className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+              >
+                <option value={5}>5 Questions</option>
+                <option value={10}>10 Questions</option>
+                <option value={15}>15 Questions</option>
+                <option value={20}>20 Questions</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-600 mb-1">
+                Number Range
+              </label>
+              <select
+                value={maxNumber}
+                onChange={(e) => setMaxNumber(Number(e.target.value))}
+                className="w-full p-2 border border-gray-300 rounded focus:border-blue-500 focus:outline-none"
+              >
+                <option value={10}>1-10</option>
+                <option value={20}>1-20</option>
+                <option value={50}>1-50</option>
+                <option value={100}>1-100</option>
+              </select>
+            </div>
+          </div>
+          <button
+            onClick={handleGenerateQuestions}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded transition-colors duration-200"
+          >
+            🎲 Generate New Questions
+          </button>
+        </div>
         <ul className="space-y-4">
           {questions.map((q, idx) => (
             <li key={idx} className="flex items-center text-lg">
