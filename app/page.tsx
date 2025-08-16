@@ -1,10 +1,8 @@
 import Script from "next/script";
-import Head from "next/head";
 import React from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Metadata } from "../components/Metadata";
 
 const pageMetadata = {
   title: "Kids Math Game - Fun Interactive Math Games for Children",
@@ -73,12 +71,46 @@ export default function HomePage() {
     },
   ];
 
+  const defaultSchema = {
+    "@context": "https://schema.org",
+    "@type": ["WebSite", "WebApplication"],
+    "name": pageMetadata.title,
+    "description": pageMetadata.description,
+    "inLanguage": "en",
+    "applicationCategory": "EducationalApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "audience": {
+      "@type": "EducationalAudience",
+      "educationalRole": "student",
+      "ageRange": "5-12"
+    },
+    "teaches": [
+      "Number Sense",
+      "Addition",
+      "Subtraction",
+      "Multiplication",
+      "Division"
+    ],
+    "publisher": {
+      "@type": "Organization",
+      "name": "EasyMath"
+    }
+  };
+
+  const finalSchema = { ...defaultSchema, ...pageMetadata.schemaData };
+
   return (
     <>
-      <Head>
-        <link rel="canonical" href="https://kids-math.com" />
-        <Metadata {...pageMetadata} />
-      </Head>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ 
+          __html: JSON.stringify(finalSchema)
+        }}
+      />
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-9QQG8FQB50" strategy="afterInteractive" />
       <Script id="gtag-init" strategy="afterInteractive">
         {`
