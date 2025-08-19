@@ -4,6 +4,30 @@ import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
+import Script from "next/script";
+
+const pageMetadata = {
+  title: "Addition Practice - Fun Math Games for Kids Learning Addition",
+  description: "Practice addition with our fun and interactive math games for kids. Free online addition games to help children learn and master basic addition skills up to 100.",
+  path: "/addition",
+  canonical: "https://kids-math.com/addition",
+  schemaData: {
+    "@type": ["WebSite", "WebApplication"],
+    "alternateType": "EducationalApplication",
+    "applicationCategory": "Education",
+    "gamePlatform": ["Web Browser", "Mobile Web"],
+    "educationalUse": ["Practice", "Assessment"],
+    "interactivityType": "Interactive",
+    "learningResourceType": "Game",
+    "skillLevel": ["Beginner", "Intermediate"],
+    "educationalAlignment": {
+      "@type": "AlignmentObject",
+      "alignmentType": "teaches",
+      "educationalFramework": "Mathematics",
+      "targetName": "Addition Skills"
+    }
+  }
+};
 
 const generateProblems = (count = 10, maxNumber = 9) => {
   const problems = []
@@ -86,8 +110,56 @@ export default function KidsMathPage() {
     }
   }, [completedCount, score, problemCount])
 
+  const defaultSchema = {
+    "@context": "https://schema.org",
+    "@type": ["WebSite", "WebApplication"],
+    "name": pageMetadata.title,
+    "description": pageMetadata.description,
+    "inLanguage": "en",
+    "applicationCategory": "EducationalApplication",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "audience": {
+      "@type": "EducationalAudience",
+      "educationalRole": "student",
+      "ageRange": "5-12"
+    },
+    "teaches": [
+      "Number Sense",
+      "Addition",
+      "Subtraction",
+      "Multiplication",
+      "Division"
+    ],
+    "publisher": {
+      "@type": "Organization",
+      "name": "EasyMath"
+    }
+  };
+
+  const finalSchema = { ...defaultSchema, ...pageMetadata.schemaData };
+
   return (
-    <div className="min-h-screen bg-background p-4">
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ 
+          __html: JSON.stringify(finalSchema)
+        }}
+      />
+      <Script src="https://www.googletagmanager.com/gtag/js?id=G-9QQG8FQB50" strategy="afterInteractive" />
+      <Script id="gtag-init" strategy="afterInteractive">
+        {`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', 'G-9QQG8FQB50');
+        `}
+      </Script>
+      <div className="min-h-screen bg-background p-4">
       <div className="max-w-4xl mx-auto mb-8">
        
         <div className="text-center mb-6">
@@ -295,5 +367,5 @@ export default function KidsMathPage() {
         </Card>
       </div>
     </div>
-  )
+  </>)
 }
