@@ -1,3 +1,5 @@
 {
-    "claudeCodeChat.permissions.yoloMode": true
+    "claudeCodeChat.permissions.yoloMode": true,
+    "Lingma.localMachineModel": false,
+    "Lingma.cloudModelEnable": true
 }
