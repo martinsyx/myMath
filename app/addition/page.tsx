@@ -89,25 +89,7 @@ export default function KidsMathPage() {
   return (
     <div className="min-h-screen bg-background p-4">
       <div className="max-w-4xl mx-auto mb-8">
-        {/* Top navigation bar, mimicking original website */}
-        <div className="bg-primary text-primary-foreground p-4 rounded-2xl mb-6 shadow-lg">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-primary-foreground/20 rounded-full flex items-center justify-center text-xl">
-                ➕
-              </div>
-              <h1 className="text-2xl font-bold font-serif">Kids Math Game</h1>
-            </div>
-            <Button
-              variant="ghost"
-              className="text-primary-foreground hover:bg-primary-foreground/20 text-lg font-medium"
-            >
-              Home
-            </Button>
-          </div>
-        </div>
-
-        {/* Title section */}
+       
         <div className="text-center mb-6">
           <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4 font-serif">
             Addition Practice - Kids Math Game
