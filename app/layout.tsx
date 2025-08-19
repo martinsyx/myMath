@@ -36,6 +36,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${inter.variable} ${fredoka.variable} antialiased`}>
+      <head>
+        <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8356923986420655" crossOrigin="anonymous"></script>
+      </head>
       {/* <head>
         <script
           type="application/ld+json"
