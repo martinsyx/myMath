@@ -67,7 +67,7 @@ export default function MultiplicationPage() {
           </ul>
           <p className="text-gray-700">
             Our multiplication practice game generates random problems to help reinforce these concepts. 
-            The more you practice, the better you'll become at multiplication!
+            The more you practice, the better you&#39;ll become at multiplication!
           </p>
         </div>
 
@@ -93,7 +93,7 @@ export default function MultiplicationPage() {
           <h2 className="text-xl font-bold text-green-800 mb-4">Why Practice Multiplication?</h2>
           <p className="text-gray-700 mb-4">
             Multiplication is a fundamental math skill that children use throughout their lives. 
-            Whether they're calculating the total cost of multiple items, determining areas of shapes, or solving complex math problems, 
+            Whether they&#39;re calculating the total cost of multiple items, determining areas of shapes, or solving complex math problems,
             multiplication is an essential skill that builds confidence in mathematical thinking.
           </p>
           <p className="text-gray-700 mb-4">
@@ -106,7 +106,7 @@ export default function MultiplicationPage() {
             <li>Gain confidence in their mathematical abilities</li>
           </ul>
           <p className="text-gray-700">
-            Our interactive multiplication game makes learning fun and engaging. Keep practicing, and you'll see 
+            Our interactive multiplication game makes learning fun and engaging. Keep practicing, and you&#39;ll see
             improvement in your math skills!
           </p>
         </div>

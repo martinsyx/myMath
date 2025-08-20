@@ -65,7 +65,7 @@ export default function SubtractionPage() {
           </ul>
           <p className="text-gray-700">
             Our subtraction practice game generates random problems to help reinforce these concepts. 
-            The more you practice, the better you'll become at subtraction!
+            The more you practice, the better you&#39;ll become at subtraction!
           </p>
         </div>
 
@@ -91,7 +91,7 @@ export default function SubtractionPage() {
           <h2 className="text-xl font-bold text-green-800 mb-4">Why Practice Subtraction?</h2>
           <p className="text-gray-700 mb-4">
             Subtraction is a fundamental math skill that children use throughout their lives. 
-            Whether they're calculating change from a purchase, measuring ingredients for a recipe, or determining how much time is left, 
+            Whether they&#39;re calculating change from a purchase, measuring ingredients for a recipe, or determining how much time is left,
             subtraction is an essential skill that builds confidence in mathematical thinking.
           </p>
           <p className="text-gray-700 mb-4">
@@ -104,7 +104,7 @@ export default function SubtractionPage() {
             <li>Gain confidence in their mathematical abilities</li>
           </ul>
           <p className="text-gray-700">
-            Our interactive subtraction game makes learning fun and engaging. Keep practicing, and you'll see 
+            Our interactive subtraction game makes learning fun and engaging. Keep practicing, and you&#39;ll see
             improvement in your math skills!
           </p>
         </div>

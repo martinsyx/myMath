@@ -39,7 +39,7 @@ export default function CountingGame() {
     <div className="max-w-2xl mx-auto mt-12 bg-white rounded shadow p-8">
       <div className="text-center mb-8">
         <h1 className="text-3xl font-bold text-blue-700 mb-4">Math Games Counting - Counting Game for Kids</h1>
-        <p className="text-gray-600">Play this <span className="font-bold">counting game for kids</span>{`! It's a fun and`} <span className="font-bold">free</span> way to learn <span className="font-bold">maths counting games</span> and improve number recognition. This <span className="font-bold">counting game</span> is perfect for <span className="font-bold">easy math for kids</span>!</p>
+        <p className="text-gray-600">Play this <span className="font-bold">counting game for kids</span>{`! It&#39;s a fun and`} <span className="font-bold">free</span> way to learn <span className="font-bold">maths counting games</span> and improve number recognition. This <span className="font-bold">counting game</span> is perfect for <span className="font-bold">easy math for kids</span>!</p>
       </div>
 
       <div className="text-center mb-8">

@@ -70,7 +70,7 @@ export default function DivisionPage() {
           </ul>
           <p className="text-gray-700">
             Our division practice game generates random problems to help reinforce these concepts. 
-            The more you practice, the better you'll become at division!
+            The more you practice, the better you&#39;ll become at division!
           </p>
         </div>
 
@@ -96,7 +96,7 @@ export default function DivisionPage() {
           <h2 className="text-xl font-bold text-green-800 mb-4">Why Practice Division?</h2>
           <p className="text-gray-700 mb-4">
             Division is a fundamental math skill that children use throughout their lives. 
-            Whether they're sharing snacks equally among friends, calculating unit prices at the store, or determining rates and ratios, 
+            Whether they&#39;re sharing snacks equally among friends, calculating unit prices at the store, or determining rates and ratios,
             division is an essential skill that builds confidence in mathematical thinking.
           </p>
           <p className="text-gray-700 mb-4">
@@ -109,7 +109,7 @@ export default function DivisionPage() {
             <li>Gain confidence in their mathematical abilities</li>
           </ul>
           <p className="text-gray-700">
-            Our interactive division game makes learning fun and engaging. Keep practicing, and you'll see 
+            Our interactive division game makes learning fun and engaging. Keep practicing, and you&#39;ll see
             improvement in your math skills!
           </p>
         </div>

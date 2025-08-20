@@ -380,7 +380,7 @@ export default function KidsMathPage() {
           <p className="text-gray-700">
             Our addition practice game generates random problems to help reinforce these concepts. 
             You can adjust the difficulty by changing the number range and the number of problems. 
-            The more you practice, the better you'll become at addition!
+            The more you practice, the better you&#39;ll become at addition!
           </p>
         </Card>
 
@@ -388,7 +388,7 @@ export default function KidsMathPage() {
           <h3 className="text-xl font-bold text-secondary mb-4">Why Practice Addition?</h3>
           <p className="text-gray-700 mb-4">
             Addition is a fundamental math skill that children use throughout their lives. 
-            Whether they're counting money, measuring ingredients for a recipe, or calculating scores in games, 
+            Whether they&#39;re counting money, measuring ingredients for a recipe, or calculating scores in games,
             addition is an essential skill that builds confidence in mathematical thinking.
           </p>
           <p className="text-gray-700 mb-4">
@@ -402,7 +402,7 @@ export default function KidsMathPage() {
           </ul>
           <p className="text-gray-700">
             Our interactive addition game makes learning fun and engaging. With customizable difficulty levels, 
-            it's perfect for children at different stages of learning addition. Keep practicing, and you'll see 
+            it&#39;s perfect for children at different stages of learning addition. Keep practicing, and you&#39;ll see 
             improvement in your math skills!
           </p>
         </Card>

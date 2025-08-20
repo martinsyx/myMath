@@ -194,7 +194,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                 <h4 className="text-lg font-semibold text-blue-800 mb-2">Engagement and Motivation</h4>
-                <p className="text-gray-700">Games capture children's attention and motivate them to practice math skills for longer periods.</p>
+                <p className="text-gray-700">Games capture children&#39;s attention and motivate them to practice math skills for longer periods.</p>
               </div>
               <div className="bg-green-50 p-4 rounded-lg border border-green-200">
                 <h4 className="text-lg font-semibold text-green-800 mb-2">Immediate Feedback</h4>

@@ -148,7 +148,7 @@ export default function NumberSensePage() {
           <div className="mt-12 bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
             <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Understanding Number Sense</h2>
             <p className="text-gray-700 mb-6">
-              Number sense is the ability to understand numbers and their relationships. It's a fundamental math skill that helps children make sense of the world around them through quantitative reasoning. Developing strong number sense in early years sets the foundation for future mathematical success.
+              Number sense is the ability to understand numbers and their relationships. It&#39;s a fundamental math skill that helps children make sense of the world around them through quantitative reasoning. Developing strong number sense in early years sets the foundation for future mathematical success.
             </p>
             <h3 className="text-xl font-semibold text-gray-800 mb-4">Key Components of Number Sense:</h3>
             <div className="grid md:grid-cols-2 gap-6 mb-6">
