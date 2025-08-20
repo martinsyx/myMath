@@ -95,6 +95,21 @@ export default function RootLayout({
         <main>
           {children}
         </main>
+         {/* Footer */}
+        <footer className="bg-gray-800 text-white py-8">
+          <div className="container mx-auto px-4 text-center">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded flex items-center justify-center text-white font-bold text-xs">
+                +
+              </div>
+              <span className="text-lg font-bold">Kids Math Game</span>
+            </div>
+            <p className="text-gray-400">Making math fun for kids everywhere!</p>
+            <p className="text-gray-500 mt-2">
+              Copyright &copy; 2025 Easy Math for Kids. All rights reserved.
+            </p>
+          </div>
+        </footer>
       </body>
     </html>
   )

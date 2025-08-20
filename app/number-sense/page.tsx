@@ -143,6 +143,44 @@ export default function NumberSensePage() {
               🏠 Back to Home
             </Link>
           </div>
+
+          {/* Educational Content Section */}
+          <div className="mt-12 bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Understanding Number Sense</h2>
+            <p className="text-gray-700 mb-6">
+              Number sense is the ability to understand numbers and their relationships. It's a fundamental math skill that helps children make sense of the world around them through quantitative reasoning. Developing strong number sense in early years sets the foundation for future mathematical success.
+            </p>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Key Components of Number Sense:</h3>
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <h4 className="text-lg font-semibold text-blue-800 mb-2">Counting and Cardinality</h4>
+                <p className="text-gray-700">Understanding that the last number counted represents the total quantity of a set.</p>
+              </div>
+              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                <h4 className="text-lg font-semibold text-green-800 mb-2">Number Relationships</h4>
+                <p className="text-gray-700">Recognizing how numbers relate to each other through comparison, ordering, and patterns.</p>
+              </div>
+              <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                <h4 className="text-lg font-semibold text-purple-800 mb-2">Base-Ten System</h4>
+                <p className="text-gray-700">Understanding place value and how numbers are composed and decomposed.</p>
+              </div>
+              <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                <h4 className="text-lg font-semibold text-orange-800 mb-2">Operations and Estimation</h4>
+                <p className="text-gray-700">Developing fluency with basic operations and making reasonable estimates.</p>
+              </div>
+            </div>
+            <p className="text-gray-700 mb-6">
+              Our number sense games are designed to help children develop these critical skills through interactive and engaging activities. Each game focuses on specific aspects of number sense, making learning both fun and effective.
+            </p>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Benefits of Strong Number Sense:</h3>
+            <ul className="list-disc pl-6 text-gray-700 space-y-2">
+              <li>Improved problem-solving abilities</li>
+              <li>Better understanding of mathematical concepts</li>
+              <li>Increased confidence in math-related activities</li>
+              <li>Enhanced critical thinking skills</li>
+              <li>Stronger foundation for advanced mathematics</li>
+            </ul>
+          </div>
         </main>
       </div>
     </div>

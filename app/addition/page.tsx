@@ -168,6 +168,7 @@ export default function KidsMathPage() {
           </h2>
         </div>
 
+
         <Card className="p-6 mb-6 bg-card border border-border shadow-md">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-xl font-bold text-secondary">Practice Settings</h3>
@@ -358,6 +359,53 @@ export default function KidsMathPage() {
             </Card>
           ))}
         </div>
+      </div>
+
+      <div className="max-w-4xl mx-auto mt-8">
+                {/* Educational Content Section */}
+        <Card className="p-6 mb-6 bg-card border border-border shadow-md">
+          <h3 className="text-xl font-bold text-secondary mb-4">Learning Addition</h3>
+          <p className="text-gray-700 mb-4">
+            Addition is one of the fundamental operations in mathematics. It involves combining two or more numbers to find their total. 
+            Practicing addition helps children develop number sense and builds a foundation for more advanced math concepts.
+          </p>
+          <h4 className="text-lg font-semibold text-secondary mb-2">Addition Tips:</h4>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
+            <li>Start with smaller numbers and gradually work your way up to larger ones</li>
+            <li>Use visual aids like fingers or objects to help understand the concept</li>
+            <li>Practice regularly to build fluency and speed</li>
+            <li>Look for patterns, like adding zero (any number plus zero equals itself)</li>
+            <li>Remember that addition is commutative (2+3 equals 3+2)</li>
+          </ul>
+          <p className="text-gray-700">
+            Our addition practice game generates random problems to help reinforce these concepts. 
+            You can adjust the difficulty by changing the number range and the number of problems. 
+            The more you practice, the better you'll become at addition!
+          </p>
+        </Card>
+
+        <Card className="p-6 bg-card border border-border shadow-md">
+          <h3 className="text-xl font-bold text-secondary mb-4">Why Practice Addition?</h3>
+          <p className="text-gray-700 mb-4">
+            Addition is a fundamental math skill that children use throughout their lives. 
+            Whether they're counting money, measuring ingredients for a recipe, or calculating scores in games, 
+            addition is an essential skill that builds confidence in mathematical thinking.
+          </p>
+          <p className="text-gray-700 mb-4">
+            Regular practice with addition helps children:
+          </p>
+          <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
+            <li>Develop mental math skills for quick calculations</li>
+            <li>Build a strong foundation for more complex math operations</li>
+            <li>Improve problem-solving abilities</li>
+            <li>Gain confidence in their mathematical abilities</li>
+          </ul>
+          <p className="text-gray-700">
+            Our interactive addition game makes learning fun and engaging. With customizable difficulty levels, 
+            it's perfect for children at different stages of learning addition. Keep practicing, and you'll see 
+            improvement in your math skills!
+          </p>
+        </Card>
       </div>
 
       <div className="max-w-4xl mx-auto mt-8 text-center">

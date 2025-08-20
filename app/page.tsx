@@ -184,6 +184,37 @@ export default function HomePage() {
           </div>
         </section>
 
+        {/* Educational Content Section */}
+        <section className="container mx-auto px-4 py-8">
+          <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Why Math Games Are Important for Kids</h3>
+            <p className="text-gray-700 mb-6">
+              Math games provide an engaging and effective way for children to develop their mathematical skills. Unlike traditional rote learning methods, games make math enjoyable and accessible, helping children build confidence while mastering important concepts.
+            </p>
+            <div className="grid md:grid-cols-2 gap-6 mb-6">
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <h4 className="text-lg font-semibold text-blue-800 mb-2">Engagement and Motivation</h4>
+                <p className="text-gray-700">Games capture children's attention and motivate them to practice math skills for longer periods.</p>
+              </div>
+              <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                <h4 className="text-lg font-semibold text-green-800 mb-2">Immediate Feedback</h4>
+                <p className="text-gray-700">Games provide instant feedback, helping children learn from their mistakes quickly.</p>
+              </div>
+              <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
+                <h4 className="text-lg font-semibold text-purple-800 mb-2">Conceptual Understanding</h4>
+                <p className="text-gray-700">Interactive games help children understand mathematical concepts rather than just memorizing procedures.</p>
+              </div>
+              <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                <h4 className="text-lg font-semibold text-orange-800 mb-2">Problem-Solving Skills</h4>
+                <p className="text-gray-700">Games develop critical thinking and problem-solving abilities through mathematical challenges.</p>
+              </div>
+            </div>
+            <p className="text-gray-700">
+              Our math games are carefully designed by educators to align with learning standards while keeping the experience fun and engaging. Each game targets specific skills and progresses in difficulty to ensure continuous learning and improvement.
+            </p>
+          </div>
+        </section>
+
         {/* Fun Stats Section */}
         <section className="bg-white/50 backdrop-blur-sm py-16">
           <div className="container mx-auto px-4">
@@ -207,21 +238,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        {/* Footer */}
-        <footer className="bg-gray-800 text-white py-8">
-          <div className="container mx-auto px-4 text-center">
-            <div className="flex items-center justify-center gap-2 mb-4">
-              <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded flex items-center justify-center text-white font-bold text-xs">
-                +
-              </div>
-              <span className="text-lg font-bold">Kids Math Game</span>
-            </div>
-            <p className="text-gray-400">Making math fun for kids everywhere!</p>
-            <p className="text-gray-500 mt-2">
-              Copyright &copy; 2025 Easy Math for Kids. All rights reserved.
-            </p>
-          </div>
-        </footer>
+       
       </div>
     </>
   );
