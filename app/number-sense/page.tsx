@@ -38,7 +38,7 @@ const pageMetadata = {
       "Number Sense",
       "Counting",
       "Number Recognition",
-      "Number Sequences",
+      "Skip Counting",
       "Number Patterns",
       "Estimation"
     ],
@@ -81,7 +81,7 @@ export default function NumberSensePage() {
       games: [
         { name: "Odd & Even", icon: "⚡", href: "/number-sense/patterns/odd-even" },
         // { name: "Skip Counting", icon: "🦘", href: "/number-sense/patterns/skip-counting" },
-        { name: "Number Sequences", icon: "🔗", href: "/number-sense/patterns/sequences" },
+        { name: "Skip Counting", icon: "🔗", href: "/number-sense/patterns/skipcountinggame" },
       ],
     },
     {
