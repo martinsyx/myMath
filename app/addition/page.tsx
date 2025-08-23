@@ -6,6 +6,17 @@ import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import Script from "next/script";
 
+// Define the type for a problem
+type Problem = {
+  id: number;
+  num1: number;
+  num2: number;
+  answer: number;
+  userAnswer: string;
+  isCorrect: boolean | null;
+  showFeedback: boolean;
+};
+
 const pageMetadata = {
   title: "Addition Practice - Fun Math Games for Kids Learning Addition",
   description: "Practice addition with our fun and interactive math games for kids. Free online addition games to help children learn and master basic addition skills up to 100.",
@@ -29,28 +40,49 @@ const pageMetadata = {
   }
 };
 
-const generateProblems = (count = 10, maxNumber = 9) => {
-  const problems = []
+// Generate initial problems with fixed values to avoid hydration issues
+const generateInitialProblems = (count = 10, maxNumber = 9) => {
+  const problems: Problem[] = [];
   for (let i = 0; i < count; i++) {
-    const num1 = Math.floor(Math.random() * maxNumber) + 1
-    const num2 = Math.floor(Math.random() * maxNumber) + 1
+    // Use fixed values to ensure server and client render the same content
+    const num1 = (i % maxNumber) + 1;
+    const num2 = Math.floor(i / maxNumber) + 1;
     problems.push({
       id: i + 1,
       num1,
       num2,
       answer: num1 + num2,
       userAnswer: "",
-      isCorrect: null as boolean | null,
+      isCorrect: null,
       showFeedback: false,
-    })
+    });
   }
-  return problems
-}
+  return problems;
+};
+
+// Generate random problems
+const generateRandomProblems = (count = 10, maxNumber = 9) => {
+  const problems: Problem[] = [];
+  for (let i = 0; i < count; i++) {
+    const num1 = Math.floor(Math.random() * maxNumber) + 1;
+    const num2 = Math.floor(Math.random() * maxNumber) + 1;
+    problems.push({
+      id: i + 1,
+      num1,
+      num2,
+      answer: num1 + num2,
+      userAnswer: "",
+      isCorrect: null,
+      showFeedback: false,
+    });
+  }
+  return problems;
+};
 
 export default function KidsMathPage() {
-  const [problemCount, setProblemCount] = useState(10)
-  const [numberRange, setNumberRange] = useState(9)
-  const [problems, setProblems] = useState(() => generateProblems(problemCount, numberRange))
+  const [problemCount, setProblemCount] = useState(10);
+  const [numberRange, setNumberRange] = useState(9);
+  const [problems, setProblems] = useState<Problem[]>(() => generateInitialProblems(problemCount, numberRange));
   const [score, setScore] = useState(0)
   const [completedCount, setCompletedCount] = useState(0)
   const [showCelebration, setShowCelebration] = useState(false)
@@ -89,14 +121,14 @@ export default function KidsMathPage() {
   }
 
   const resetGame = () => {
-    setProblems(generateProblems(problemCount, numberRange))
+    setProblems(generateRandomProblems(problemCount, numberRange))
     setScore(0)
     setCompletedCount(0)
     setShowCelebration(false)
   }
 
   const generateNewProblems = () => {
-    setProblems(generateProblems(problemCount, numberRange))
+    setProblems(generateRandomProblems(problemCount, numberRange))
     setScore(0)
     setCompletedCount(0)
     setShowCelebration(false)
@@ -313,7 +345,7 @@ export default function KidsMathPage() {
                       value={problem.userAnswer}
                       onChange={(e) => handleAnswerChange(problem.id, e.target.value)}
                       className="w-32 h-12 text-2xl text-center font-bold border-2 border-primary/30 focus:border-primary rounded-lg"
-                      placeholder="Your answer"
+                      placeholder="answer"
                       maxLength={3}
                     />
                     <Button

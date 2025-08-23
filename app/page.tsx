@@ -45,30 +45,30 @@ export default function HomePage() {
       icon: "➕",
       href: "/addition"
     },
-    {
-      title: "Subtraction Practice",
-      description: "Learn subtraction skills with interactive games. Easy math for kids to master subtraction.",
-      color: "bg-orange-100 border-orange-200",
-      buttonColor: "bg-orange-500 hover:bg-orange-600",
-      icon: "➖",
-      href: "/subtraction"
-    },
-    {
-      title: "Multiplication Mastery",
-      description: "Master multiplication tables with kids math games. Fun maths counting games for multiplication practice.",
-      color: "bg-purple-100 border-purple-200",
-      buttonColor: "bg-purple-500 hover:bg-purple-600",
-      icon: "✖️",
-      href: "/multiplication"
-    },
-    {
-      title: "Division Practice",
-      description: "Discover division through fun and engaging activities. Counting game for kids to learn division.",
-      color: "bg-red-100 border-red-200",
-      buttonColor: "bg-red-500 hover:bg-red-600",
-      icon: "➗",
-      href: "/division"
-    },
+    // {
+    //   title: "Subtraction Practice",
+    //   description: "Learn subtraction skills with interactive games. Easy math for kids to master subtraction.",
+    //   color: "bg-orange-100 border-orange-200",
+    //   buttonColor: "bg-orange-500 hover:bg-orange-600",
+    //   icon: "➖",
+    //   href: "/subtraction"
+    // },
+    // {
+    //   title: "Multiplication Mastery",
+    //   description: "Master multiplication tables with kids math games. Fun maths counting games for multiplication practice.",
+    //   color: "bg-purple-100 border-purple-200",
+    //   buttonColor: "bg-purple-500 hover:bg-purple-600",
+    //   icon: "✖️",
+    //   href: "/multiplication"
+    // },
+    // {
+    //   title: "Division Practice",
+    //   description: "Discover division through fun and engaging activities. Counting game for kids to learn division.",
+    //   color: "bg-red-100 border-red-200",
+    //   buttonColor: "bg-red-500 hover:bg-red-600",
+    //   icon: "➗",
+    //   href: "/division"
+    // },
   ];
 
   const defaultSchema = {
@@ -148,7 +148,7 @@ export default function HomePage() {
             <p className="text-gray-600">Pick a game and start your mathematical journey!</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 max-w-7xl mx-auto">
             {mathGames.map((game, index) => (
               <Card
                 key={index}
