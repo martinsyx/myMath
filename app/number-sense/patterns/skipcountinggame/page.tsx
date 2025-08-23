@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import { Metadata } from "@/components/Metadata";
 
 interface Question {
   sequence: (number | null)[];
@@ -145,12 +146,62 @@ export default function SequencesGame() {
     ));
   };
 
+  // SEO metadata for the skip counting game page
+  const pageMetadata = {
+    title: "Skip Counting Games for Kids | Number Pattern Math Games",
+    description: "Fun skip counting games for kids to learn number patterns. Practice math skills with interactive sequences and improve number sense. Perfect for elementary students!",
+    path: "/number-sense/patterns/skipcountinggame",
+    schemaData: {
+      "@type": ["WebPage", "LearningResource"],
+      "alternateType": "EducationalApplication",
+      "applicationCategory": "EducationalApplication",
+      "gamePlatform": ["Web Browser", "Mobile Web"],
+      "educationalUse": ["Practice", "Assessment"],
+      "interactivityType": "Interactive",
+      "learningResourceType": "Game",
+      "skillLevel": ["Beginner", "Intermediate"],
+      "educationalAlignment": {
+        "@type": "AlignmentObject",
+        "alignmentType": "teaches",
+        "educationalFramework": "Mathematics",
+        "targetName": "Skip Counting"
+      },
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "student",
+        "ageRange": "5-12"
+      },
+      "teaches": [
+        "Skip Counting",
+        "Number Patterns",
+        "Mathematical Sequences",
+        "Number Sense"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "EasyMath"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  };
+
   return (
-    <div className="max-w-4xl mx-auto mt-12 bg-white rounded shadow p-8">
-      <div className="text-center mb-8">
-        <h1 className="text-3xl font-bold text-green-700 mb-4">Skip Counting - Kids Math Game</h1>
-        <p className="text-gray-600">Find the pattern in the sequence and fill in the missing number!</p>
-      </div>
+    <>
+      <Metadata
+        title={pageMetadata.title}
+        description={pageMetadata.description}
+        path={pageMetadata.path}
+        schemaData={pageMetadata.schemaData}
+      />
+      <div className="max-w-4xl mx-auto mt-12 bg-white rounded shadow p-8">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-green-700 mb-4">Skip Counting - Kids Math Game</h1>
+          <p className="text-gray-600">Find the pattern in the sequence and fill in the missing number!</p>
+        </div>
 
       <div className="flex justify-center space-x-8 mb-8">
         <div className="text-lg">
@@ -252,5 +303,6 @@ export default function SequencesGame() {
         </Link>
       </div>
     </div>
+    </>
   );
 }
