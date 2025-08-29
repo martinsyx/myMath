@@ -67,6 +67,13 @@ export default function SubtractionPage() {
             Our subtraction practice game generates random problems to help reinforce these concepts. 
             The more you practice, the better you&#39;ll become at subtraction!
           </p>
+          <h3 className="text-lg font-semibold text-blue-700 mb-2 mt-4">Understanding Subtraction in Daily Life</h3>
+          <p className="text-gray-700 mb-4">
+            Subtraction is not just a mathematical concept; it's a skill we use in our daily lives. From calculating the change we receive at a store to determining how much time is left before an event, subtraction helps us make sense of the world around us.
+          </p>
+          <p className="text-gray-700 mb-4">
+            When children learn subtraction, they're not just memorizing facts; they're developing critical thinking skills. They learn to analyze problems, identify what information is needed, and apply logical reasoning to find solutions.
+          </p>
         </div>
 
         <ul className="space-y-4">

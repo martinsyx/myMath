@@ -72,6 +72,13 @@ export default function DivisionPage() {
             Our division practice game generates random problems to help reinforce these concepts. 
             The more you practice, the better you&#39;ll become at division!
           </p>
+          <h3 className="text-lg font-semibold text-blue-700 mb-2 mt-4">Division in Everyday Life</h3>
+          <p className="text-gray-700 mb-4">
+            Division is a practical skill we use daily, often without realizing it. Whether it's splitting a pizza among friends, calculating the price per item when buying in bulk, or determining how many days a supply will last, division helps us make fair and accurate decisions.
+          </p>
+          <p className="text-gray-700 mb-4">
+            Understanding division also builds critical thinking skills. Children learn to break down complex problems into manageable parts, distribute resources fairly, and think proportionally. These skills extend far beyond mathematics and are valuable in many areas of life.
+          </p>
         </div>
 
         <ul className="space-y-4">
