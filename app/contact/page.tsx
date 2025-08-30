@@ -87,7 +87,7 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-800">Email Us</h3>
-                  <p className="text-gray-600">support@kidsmathgame.com</p>
+                  <p className="text-gray-600">martinsyx@sina.com</p>
                 </div>
               </div>
               
@@ -210,7 +210,7 @@ export default function ContactPage() {
                 disabled={isSubmitting}
                 className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 px-4 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-50"
               >
-                {isSubmitting ? "Sending..." : "Send Message"}
+                {isSubmitting ? "Sending..." : "send"}
               </button>
             </form>
           </div>

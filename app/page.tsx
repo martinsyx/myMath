@@ -194,7 +194,7 @@ export default function HomePage() {
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
                 <h4 className="text-lg font-semibold text-blue-800 mb-2">Engagement and Motivation</h4>
-                <p className="text-gray-700">Games capture children's attention and motivate them to practice math skills for longer periods. Interactive math games for kids create a sense of achievement and progress that keeps children engaged with mathematical concepts.</p>
+                <p className="text-gray-700">Games capture children&#39;s attention and motivate them to practice math skills for longer periods. Interactive math games for kids create a sense of achievement and progress that keeps children engaged with mathematical concepts.</p>
               </div>
               <div className="bg-green-50 p-4 rounded-lg border border-green-200">
                 <h4 className="text-lg font-semibold text-green-800 mb-2">Immediate Feedback</h4>
@@ -215,7 +215,7 @@ export default function HomePage() {
             
             <h4 className="text-xl font-semibold text-gray-800 mb-4">Benefits of Online Math Games for Kids</h4>
             <p className="text-gray-700 mb-4">
-              Free math games online offer several advantages over traditional learning methods. They provide personalized learning experiences that adapt to each child's pace and skill level. Our cool math games for kids are accessible from any device with an internet connection, making it easy for children to practice math skills anytime, anywhere.
+              Free math games online offer several advantages over traditional learning methods. They provide personalized learning experiences that adapt to each child&#39;s pace and skill level. Our cool math games for kids are accessible from any device with an internet connection, making it easy for children to practice math skills anytime, anywhere.
             </p>
             <p className="text-gray-700">
               Research has shown that children who regularly engage with math games demonstrate improved performance in standardized tests and classroom assessments. The combination of visual elements, interactive challenges, and immediate feedback creates an optimal learning environment that caters to different learning styles.

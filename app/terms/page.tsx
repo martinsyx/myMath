@@ -38,7 +38,7 @@ export default function TermsPage() {
             </p>
             
             <p className="text-gray-700 mb-6">
-              These Terms of Service ("Terms") govern your access to and use of the Kids Math Game 
+              These Terms of Service (&#34;Terms&#34;) govern your access to and use of the Kids Math Game 
               website and services. By accessing or using our services, you agree to be bound by 
               these Terms and our Privacy Policy.
             </p>
@@ -100,7 +100,7 @@ export default function TermsPage() {
             
             <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">7. Disclaimer of Warranties</h2>
             <p className="text-gray-700 mb-6">
-              Our services are provided "as is" and "as available" without warranties of any kind, 
+              Our services are provided &#34;as is&#34; and &#34;as available&#34; without warranties of any kind, 
               either express or implied. We do not warrant that our services will be uninterrupted 
               or error-free, that defects will be corrected, or that our services or the servers 
               that make them available are free of viruses or other harmful components.
@@ -118,7 +118,7 @@ export default function TermsPage() {
             <h2 className="text-2xl font-bold text-gray-800 mt-8 mb-4">9. Modifications to Terms</h2>
             <p className="text-gray-700 mb-6">
               We reserve the right, at our sole discretion, to modify or replace these Terms at 
-              any time. If a revision is material, we will provide at least 30 days' notice prior 
+              any time. If a revision is material, we will provide at least 30 days&#39; notice prior 
               to any new terms taking effect. What constitutes a material change will be determined 
               at our sole discretion.
             </p>
@@ -137,7 +137,7 @@ export default function TermsPage() {
             </p>
             <div className="bg-gray-50 p-4 rounded-lg border border-gray-200">
               <p className="text-gray-700">
-                <strong>Email:</strong> terms@kidsmathgame.com
+                <strong>Email:</strong> martinsyx@sina.com
               </p>
             </div>
           </div>

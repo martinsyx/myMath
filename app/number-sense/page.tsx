@@ -1,7 +1,3 @@
-
-
-
-
 import Script from "next/script";
 import React from "react";
 import Link from "next/link";
@@ -183,10 +179,10 @@ export default function NumberSensePage() {
             
             <h3 className="text-xl font-semibold text-gray-800 mb-4">How Parents Can Support Number Sense Development:</h3>
             <p className="text-gray-700 mb-4">
-              Parents play a crucial role in developing their child's number sense. Simple activities like counting objects during daily routines, discussing quantities in recipes, or playing number-based games can significantly enhance mathematical understanding. Our free math games online provide structured opportunities for children to practice these skills in an engaging environment.
+              Parents play a crucial role in developing their child&#39;s number sense. Simple activities like counting objects during daily routines, discussing quantities in recipes, or playing number-based games can significantly enhance mathematical understanding. Our free math games online provide structured opportunities for children to practice these skills in an engaging environment.
             </p>
             <p className="text-gray-700">
-              Creating a positive attitude toward mathematics is equally important. When children see math as fun and accessible through cool math games for kids, they're more likely to develop the confidence needed for mathematical success. Regular practice with educational games for children helps reinforce concepts learned in school while introducing new challenges in a supportive setting.
+              Creating a positive attitude toward mathematics is equally important. When children see math as fun and accessible through cool math games for kids, they&#39;re more likely to develop the confidence needed for mathematical success. Regular practice with educational games for children helps reinforce concepts learned in school while introducing new challenges in a supportive setting.
             </p>
           </div>
         </main>

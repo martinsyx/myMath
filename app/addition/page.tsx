@@ -400,7 +400,7 @@ export default function KidsMathPage() {
           <p className="text-gray-700 mb-4">
             Addition is one of the fundamental operations in mathematics. It involves combining two or more numbers to find their total. 
             Practicing addition helps children develop number sense and builds a foundation for more advanced math concepts. Mastering addition 
-            skills early on is crucial for mathematical success throughout a child's academic journey.
+            skills early on is crucial for mathematical success throughout a child&#39;s academic journey.
           </p>
           <h4 className="text-lg font-semibold text-secondary mb-2">Addition Tips:</h4>
           <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
