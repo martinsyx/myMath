@@ -130,6 +130,7 @@ export default function SequencesGame() {
   };
 
   const resetGame = () => {
+    console.log("Resetting game...");
     setQuestions(generateQuestions());
     setCurrentQuestion(0);
     setScore(0);
@@ -148,46 +149,40 @@ export default function SequencesGame() {
 
   // SEO metadata for the skip counting game page
   const pageMetadata = {
-    title: "Skip Counting Games for Kids | Number Pattern Math Games",
-    description: "Fun skip counting games for kids to learn number patterns. Practice math skills with interactive sequences and improve number sense. Perfect for elementary students!",
+    title: "Skip Counting Game – Practice Number Patterns | Kids-Math.com",
+    description: "Fun skip counting game for kids! Practice number patterns by filling in missing numbers. Great for ages 5–8 to build number sense and prepare for multiplication.",
     path: "/number-sense/patterns/skipcountinggame",
     schemaData: {
-      "@type": ["WebPage", "LearningResource"],
-      "alternateType": "EducationalApplication",
-      "applicationCategory": "EducationalApplication",
-      "gamePlatform": ["Web Browser", "Mobile Web"],
-      "educationalUse": ["Practice", "Assessment"],
-      "interactivityType": "Interactive",
+      "@type": "EducationalGame",
+      "name": "Skip Counting Game",
+      "url": "https://kids-math.com/number-sense/patterns/skipcountinggame",
+      "description": "A fun skip counting game for kids ages 5–8. Practice number patterns by filling in missing numbers, strengthen number sense, and prepare for multiplication.",
+      "educationalLevel": ["Kindergarten", "Grade 1", "Grade 2"],
       "learningResourceType": "Game",
-      "skillLevel": ["Beginner", "Intermediate"],
-      "educationalAlignment": {
-        "@type": "AlignmentObject",
-        "alignmentType": "teaches",
-        "educationalFramework": "Mathematics",
-        "targetName": "Skip Counting"
-      },
+      "about": [
+        "Skip counting",
+        "Number patterns",
+        "Math practice",
+        "Arithmetic"
+      ],
       "audience": {
         "@type": "EducationalAudience",
-        "educationalRole": "student",
-        "ageRange": "5-12"
+        "educationalRole": "Learner",
+        "typicalAgeRange": "5-8"
       },
-      "teaches": [
-        "Skip Counting",
-        "Number Patterns",
-        "Mathematical Sequences",
-        "Number Sense"
-      ],
       "publisher": {
         "@type": "Organization",
-        "name": "EasyMath"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "USD"
+        "name": "Kids-Math.com",
+        "url": "https://kids-math.com"
       }
     }
   };
+
+  // State for collapsible sections
+  const [showLearningObjectives, setShowLearningObjectives] = useState(false);
+  const [showRecommendedAge, setShowRecommendedAge] = useState(false);
+  const [showHowToPlay, setShowHowToPlay] = useState(false);
+  const [showWhySkipCountingMatters, setShowWhySkipCountingMatters] = useState(false);
 
   return (
     <>
@@ -199,7 +194,7 @@ export default function SequencesGame() {
       />
       <div className="max-w-4xl mx-auto mt-12 bg-white rounded shadow p-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-green-700 mb-4">Skip Counting - Kids Math Game</h1>
+          <h1 className="text-3xl font-bold text-green-700 mb-4">Skip Counting Game – Practice Number Patterns</h1>
           <p className="text-gray-600">Find the pattern in the sequence and fill in the missing number!</p>
         </div>
 
@@ -287,6 +282,103 @@ export default function SequencesGame() {
           </button>
         </div>
       )}
+
+      {/* Collapsible Rules and Information Section */}
+      <div className="mt-12 bg-gray-50 rounded-lg p-6">
+        <h2 className="text-2xl font-bold text-green-700 mb-4 text-center">Game Information</h2>
+        
+        {/* Learning Objectives */}
+        <div className="mb-4">
+          <button 
+            onClick={() => setShowLearningObjectives(!showLearningObjectives)}
+            className="flex justify-between items-center w-full text-left font-semibold text-lg text-gray-800 py-2"
+          >
+            <span>Learning Objectives</span>
+            <svg 
+              className={`w-5 h-5 transition-transform ${showLearningObjectives ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {showLearningObjectives && (
+            <ul className="text-gray-600 mt-2 list-disc list-inside pl-5">
+              <li>Recognize and continue number patterns with equal intervals.</li>
+              <li>Improve number sense and quick thinking skills.</li>
+              <li>Build a foundation for multiplication, division, and higher-level math concepts.</li>
+            </ul>
+          )}
+        </div>
+
+        {/* Recommended Age */}
+        <div className="mb-4">
+          <button 
+            onClick={() => setShowRecommendedAge(!showRecommendedAge)}
+            className="flex justify-between items-center w-full text-left font-semibold text-lg text-gray-800 py-2"
+          >
+            <span>Recommended Age</span>
+            <svg 
+              className={`w-5 h-5 transition-transform ${showRecommendedAge ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {showRecommendedAge && (
+            <p className="text-gray-600 mt-2">This game is designed for children ages <strong>5–8</strong>, suitable for kindergarten, 1st grade, and 2nd grade students.</p>
+          )}
+        </div>
+
+        {/* How to Play */}
+        <div className="mb-4">
+          <button 
+            onClick={() => setShowHowToPlay(!showHowToPlay)}
+            className="flex justify-between items-center w-full text-left font-semibold text-lg text-gray-800 py-2"
+          >
+            <span>How to Play</span>
+            <svg 
+              className={`w-5 h-5 transition-transform ${showHowToPlay ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {showHowToPlay && (
+            <ol className="text-gray-600 mt-2 list-decimal list-inside pl-5">
+              <li>A sequence of 10 numbers will appear, but some numbers are missing.</li>
+              <li>Look at the pattern (for example, counting by 2s or 5s) and select the missing numbers.</li>
+              <li>Earn points for each correct answer and see how many rounds you can complete!</li>
+            </ol>
+          )}
+        </div>
+
+        {/* Why Skip Counting Matters */}
+        <div className="mb-4">
+          <button 
+            onClick={() => setShowWhySkipCountingMatters(!showWhySkipCountingMatters)}
+            className="flex justify-between items-center w-full text-left font-semibold text-lg text-gray-800 py-2"
+          >
+            <span>Why Skip Counting Matters</span>
+            <svg 
+              className={`w-5 h-5 transition-transform ${showWhySkipCountingMatters ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          {showWhySkipCountingMatters && (
+            <p className="text-gray-600 mt-2">Skip counting is more than just memorizing numbers. It helps children see arithmetic patterns and strengthens the connection between addition and multiplication. Research shows that skip counting supports early math development and problem-solving skills. By turning this concept into a game, kids stay motivated, practice repeatedly, and learn while having fun.</p>
+          )}
+        </div>
+      </div>
 
       <div className="mt-8 text-center">
         <button
