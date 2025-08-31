@@ -1,0 +1,44 @@
+{
+  "HomePage": {
+    "title": "Kids Math Game - Fun Interactive Math Games for Children",
+    "welcome": "Welcome to Kids Math!",
+    "description": "Welcome to Cool Math Games for Kids! Enjoy free, fun, and easy math games designed to make learning enjoyable.",
+    "chooseAdventure": "Choose Your Math Adventure",
+    "pickGame": "Pick a game and start your mathematical journey!",
+    "startGame": "Start Game",
+    "exploreGames": "Explore our cool math games for kids! We offer a wide range of free and fun games to help children learn and practice essential math skills. From easy math for kids to more challenging maths counting games, we have something for everyone.",
+    "varietyGames": "Explore a variety of fun and engaging math games designed to help kids learn and practice essential math skills. From number sense to division, we have got you covered!",
+    "platformDescription": "A fun and interactive platform designed for kids to learn math through exciting games and activities!",
+    "whyImportant": "Why Math Games Are Important for Kids",
+    "engagement": "Engagement and Motivation",
+    "engagementDesc": "Games capture children's attention and motivate them to practice math skills for longer periods. Interactive math games for kids create a sense of achievement and progress that keeps children engaged with mathematical concepts.",
+    "feedback": "Immediate Feedback",
+    "feedbackDesc": "Games provide instant feedback, helping children learn from their mistakes quickly. This immediate response system in kids math games allows for rapid correction and reinforcement of correct mathematical procedures.",
+    "understanding": "Conceptual Understanding",
+    "understandingDesc": "Interactive games help children understand mathematical concepts rather than just memorizing procedures. Through visual representations and hands-on activities, math practice games build deep conceptual understanding that lasts beyond the gaming session.",
+    "problemSolving": "Problem-Solving Skills",
+    "problemSolvingDesc": "Games develop critical thinking and problem-solving abilities through mathematical challenges. These problem-solving math games encourage children to think flexibly and apply various strategies to find solutions.",
+    "educationalDesign": "Our math games are carefully designed by educators to align with learning standards while keeping the experience fun and engaging. Each game targets specific skills and progresses in difficulty to ensure continuous learning and improvement. These educational games for children help build a strong foundation in mathematics that will benefit them throughout their academic journey.",
+    "onlineBenefits": "Benefits of Online Math Games for Kids",
+    "onlineBenefitsDesc": "Free math games online offer several advantages over traditional learning methods. They provide personalized learning experiences that adapt to each child's pace and skill level. Our cool math games for kids are accessible from any device with an internet connection, making it easy for children to practice math skills anytime, anywhere.",
+    "research": "Research has shown that children who regularly engage with math games demonstrate improved performance in standardized tests and classroom assessments. The combination of visual elements, interactive challenges, and immediate feedback creates an optimal learning environment that caters to different learning styles."
+  },
+  "Navigation": {
+    "home": "Home",
+    "about": "About Us",
+    "contact": "Contact",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service",
+    "numberSense": "Number Sense",
+    "addition": "Addition Practice"
+  },
+  "Footer": {
+    "title": "Kids Math Game",
+    "tagline": "Making math fun for kids everywhere!",
+    "copyright": "Copyright © 2025 Easy Math for Kids. All rights reserved."
+  },
+  "LanguageSwitcher": {
+    "switchToChinese": "切换到中文",
+    "switchToEnglish": "Switch to English"
+  }
+}

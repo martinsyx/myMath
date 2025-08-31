@@ -3,6 +3,8 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { Inter, Fredoka } from "next/font/google"
 import "./globals.css"
+import LanguageSwitcher from "@/components/LanguageSwitcher";
+import Footer from "@/components/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -39,99 +41,11 @@ export default function RootLayout({
       <head>
         <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8356923986420655" crossOrigin="anonymous"></script>
       </head>
-      {/* <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              '@context': 'https://schema.org',
-              '@type': ['WebSite', 'WebApplication'],
-              name: 'Kids Math Game',
-              description: 'A fun and interactive platform designed for kids to learn math through games and activities.',
-              applicationCategory: 'EducationalApplication',
-              offers: {
-                '@type': 'Offer',
-                price: '0',
-                priceCurrency: 'USD'
-              },
-              audience: {
-                '@type': 'EducationalAudience',
-                educationalRole: 'student',
-                ageRange: '5-12'
-              },
-              teaches: [
-                'Number Sense',
-                'Addition',
-                'Subtraction',
-                'Multiplication',
-                'Division'
-              ],
-              publisher: {
-                '@type': 'Organization',
-                name: 'EasyMath'
-              }
-            })
-          }}
-        />
-      </head> */}
       <body className="font-sans">
-        <header className="bg-white/80 backdrop-blur-sm border-b border-blue-100 sticky top-0 z-10">
-          <div className="container mx-auto px-4 py-2 flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center text-white font-bold text-sm">
-                +
-              </div>
-              <Link href="/" className="text-xl font-bold bg-gradient-to-r from-blue-600 to-purple-500 bg-clip-text text-transparent">
-                Kids Math Game
-              </Link>
-            </div>
-            <nav className="flex items-center">
-              <Link href="/" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
-                Home
-              </Link>
-            </nav>
-          </div>
-        </header>
         <main>
           {children}
         </main>
-         {/* Footer */}
-        <footer className="bg-gray-800 text-white py-8">
-          <div className="container mx-auto px-4">
-            <div className="flex flex-col md:flex-row justify-between items-center">
-              <div className="mb-4 md:mb-0">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-gradient-to-br from-blue-500 to-purple-500 rounded flex items-center justify-center text-white font-bold text-xs">
-                    +
-                  </div>
-                  <span className="text-lg font-bold">Kids Math Game</span>
-                </div>
-                <p className="text-gray-400 mt-2">Making math fun for kids everywhere!</p>
-              </div>
-              
-              <div className="flex flex-wrap justify-center gap-6 mb-4 md:mb-0">
-                <Link href="/about" className="text-gray-300 hover:text-white transition-colors">
-                  About Us
-                </Link>
-                <Link href="/contact" className="text-gray-300 hover:text-white transition-colors">
-                  Contact
-                </Link>
-                <Link href="/privacy" className="text-gray-300 hover:text-white transition-colors">
-                  Privacy Policy
-                </Link>
-                <Link href="/terms" className="text-gray-300 hover:text-white transition-colors">
-                  Terms of Service
-                </Link>
-              </div>
-            </div>
-            
-            <div className="border-t border-gray-700 mt-6 pt-6 text-center">
-              <p className="text-gray-500">
-                Copyright &copy; 2025 Easy Math for Kids. All rights reserved.
-              </p>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </body>
     </html>
   )

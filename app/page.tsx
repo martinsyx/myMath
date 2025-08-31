@@ -1,33 +1,49 @@
-import Script from "next/script";
-import React from "react";
-import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+'use client';
 
-const pageMetadata = {
-  title: "Kids Math Game - Fun Interactive Math Games for Children",
-  description: "A fun and interactive platform designed for kids to learn math through games and activities. Practice number sense, addition, subtraction, multiplication, and division.",
-  path: "/",
-  canonical: "https://kids-math.com",  // 添加这一行
-  schemaData: {
-    "@type": ["WebSite", "WebApplication"],
-    "alternateType": "EducationalApplication",
-    "applicationCategory": "Education",
-    "gamePlatform": ["Web Browser", "Mobile Web"],
-    "educationalUse": ["Practice", "Assessment"],
-    "interactivityType": "Interactive",
-    "learningResourceType": "Game",
-    "skillLevel": ["Beginner", "Intermediate"],
-    "educationalAlignment": {
-      "@type": "AlignmentObject",
-      "alignmentType": "teaches",
-      "educationalFramework": "Mathematics",
-      "targetName": "Early Mathematics"
-    }
-  }
-};
+import { useState, useEffect } from 'react';
+import { Header } from '@/components/header';
+import Footer from '@/components/Footer';
+
+// Define the structure of our messages
+interface Messages {
+  [key: string]: string | Messages;
+}
 
 export default function HomePage() {
+  const [locale, setLocale] = useState('en');
+  const [messages, setMessages] = useState<Messages>({});
+
+  useEffect(() => {
+    // Get current locale from localStorage or default to 'en'
+    const savedLocale = typeof window !== 'undefined' ? localStorage.getItem('locale') : 'en';
+    const currentLocale = savedLocale && (savedLocale === 'en' || savedLocale === 'zh') ? savedLocale : 'en';
+    setLocale(currentLocale);
+    
+    // Load the appropriate messages based on the locale
+    import(`../messages/${currentLocale}.json`).then((module) => {
+      setMessages(module.default);
+    });
+  }, []);
+
+  // If messages are not loaded yet, show a loading state
+  if (!messages.HomePage) {
+    return <div>Loading...</div>;
+  }
+
+  const t = (key: string): string => {
+    // Simple translation function
+    const keys = key.split('.');
+    let value: string | Messages = messages;
+    for (const k of keys) {
+      if (value && typeof value === 'object' && k in value) {
+        value = (value as Messages)[k];
+      } else {
+        return key; // Return the key if translation not found
+      }
+    }
+    return typeof value === 'string' ? value : key;
+  };
+
   const mathGames = [
     {
       title: "Number Sense",
@@ -45,92 +61,22 @@ export default function HomePage() {
       icon: "➕",
       href: "/addition"
     },
-    // {
-    //   title: "Subtraction Practice",
-    //   description: "Learn subtraction skills with interactive games. Easy math for kids to master subtraction.",
-    //   color: "bg-orange-100 border-orange-200",
-    //   buttonColor: "bg-orange-500 hover:bg-orange-600",
-    //   icon: "➖",
-    //   href: "/subtraction"
-    // },
-    // {
-    //   title: "Multiplication Mastery",
-    //   description: "Master multiplication tables with kids math games. Fun maths counting games for multiplication practice.",
-    //   color: "bg-purple-100 border-purple-200",
-    //   buttonColor: "bg-purple-500 hover:bg-purple-600",
-    //   icon: "✖️",
-    //   href: "/multiplication"
-    // },
-    // {
-    //   title: "Division Practice",
-    //   description: "Discover division through fun and engaging activities. Counting game for kids to learn division.",
-    //   color: "bg-red-100 border-red-200",
-    //   buttonColor: "bg-red-500 hover:bg-red-600",
-    //   icon: "➗",
-    //   href: "/division"
-    // },
   ];
 
-  const defaultSchema = {
-    "@context": "https://schema.org",
-    "@type": ["WebSite", "WebApplication"],
-    "name": pageMetadata.title,
-    "description": pageMetadata.description,
-    "inLanguage": "en",
-    "applicationCategory": "EducationalApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "audience": {
-      "@type": "EducationalAudience",
-      "educationalRole": "student",
-      "ageRange": "5-12"
-    },
-    "teaches": [
-      "Number Sense",
-      "Addition",
-      "Subtraction",
-      "Multiplication",
-      "Division"
-    ],
-    "publisher": {
-      "@type": "Organization",
-      "name": "EasyMath"
-    }
-  };
-
-  const finalSchema = { ...defaultSchema, ...pageMetadata.schemaData };
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ 
-          __html: JSON.stringify(finalSchema)
-        }}
-      />
-      <Script src="https://www.googletagmanager.com/gtag/js?id=G-9QQG8FQB50" strategy="afterInteractive" />
-      <Script id="gtag-init" strategy="afterInteractive">
-        {`
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', 'G-9QQG8FQB50');
-        `}
-      </Script>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <Header />
 
+      <main>
         {/* Hero Section - Compact */}
         <section className="container mx-auto px-4 py-8 text-center">
           <div className="max-w-4xl mx-auto">
             <div className="mb-6">
               <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">
-                Welcome to Kids Math!
+                {t('HomePage.welcome')}
               </h2>
               <p className="text-gray-700 text-lg mb-4">
-                Welcome to <span className="font-bold">Cool Math Games for Kids</span>! Enjoy <span className="font-bold">free</span>, <span className="font-bold">fun</span>, and <span className="font-bold">easy math</span> games designed to make learning enjoyable.
+                {t('HomePage.description')}
               </p>
               <div className="flex justify-center gap-3 mb-2">
                 <span className="text-3xl animate-bounce">🎯</span>
@@ -144,42 +90,40 @@ export default function HomePage() {
         {/* Math Games Grid - All 5 games visible */}
         <section className="container mx-auto px-4 pb-6">
           <div className="text-center mb-4">
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">Choose Your Math Adventure</h3>
-            <p className="text-gray-600">Pick a game and start your mathematical journey!</p>
+            <h3 className="text-2xl font-bold text-gray-800 mb-2">{t('HomePage.chooseAdventure')}</h3>
+            <p className="text-gray-600">{t('HomePage.pickGame')}</p>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 max-w-7xl mx-auto">
             {mathGames.map((game, index) => (
-              <Card
+              <div
                 key={index}
-                className={`${game.color} border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group flex flex-col`}
+                className={`${game.color} border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group flex flex-col rounded-lg`}
               >
-                <CardHeader className="text-center pb-3">
+                <div className="p-6 text-center">
                   <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">{game.icon}</div>
-                  <CardTitle className="text-lg font-bold text-gray-800 mb-2">{game.title}</CardTitle>
-                  <CardDescription className="text-gray-600 text-sm leading-relaxed">{game.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="text-center pt-0 flex justify-center">
-                  <Link href={game.href}>
-                    <Button
+                  <h4 className="text-lg font-bold text-gray-800 mb-2">{game.title}</h4>
+                  <p className="text-gray-600 text-sm leading-relaxed">{game.description}</p>
+                  <div className="mt-4">
+                    <button 
+                      onClick={() => window.location.href = game.href }
                       className={`${game.buttonColor} text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all text-sm`}
                     >
-                      Start Game
-                    </Button>
-                  </Link>
-                </CardContent>
-                
-              </Card>
+                      {t('HomePage.startGame')}
+                    </button>
+                  </div>
+                </div>
+              </div>
             ))}
           </div>
 
           <div className="text-center mt-8">
-              <p className="text-gray-700 text-lg mb-4">
-                Explore our cool math games for kids! We offer a wide range of free and fun games to help children learn and practice essential math skills. From easy math for kids to more challenging maths counting games, we have something for everyone.
-              </p>
-            <p className="text-gray-700 text-lg mb-4">Explore a variety of fun and engaging math games designed to help kids learn and practice essential math skills. From number sense to division, we have got you covered!</p>
+            <p className="text-gray-700 text-lg mb-4">
+              {t('HomePage.exploreGames')}
+            </p>
+            <p className="text-gray-700 text-lg mb-4">{t('HomePage.varietyGames')}</p>
             <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-              A fun and interactive platform designed for kids to learn math through exciting games and activities!
+              {t('HomePage.platformDescription')}
             </p>
           </div>
         </section>
@@ -187,38 +131,38 @@ export default function HomePage() {
         {/* Educational Content Section */}
         <section className="container mx-auto px-4 py-8">
           <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">Why Math Games Are Important for Kids</h3>
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">{t('HomePage.whyImportant')}</h3>
             <p className="text-gray-700 mb-6">
-              Math games provide an engaging and effective way for children to develop their mathematical skills. Unlike traditional rote learning methods, games make math enjoyable and accessible, helping children build confidence while mastering important concepts. Educational math games for kids combine learning with fun, creating an environment where children can explore mathematical principles without the pressure of traditional classroom settings.
+              {t('HomePage.engagementDesc')}
             </p>
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <h4 className="text-lg font-semibold text-blue-800 mb-2">Engagement and Motivation</h4>
-                <p className="text-gray-700">Games capture children&#39;s attention and motivate them to practice math skills for longer periods. Interactive math games for kids create a sense of achievement and progress that keeps children engaged with mathematical concepts.</p>
+                <h4 className="text-lg font-semibold text-blue-800 mb-2">{t('HomePage.engagement')}</h4>
+                <p className="text-gray-700">{t('HomePage.engagementDesc')}</p>
               </div>
               <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                <h4 className="text-lg font-semibold text-green-800 mb-2">Immediate Feedback</h4>
-                <p className="text-gray-700">Games provide instant feedback, helping children learn from their mistakes quickly. This immediate response system in kids math games allows for rapid correction and reinforcement of correct mathematical procedures.</p>
+                <h4 className="text-lg font-semibold text-green-800 mb-2">{t('HomePage.feedback')}</h4>
+                <p className="text-gray-700">{t('HomePage.feedbackDesc')}</p>
               </div>
               <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                <h4 className="text-lg font-semibold text-purple-800 mb-2">Conceptual Understanding</h4>
-                <p className="text-gray-700">Interactive games help children understand mathematical concepts rather than just memorizing procedures. Through visual representations and hands-on activities, math practice games build deep conceptual understanding that lasts beyond the gaming session.</p>
+                <h4 className="text-lg font-semibold text-purple-800 mb-2">{t('HomePage.understanding')}</h4>
+                <p className="text-gray-700">{t('HomePage.understandingDesc')}</p>
               </div>
               <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                <h4 className="text-lg font-semibold text-orange-800 mb-2">Problem-Solving Skills</h4>
-                <p className="text-gray-700">Games develop critical thinking and problem-solving abilities through mathematical challenges. These problem-solving math games encourage children to think flexibly and apply various strategies to find solutions.</p>
+                <h4 className="text-lg font-semibold text-orange-800 mb-2">{t('HomePage.problemSolving')}</h4>
+                <p className="text-gray-700">{t('HomePage.problemSolvingDesc')}</p>
               </div>
             </div>
             <p className="text-gray-700 mb-6">
-              Our math games are carefully designed by educators to align with learning standards while keeping the experience fun and engaging. Each game targets specific skills and progresses in difficulty to ensure continuous learning and improvement. These educational games for children help build a strong foundation in mathematics that will benefit them throughout their academic journey.
+              {t('HomePage.educationalDesign')}
             </p>
             
-            <h4 className="text-xl font-semibold text-gray-800 mb-4">Benefits of Online Math Games for Kids</h4>
+            <h4 className="text-xl font-semibold text-gray-800 mb-4">{t('HomePage.onlineBenefits')}</h4>
             <p className="text-gray-700 mb-4">
-              Free math games online offer several advantages over traditional learning methods. They provide personalized learning experiences that adapt to each child&#39;s pace and skill level. Our cool math games for kids are accessible from any device with an internet connection, making it easy for children to practice math skills anytime, anywhere.
+              {t('HomePage.onlineBenefitsDesc')}
             </p>
             <p className="text-gray-700">
-              Research has shown that children who regularly engage with math games demonstrate improved performance in standardized tests and classroom assessments. The combination of visual elements, interactive challenges, and immediate feedback creates an optimal learning environment that caters to different learning styles.
+              {t('HomePage.research')}
             </p>
           </div>
         </section>
@@ -245,9 +189,9 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+      </main>
 
-       
-      </div>
-    </>
+      {/* <Footer /> */}
+    </div>
   );
 }
