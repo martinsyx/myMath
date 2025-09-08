@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate-screenshots": "node scripts/generate-game-screenshots.js",
+    "test-images": "node scripts/test-image-display.js"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.3",
@@ -26,8 +28,10 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "cross-env": "^10.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.4.4",
+    "puppeteer": "^24.19.0",
     "tailwindcss": "^4.1.11",
     "tw-animate-css": "^1.3.6",
     "typescript": "^5"

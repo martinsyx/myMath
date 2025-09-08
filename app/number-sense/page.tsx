@@ -133,12 +133,6 @@ export default function NumberSensePage() {
             ))}
           </div>
 
-          {/* Back Button */}
-          <div className="text-center">
-            <Link href="/" className="inline-block bg-gray-600 hover:bg-gray-700 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg transition-colors">
-              🏠 Back to Home
-            </Link>
-          </div>
 
           {/* Educational Content Section */}
           <div className="mt-12 bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">

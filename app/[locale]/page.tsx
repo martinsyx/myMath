@@ -1,94 +1,111 @@
 import Script from "next/script";
 import React from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useTranslations } from 'next-intl';
+import { FloatingElements } from "@/components/floating-elements"
+import { Metadata } from "@/components/Metadata"
 import { getTranslations } from 'next-intl/server';
+
+// Define all individual games
+const games = [
+  { 
+    name: "Counting Games", 
+    href: "/number-sense/games/counting",
+    description: "Learn to count numbers through fun interactive games",
+    image: "/images/counting-game.png"
+  },
+  { 
+    name: "Number Matching", 
+    href: "/number-sense/games/matching",
+    description: "Match numbers with corresponding quantities",
+    image: "/images/matching-game.png"
+  },
+  { 
+    name: "Number Sequence", 
+    href: "/number-sense/games/sequence",
+    description: "Arrange numbers in the correct order",
+    image: "/images/sequence-game.png"
+  },
+  { 
+    name: "Odd & Even", 
+    href: "/number-sense/patterns/odd-even",
+    description: "Identify odd and even numbers",
+    image: "/images/odd-even-game.png"
+  },
+  { 
+    name: "Skip Counting", 
+    href: "/number-sense/patterns/skipcountinggame",
+    description: "Practice counting by 2s, 5s, and 10s",
+    image: "/images/skip-counting-game.png"
+  },
+  { 
+    name: "Size Comparison", 
+    href: "/number-sense/basics/comparison",
+    description: "Compare sizes and quantities",
+    image: "/images/comparison-game.png"
+  },
+  { 
+    name: "Quantity Estimation", 
+    href: "/number-sense/basics/estimation",
+    description: "Estimate quantities without counting",
+    image: "/images/estimation-game.png"
+  },
+];
 
 export default async function HomePage() {
   const t = await getTranslations('HomePage');
-  
-  const mathGames = [
-    {
-      title: "Number Sense",
-      description: "Build number sense with simple addition games. Cool math games for kids to learn counting and number recognition.",
-      color: "bg-blue-100 border-blue-200",
-      buttonColor: "bg-blue-500 hover:bg-blue-600",
-      icon: "🔢",
-      href: "/number-sense"
-    },
-    {
-      title: "Addition Practice",
-      description: "Practice addition up to 20 with fun math games. Free and fun addition games online for kids.",
-      color: "bg-green-100 border-green-200",
-      buttonColor: "bg-green-500 hover:bg-green-600",
-      icon: "➕",
-      href: "/addition"
-    },
-    // {
-    //   title: "Subtraction Practice",
-    //   description: "Learn subtraction skills with interactive games. Easy math for kids to master subtraction.",
-    //   color: "bg-orange-100 border-orange-200",
-    //   buttonColor: "bg-orange-500 hover:bg-orange-600",
-    //   icon: "➖",
-    //   href: "/subtraction"
-    // },
-    // {
-    //   title: "Multiplication Mastery",
-    //   description: "Master multiplication tables with kids math games. Fun maths counting games for multiplication practice.",
-    //   color: "bg-purple-100 border-purple-200",
-    //   buttonColor: "bg-purple-500 hover:bg-purple-600",
-    //   icon: "✖️",
-    //   href: "/multiplication"
-    // },
-    // {
-    //   title: "Division Practice",
-    //   description: "Discover division through fun and engaging activities. Counting game for kids to learn division.",
-    //   color: "bg-red-100 border-red-200",
-    //   buttonColor: "bg-red-500 hover:bg-red-600",
-    //   icon: "➗",
-    //   href: "/division"
-    // },
-  ];
 
-  const defaultSchema = {
-    "@context": "https://schema.org",
-    "@type": ["WebSite", "WebApplication"],
-    "name": t('title'),
-    "description": t('description'),
-    "inLanguage": "en",
-    "applicationCategory": "EducationalApplication",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "audience": {
-      "@type": "EducationalAudience",
-      "educationalRole": "student",
-      "ageRange": "5-12"
-    },
-    "teaches": [
-      "Number Sense",
-      "Addition",
-      "Subtraction",
-      "Multiplication",
-      "Division"
-    ],
-    "publisher": {
-      "@type": "Organization",
-      "name": "EasyMath"
+  const pageMetadata = {
+    title: t('title'),
+    description: t('description'),
+    path: "/number-sense",
+    canonical: "https://kids-math.com/number-sense",
+    schemaData: {
+      "@type": ["WebPage", "LearningResource"],
+      "alternateType": "EducationalApplication",
+      "applicationCategory": "EducationalApplication",
+      "gamePlatform": ["Web Browser", "Mobile Web"],
+      "educationalUse": ["Practice", "Assessment"],
+      "interactivityType": "Interactive",
+      "learningResourceType": "Game",
+      "skillLevel": ["Beginner", "Intermediate"],
+      "educationalAlignment": {
+        "@type": "AlignmentObject",
+        "alignmentType": "teaches",
+        "educationalFramework": "Mathematics",
+        "targetName": "Number Sense"
+      },
+      "audience": {
+        "@type": "EducationalAudience",
+        "educationalRole": "student",
+        "ageRange": "5-12"
+      },
+      "teaches": [
+        "Number Sense",
+        "Counting",
+        "Number Recognition",
+        "Skip Counting",
+        "Number Patterns",
+        "Estimation"
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "EasyMath"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
     }
   };
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ 
-          __html: JSON.stringify(defaultSchema)
-        }}
+      <Metadata
+        title={pageMetadata.title}
+        description={pageMetadata.description}
+        path={pageMetadata.path}
+        schemaData={pageMetadata.schemaData}
       />
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-9QQG8FQB50" strategy="afterInteractive" />
       <Script id="gtag-init" strategy="afterInteractive">
@@ -99,134 +116,110 @@ export default async function HomePage() {
           gtag('config', 'G-9QQG8FQB50');
         `}
       </Script>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+      <div className="min-h-screen relative overflow-hidden">
+        <FloatingElements />
 
-        {/* Hero Section - Compact */}
-        <section className="container mx-auto px-4 py-8 text-center">
-          <div className="max-w-4xl mx-auto">
-            <div className="mb-6">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent leading-tight">
-                {t('welcome')}
-              </h2>
-              <p className="text-gray-700 text-lg mb-4">
-                {t('description')}
-              </p>
-              <div className="flex justify-center gap-3 mb-2">
-                <span className="text-3xl animate-bounce">🎯</span>
-                <span className="text-3xl animate-bounce delay-100">🎮</span>
-                <span className="text-3xl animate-bounce delay-200">🏆</span>
+      <div className="relative z-10">
+        <main className="container mx-auto px-4 py-8">
+          {/* Page Title */}
+          <div className="text-center mb-12">
+            <h1 className="text-4xl md:text-5xl font-display font-bold text-gray-800 mb-4 bounce-gentle">
+              {t('title')}
+            </h1>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+              {t('description')}
+            </p>
+          </div>
+
+          {/* Individual Game Cards - Stacked Vertically */}
+          <div className="max-w-4xl mx-auto space-y-8 mb-12">
+            {games.map((game, index) => (
+              <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                <Link href={game.href} className="flex flex-col sm:flex-row items-center p-6">
+                  {/* Game Image */}
+                  <div className="w-full sm:w-1/3 mb-4 sm:mb-0 sm:mr-6 flex justify-center">
+                    <img 
+                      src={game.image} 
+                      alt={game.name} 
+                      className="rounded-xl w-48 h-48 object-cover border-2 border-gray-200"
+                      onError={(e) => {
+                        // 如果图片加载失败，显示默认的占位符
+                        e.currentTarget.onerror = null;
+                        if (e.currentTarget.parentElement) {
+                          e.currentTarget.parentElement.innerHTML = '<div class="bg-gray-200 border-2 border-dashed rounded-xl w-48 h-48 flex items-center justify-center text-gray-500">Game Screenshot</div>';
+                        }
+                      }}
+                    />
+                  </div>
+                  
+                  {/* Game Info */}
+                  <div className="w-full sm:w-2/3 text-center sm:text-left">
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">{game.name}</h3>
+                    <p className="text-gray-600 mb-4">{game.description}</p>
+                    <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-full transition duration-200">
+                      {t('playNow')}
+                    </button>
+                  </div>
+                </Link>
               </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Math Games Grid - All 5 games visible */}
-        <section className="container mx-auto px-4 pb-6">
-          <div className="text-center mb-4">
-            <h3 className="text-2xl font-bold text-gray-800 mb-2">{t('chooseAdventure')}</h3>
-            <p className="text-gray-600">{t('pickGame')}</p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-4 max-w-7xl mx-auto">
-            {mathGames.map((game, index) => (
-              <Card
-                key={index}
-                className={`${game.color} border-2 hover:shadow-xl transition-all duration-300 hover:-translate-y-2 group flex flex-col`}
-              >
-                <CardHeader className="text-center pb-3">
-                  <div className="text-4xl mb-3 group-hover:scale-110 transition-transform duration-300">{game.icon}</div>
-                  <CardTitle className="text-lg font-bold text-gray-800 mb-2">{game.title}</CardTitle>
-                  <CardDescription className="text-gray-600 text-sm leading-relaxed">{game.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="text-center pt-0 flex justify-center">
-                  <Link href={game.href}>
-                    <Button
-                      className={`${game.buttonColor} text-white font-semibold px-4 py-2 rounded-full shadow-md hover:shadow-lg transition-all text-sm`}
-                    >
-                      {t('startGame')}
-                    </Button>
-                  </Link>
-                </CardContent>
-                
-              </Card>
             ))}
           </div>
 
-          <div className="text-center mt-8">
-            <p className="text-gray-700 text-lg mb-4">
-              {t('exploreGames')}
-            </p>
-            <p className="text-gray-700 text-lg mb-4">{t('varietyGames')}</p>
-            <p className="text-lg text-gray-600 leading-relaxed max-w-2xl mx-auto">
-              {t('platformDescription')}
-            </p>
+          {/* Back Button */}
+          <div className="text-center">
+            <Link href="/" className="inline-block bg-gray-600 hover:bg-gray-700 text-white px-8 py-4 rounded-full text-lg font-semibold shadow-lg transition-colors">
+              🏠 Back to Home
+            </Link>
           </div>
-        </section>
 
-        {/* Educational Content Section */}
-        <section className="container mx-auto px-4 py-8">
-          <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
-            <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">{t('whyImportant')}</h3>
+          {/* Educational Content Section */}
+          <div className="mt-12 bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">{t('understandingTitle')}</h2>
             <p className="text-gray-700 mb-6">
-              {t('engagementDesc')}
+              {t('understandingDesc')}
             </p>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">{t('keyComponents')}</h3>
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <h4 className="text-lg font-semibold text-blue-800 mb-2">{t('engagement')}</h4>
-                <p className="text-gray-700">{t('engagementDesc')}</p>
+                <h4 className="text-lg font-semibold text-blue-800 mb-2">{t('countingCardinality')}</h4>
+                <p className="text-gray-700">{t('countingCardinalityDesc')}</p>
               </div>
               <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                <h4 className="text-lg font-semibold text-green-800 mb-2">{t('feedback')}</h4>
-                <p className="text-gray-700">{t('feedbackDesc')}</p>
+                <h4 className="text-lg font-semibold text-green-800 mb-2">{t('numberRelationships')}</h4>
+                <p className="text-gray-700">{t('numberRelationshipsDesc')}</p>
               </div>
               <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                <h4 className="text-lg font-semibold text-purple-800 mb-2">{t('understanding')}</h4>
-                <p className="text-gray-700">{t('understandingDesc')}</p>
+                <h4 className="text-lg font-semibold text-purple-800 mb-2">{t('baseTenSystem')}</h4>
+                <p className="text-gray-700">{t('baseTenSystemDesc')}</p>
               </div>
               <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                <h4 className="text-lg font-semibold text-orange-800 mb-2">{t('problemSolving')}</h4>
-                <p className="text-gray-700">{t('problemSolvingDesc')}</p>
+                <h4 className="text-lg font-semibold text-orange-800 mb-2">{t('operationsEstimation')}</h4>
+                <p className="text-gray-700">{t('operationsEstimationDesc')}</p>
               </div>
             </div>
             <p className="text-gray-700 mb-6">
-              {t('educationalDesign')}
+              {t('gamesDesc')}
             </p>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">{t('benefitsTitle')}</h3>
+            <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-6">
+              <li>{t('benefit1')}</li>
+              <li>{t('benefit2')}</li>
+              <li>{t('benefit3')}</li>
+              <li>{t('benefit4')}</li>
+              <li>{t('benefit5')}</li>
+            </ul>
             
-            <h4 className="text-xl font-semibold text-gray-800 mb-4">{t('onlineBenefits')}</h4>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">{t('supportTitle')}</h3>
             <p className="text-gray-700 mb-4">
-              {t('onlineBenefitsDesc')}
+              {t('supportDesc1')}
             </p>
             <p className="text-gray-700">
-              {t('research')}
+              {t('supportDesc2')}
             </p>
           </div>
-        </section>
-
-        {/* Fun Stats Section */}
-        <section className="bg-white/50 backdrop-blur-sm py-16">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto text-center">
-              <div className="group">
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🎯</div>
-                <div className="text-3xl font-bold text-blue-600 mb-2">10,000+</div>
-                <div className="text-gray-600">Problems Solved</div>
-              </div>
-              <div className="group">
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">👨‍👩‍👧‍👦</div>
-                <div className="text-3xl font-bold text-green-600 mb-2">5,000+</div>
-                <div className="text-gray-600">Happy Families</div>
-              </div>
-              <div className="group">
-                <div className="text-4xl mb-4 group-hover:scale-110 transition-transform duration-300">🏆</div>
-                <div className="text-3xl font-bold text-purple-600 mb-2">50,000+</div>
-                <div className="text-gray-600">Achievements Earned</div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-       
+        </main>
       </div>
+    </div>
     </>
   );
 }
