@@ -53,15 +53,12 @@ export default function CountingGame() {
       <div
         key={i}
         onClick={() => popBalloon(i)}
-        className={`cursor-pointer text-5xl transition-all duration-300 ${
-          balloons[i] 
-            ? 'hover:scale-110 transform' 
+        className={`cursor-pointer text-5xl transition-all duration-300 flex items-center justify-center ${
+          balloons[i]
+            ? 'hover:scale-110 transform'
             : 'scale-0 opacity-0'
         }`}
         style={{
-          position: 'absolute',
-          left: `${(i % 5) * 20 + 10}%`,
-          top: `${Math.floor(i / 5) * 30 + 10}%`,
           transition: 'all 0.3s ease'
         }}
       >
@@ -88,8 +85,10 @@ export default function CountingGame() {
       </div>
 
       {/* Balloon area */}
-      <div className="relative h-50 border-2 border-dashed border-gray-300 rounded-lg mb-4 bg-blue-50">
-        {balloonElements}
+      <div className="border-2 border-dashed border-gray-300 rounded-lg mb-4 bg-blue-50 p-4">
+        <div className="grid grid-cols-5 gap-4 justify-items-center items-center min-h-[300px]">
+          {balloonElements}
+        </div>
       </div>
 
       {gameState === 'playing' && (

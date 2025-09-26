@@ -11,6 +11,7 @@ interface Question {
   answerOptions: number[];
   userAnswer: number | null;
   isCorrect: boolean | null;
+  displayCorrectAnswer?: number; // 用于显示反馈时的正确答案
 }
 
 export default function SequencesGame() {
@@ -104,14 +105,16 @@ export default function SequencesGame() {
     const currentQ = questions[currentQuestion];
     // 使用存储在问题对象中的正确答案
     const correctAnswer = currentQ.correctAnswer;
-    
+
     const isCorrect = answer === correctAnswer;
-    
+
     const newQuestions = [...questions];
     newQuestions[currentQuestion] = {
       ...currentQ,
       userAnswer: answer,
-      isCorrect
+      isCorrect,
+      // 保存当前的正确答案，防止在显示反馈时被更新
+      displayCorrectAnswer: correctAnswer
     };
     setQuestions(newQuestions);
 
@@ -256,7 +259,7 @@ export default function SequencesGame() {
                 <div className="text-2xl text-green-600 font-bold">✓ Correct!</div>
               ) : (
             <div className="text-2xl text-red-600 font-bold">
-              ✗ Incorrect! The correct answer is {currentQ.correctAnswer}
+              ✗ Incorrect! The correct answer is {currentQ.displayCorrectAnswer ?? currentQ.correctAnswer}
             </div>
               )}
             </div>

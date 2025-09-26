@@ -25,12 +25,12 @@ export default function LanguageSwitcher() {
     window.location.reload();
   };
 
-  return (
-    <button
-      onClick={switchLanguage}
-      className="px-3 py-1 text-sm rounded-full bg-blue-100 hover:bg-blue-200 text-blue-800 transition-colors"
-    >
-      {currentLocale === 'en' ? '切换到中文' : 'Switch to English'}
-    </button>
-  );
+  // return (
+  //   <button
+  //     onClick={switchLanguage}
+  //     className="px-3 py-1 text-sm rounded-full bg-blue-100 hover:bg-blue-200 text-blue-800 transition-colors"
+  //   >
+  //     {currentLocale === 'en' ? '切换到中文' : 'Switch to English'}
+  //   </button>
+  // );
 }
