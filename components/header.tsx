@@ -15,9 +15,9 @@ export function Header() {
             Kids Math Game
           </Link>
         </div>
-        <nav className="flex items-center gap-4">
+        {/* <nav className="flex items-center gap-4">
           <LanguageSwitcher />
-        </nav>
+        </nav> */}
       </div>
     </header>
   );
