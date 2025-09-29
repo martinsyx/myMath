@@ -131,38 +131,37 @@ export default async function HomePage() {
             </p>
           </div>
 
-          {/* Individual Game Cards - Stacked Vertically */}
-          <div className="max-w-4xl mx-auto space-y-8 mb-12">
-            {games.map((game, index) => (
-              <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
-                <Link href={game.href} className="flex flex-col sm:flex-row items-center p-6">
-                  {/* Game Image */}
-                  <div className="w-full sm:w-1/3 mb-4 sm:mb-0 sm:mr-6 flex justify-center">
-                    <img 
-                      src={game.image} 
-                      alt={game.name} 
-                      className="rounded-xl w-48 h-48 object-cover border-2 border-gray-200"
-                      onError={(e) => {
-                        // 如果图片加载失败，显示默认的占位符
-                        e.currentTarget.onerror = null;
-                        if (e.currentTarget.parentElement) {
-                          e.currentTarget.parentElement.innerHTML = '<div class="bg-gray-200 border-2 border-dashed rounded-xl w-48 h-48 flex items-center justify-center text-gray-500">Game Screenshot</div>';
-                        }
-                      }}
-                    />
-                  </div>
-                  
-                  {/* Game Info */}
-                  <div className="w-full sm:w-2/3 text-center sm:text-left">
-                    <h3 className="text-2xl font-bold text-gray-800 mb-2">{game.name}</h3>
-                    <p className="text-gray-600 mb-4">{game.description}</p>
-                    <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-full transition duration-200">
-                      {t('playNow')}
-                    </button>
-                  </div>
-                </Link>
-              </div>
-            ))}
+          {/* Game Cards Grid - Four per Row */}
+          <div className="max-w-7xl mx-auto mb-12">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {games.map((game, index) => (
+                <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                  <Link href={game.href} className="flex flex-col h-full">
+                    {/* Game Image */}
+                    <div className="w-full p-4 flex justify-center">
+                      <img
+                        src={game.image}
+                        alt={game.name}
+                        className="rounded-xl w-32 h-32 object-cover border-2 border-gray-200"
+                        onError={(e) => {
+                          // 如果图片加载失败，显示默认的占位符
+                          e.currentTarget.onerror = null;
+                          if (e.currentTarget.parentElement) {
+                            e.currentTarget.parentElement.innerHTML = '<div class="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32 flex items-center justify-center text-gray-500 text-xs">Game Image</div>';
+                          }
+                        }}
+                      />
+                    </div>
+
+                    {/* Game Info */}
+                    <div className="flex-1 p-4 pt-0 text-center">
+                      <h3 className="text-lg font-bold text-gray-800 mb-2">{game.name}</h3>
+                      <p className="text-sm text-gray-600">{game.description}</p>
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
           </div>
 
           {/* Back Button */}
