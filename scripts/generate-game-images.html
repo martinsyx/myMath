@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Image Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+        .canvas-container {
+            margin: 20px 0;
+        }
+        canvas {
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+        button {
+            background: #0066cc;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0052a3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Math Game Image Generator</h1>
+    <p>Click the buttons below to generate and download game preview images</p>
+
+    <div class="canvas-container">
+        <h2>Addition Practice</h2>
+        <canvas id="additionCanvas" width="400" height="300"></canvas>
+        <br>
+        <button onclick="generateAdditionImage()">Generate</button>
+        <button onclick="downloadImage('additionCanvas', 'addition-game.png')">Download</button>
+    </div>
+
+    <div class="canvas-container">
+        <h2>Subtraction Practice</h2>
+        <canvas id="subtractionCanvas" width="400" height="300"></canvas>
+        <br>
+        <button onclick="generateSubtractionImage()">Generate</button>
+        <button onclick="downloadImage('subtractionCanvas', 'subtraction-game.png')">Download</button>
+    </div>
+
+    <div class="canvas-container">
+        <h2>Multiplication Practice</h2>
+        <canvas id="multiplicationCanvas" width="400" height="300"></canvas>
+        <br>
+        <button onclick="generateMultiplicationImage()">Generate</button>
+        <button onclick="downloadImage('multiplicationCanvas', 'multiplication-game.png')">Download</button>
+    </div>
+
+    <div class="canvas-container">
+        <h2>Division Practice</h2>
+        <canvas id="divisionCanvas" width="400" height="300"></canvas>
+        <br>
+        <button onclick="generateDivisionImage()">Generate</button>
+        <button onclick="downloadImage('divisionCanvas', 'division-game.png')">Download</button>
+    </div>
+
+    <div class="canvas-container">
+        <h2>Number Visualization</h2>
+        <canvas id="visualizationCanvas" width="400" height="300"></canvas>
+        <br>
+        <button onclick="generateVisualizationImage()">Generate</button>
+        <button onclick="downloadImage('visualizationCanvas', 'visualization-game.png')">Download</button>
+    </div>
+
+    <script>
+        function generateAdditionImage() {
+            const canvas = document.getElementById('additionCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 400, 300);
+
+            // Border
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, 400, 300);
+
+            // Title
+            ctx.fillStyle = '#1e40af';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Addition Practice', 200, 40);
+
+            // Subtitle
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '14px Arial';
+            ctx.fillText('Kids Math Game', 200, 65);
+
+            // Example problem
+            ctx.fillStyle = '#374151';
+            ctx.font = 'bold 48px Arial';
+            ctx.fillText('7 + 5 = ?', 200, 140);
+
+            // Answer box
+            ctx.strokeStyle = '#3b82f6';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(150, 160, 100, 50);
+
+            // Score section
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Score: 0/10', 30, 230);
+
+            // Button
+            ctx.fillStyle = '#3b82f6';
+            ctx.fillRect(130, 240, 140, 40);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Check Answer', 200, 265);
+        }
+
+        function generateSubtractionImage() {
+            const canvas = document.getElementById('subtractionCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 400, 300);
+
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, 400, 300);
+
+            ctx.fillStyle = '#1e40af';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Subtraction Practice', 200, 40);
+
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '14px Arial';
+            ctx.fillText('Kids Math Game', 200, 65);
+
+            ctx.fillStyle = '#374151';
+            ctx.font = 'bold 48px Arial';
+            ctx.fillText('15 - 8 = ?', 200, 140);
+
+            ctx.strokeStyle = '#8b5cf6';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(150, 160, 100, 50);
+
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Score: 0/10', 30, 230);
+
+            ctx.fillStyle = '#8b5cf6';
+            ctx.fillRect(130, 240, 140, 40);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Check Answer', 200, 265);
+        }
+
+        function generateMultiplicationImage() {
+            const canvas = document.getElementById('multiplicationCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 400, 300);
+
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, 400, 300);
+
+            ctx.fillStyle = '#1e40af';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Multiplication Practice', 200, 40);
+
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '14px Arial';
+            ctx.fillText('Kids Math Game', 200, 65);
+
+            ctx.fillStyle = '#374151';
+            ctx.font = 'bold 48px Arial';
+            ctx.fillText('6 × 4 = ?', 200, 140);
+
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(150, 160, 100, 50);
+
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Score: 0/10', 30, 230);
+
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillRect(130, 240, 140, 40);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Check Answer', 200, 265);
+        }
+
+        function generateDivisionImage() {
+            const canvas = document.getElementById('divisionCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 400, 300);
+
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, 400, 300);
+
+            ctx.fillStyle = '#1e40af';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Division Practice', 200, 40);
+
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '14px Arial';
+            ctx.fillText('Kids Math Game', 200, 65);
+
+            ctx.fillStyle = '#374151';
+            ctx.font = 'bold 48px Arial';
+            ctx.fillText('24 ÷ 6 = ?', 200, 140);
+
+            ctx.strokeStyle = '#ef4444';
+            ctx.lineWidth = 3;
+            ctx.strokeRect(150, 160, 100, 50);
+
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Score: 0/10', 30, 230);
+
+            ctx.fillStyle = '#ef4444';
+            ctx.fillRect(130, 240, 140, 40);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Check Answer', 200, 265);
+        }
+
+        function generateVisualizationImage() {
+            const canvas = document.getElementById('visualizationCanvas');
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, 400, 300);
+
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(0, 0, 400, 300);
+
+            ctx.fillStyle = '#1e40af';
+            ctx.font = 'bold 24px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Number Visualization', 200, 40);
+
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '14px Arial';
+            ctx.fillText('Kids Math Game', 200, 65);
+
+            // Draw some visual elements
+            for (let i = 0; i < 5; i++) {
+                ctx.fillStyle = '#3b82f6';
+                ctx.fillRect(60 + i * 60, 100, 40, 40);
+            }
+
+            ctx.fillStyle = '#374151';
+            ctx.font = 'bold 32px Arial';
+            ctx.fillText('5', 200, 180);
+
+            ctx.fillStyle = '#10b981';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText('Visualize Numbers', 30, 230);
+
+            ctx.fillStyle = '#06b6d4';
+            ctx.fillRect(130, 240, 140, 40);
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText('Start Learning', 200, 265);
+        }
+
+        function downloadImage(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Auto-generate all images on page load
+        window.onload = function() {
+            generateAdditionImage();
+            generateSubtractionImage();
+            generateMultiplicationImage();
+            generateDivisionImage();
+            generateVisualizationImage();
+        };
+    </script>
+</body>
+</html>

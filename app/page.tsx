@@ -8,10 +8,10 @@ import { Metadata } from "@/components/Metadata"
 import { Header } from '@/components/header';
 
 const pageMetadata = {
-  title: "Number Sense - Kids Math Games",
-  description: "Build number sense with fun and engaging math games for kids. Practice counting, matching, sequencing, patterns, comparison, and estimation.",
-  path: "/number-sense",
-  canonical: "https://kids-math.com/number-sense",
+  title: "Kids Math Games - Free Online Math Practice for Children",
+  description: "Free online math games for kids! Practice addition, subtraction, multiplication, division, counting, patterns, and number sense. Fun and educational games for children ages 5-12.",
+  path: "/",
+  canonical: "https://kids-math.com",
   schemaData: {
     "@type": ["WebPage", "LearningResource"],
     "alternateType": "EducationalApplication",
@@ -54,47 +54,77 @@ const pageMetadata = {
 
 // Define all individual games
 const games = [
-  { 
-    name: "Counting Games", 
+  {
+    name: "Counting Games",
     href: "/number-sense/games/counting",
     description: "Learn to count numbers through fun interactive games",
     image: "/images/counting-game.png"
   },
-  { 
-    name: "Number Matching", 
+  {
+    name: "Number Matching",
     href: "/number-sense/games/matching",
     description: "Match numbers with corresponding quantities",
     image: "/images/matching-game.png"
   },
-  { 
-    name: "Number Sequence", 
+  {
+    name: "Number Sequence",
     href: "/number-sense/games/sequence",
     description: "Arrange numbers in the correct order",
     image: "/images/sequence-game.png"
   },
-  { 
-    name: "Odd & Even", 
+  {
+    name: "Odd & Even",
     href: "/number-sense/patterns/odd-even",
     description: "Identify odd and even numbers",
     image: "/images/odd-even-game.png"
   },
-  { 
-    name: "Skip Counting", 
+  {
+    name: "Skip Counting",
     href: "/number-sense/patterns/skipcountinggame",
     description: "Practice counting by 2s, 5s, and 10s",
     image: "/images/skip-counting-game.png"
   },
-  { 
-    name: "Size Comparison", 
+  {
+    name: "Size Comparison",
     href: "/number-sense/basics/comparison",
     description: "Compare sizes and quantities",
     image: "/images/comparison-game.png"
   },
-  { 
-    name: "Quantity Estimation", 
+  {
+    name: "Quantity Estimation",
     href: "/number-sense/basics/estimation",
     description: "Estimate quantities without counting",
     image: "/images/estimation-game.png"
+  },
+  {
+    name: "Addition Practice",
+    href: "/addition",
+    description: "Master addition with fun interactive problems",
+    image: "/images/addition-game.svg"
+  },
+  {
+    name: "Subtraction Practice",
+    href: "/subtraction",
+    description: "Learn subtraction through engaging exercises",
+    image: "/images/subtraction-game.svg"
+  },
+  {
+    name: "Multiplication Practice",
+    href: "/multiplication",
+    description: "Practice multiplication tables and skills",
+    image: "/images/multiplication-game.svg"
+  },
+  {
+    name: "Division Practice",
+    href: "/division",
+    description: "Develop division skills with interactive games",
+    image: "/images/division-game.svg"
+  },
+  {
+    name: "Number Visualization",
+    href: "/number-sense/basics/visualization",
+    description: "Visualize numbers and their relationships",
+    image: "/images/visualization-game.svg"
   },
 ];
 
@@ -125,10 +155,10 @@ export default function HomePage() {
           {/* Page Title */}
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-display font-bold text-gray-800 mb-4 bounce-gentle">
-              Number Sense - Kids Math Games
+              Kids Math Games - Free Online Practice
             </h1>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Help children build number concepts and develop mathematical thinking through fun interactive games
+              Master math skills with fun interactive games! Practice addition, subtraction, multiplication, division, counting, patterns, and more.
             </p>
           </div>
 
@@ -168,47 +198,48 @@ export default function HomePage() {
 
           {/* Educational Content Section */}
           <div className="mt-12 bg-white rounded-xl shadow-lg p-8 max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Understanding Number Sense</h2>
+            <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Complete Math Skills Development</h2>
             <p className="text-gray-700 mb-6">
-              Number sense is the ability to understand numbers and their relationships. It&#39;s a fundamental math skill that helps children make sense of the world around them through quantitative reasoning. Developing strong number sense in early years sets the foundation for future mathematical success. This mathematical intuition allows children to work flexibly with numbers and understand their practical applications in daily life.
+              Our comprehensive collection of math games helps children master essential mathematical skills from basic number sense to advanced operations. Each game is designed to make learning fun and engaging while building strong foundational skills. From counting and patterns to addition, subtraction, multiplication, and division, children can practice all core math concepts in an interactive environment that encourages exploration and builds confidence.
             </p>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Key Components of Number Sense:</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Math Skills Covered:</h3>
             <div className="grid md:grid-cols-2 gap-6 mb-6">
               <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
-                <h4 className="text-lg font-semibold text-blue-800 mb-2">Counting and Cardinality</h4>
-                <p className="text-gray-700">Understanding that the last number counted represents the total quantity of a set. This foundational skill helps children grasp the concept that numbers represent specific amounts, not just recited words in sequence.</p>
+                <h4 className="text-lg font-semibold text-blue-800 mb-2">Number Sense & Counting</h4>
+                <p className="text-gray-700">Build foundational understanding with counting games, number matching, sequencing, and visualization. Learn to recognize numbers, understand quantities, and develop numerical relationships through interactive activities.</p>
               </div>
               <div className="bg-green-50 p-4 rounded-lg border border-green-200">
-                <h4 className="text-lg font-semibold text-green-800 mb-2">Number Relationships</h4>
-                <p className="text-gray-700">Recognizing how numbers relate to each other through comparison, ordering, and patterns. Children learn to identify which numbers are greater or lesser, and begin to see numerical sequences and relationships.</p>
+                <h4 className="text-lg font-semibold text-green-800 mb-2">Patterns & Logic</h4>
+                <p className="text-gray-700">Master skip counting, odd and even numbers, and number patterns. These games help children identify mathematical patterns and develop logical thinking skills essential for higher-level mathematics.</p>
               </div>
               <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
-                <h4 className="text-lg font-semibold text-purple-800 mb-2">Base-Ten System</h4>
-                <p className="text-gray-700">Understanding place value and how numbers are composed and decomposed. This critical concept helps children work with larger numbers and prepares them for more complex mathematical operations.</p>
+                <h4 className="text-lg font-semibold text-purple-800 mb-2">Basic Operations</h4>
+                <p className="text-gray-700">Practice addition and subtraction with customizable difficulty levels. Build computational fluency and mental math skills through unlimited practice problems that adapt to your child's learning pace.</p>
               </div>
               <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
-                <h4 className="text-lg font-semibold text-orange-800 mb-2">Operations and Estimation</h4>
-                <p className="text-gray-700">Developing fluency with basic operations and making reasonable estimates. Children learn to perform calculations mentally and develop a sense of whether their answers are reasonable.</p>
+                <h4 className="text-lg font-semibold text-orange-800 mb-2">Advanced Operations</h4>
+                <p className="text-gray-700">Develop multiplication and division skills with engaging practice games. Master times tables, understand division concepts, and build confidence in more complex mathematical operations.</p>
               </div>
             </div>
             <p className="text-gray-700 mb-6">
-              Our number sense games are designed to help children develop these critical skills through interactive and engaging activities. Each game focuses on specific aspects of number sense, making learning both fun and effective. These educational math games for kids provide hands-on experiences that build mathematical understanding in ways that traditional worksheets cannot match.
+              Our complete collection of math games provides a comprehensive learning path from basic counting to advanced operations. Each game is carefully designed to make learning enjoyable while building essential mathematical skills. These educational math games for kids offer immediate feedback, unlimited practice opportunities, and engaging challenges that keep children motivated to learn.
             </p>
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">Benefits of Strong Number Sense:</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">Benefits of Our Math Games:</h3>
             <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-6">
-              <li>Improved problem-solving abilities through better numerical reasoning</li>
-              <li>Better understanding of mathematical concepts and their real-world applications</li>
-              <li>Increased confidence in math-related activities and academic settings</li>
-              <li>Enhanced critical thinking skills that extend beyond mathematics</li>
-              <li>Stronger foundation for advanced mathematics including algebra and calculus</li>
+              <li>Comprehensive coverage of essential math skills from counting to division</li>
+              <li>Interactive games that make learning fun and engaging for children</li>
+              <li>Customizable difficulty levels to match each child's learning pace</li>
+              <li>Immediate feedback to help children learn from mistakes</li>
+              <li>Build confidence and positive attitudes toward mathematics</li>
+              <li>Strengthen problem-solving and critical thinking abilities</li>
             </ul>
             
-            <h3 className="text-xl font-semibold text-gray-800 mb-4">How Parents Can Support Number Sense Development:</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-4">How Parents Can Support Math Learning:</h3>
             <p className="text-gray-700 mb-4">
-              Parents play a crucial role in developing their child&#39;s number sense. Simple activities like counting objects during daily routines, discussing quantities in recipes, or playing number-based games can significantly enhance mathematical understanding. Our free math games online provide structured opportunities for children to practice these skills in an engaging environment.
+              Parents play a crucial role in developing their child&#39;s mathematical abilities. Our free math games online provide structured practice opportunities that complement classroom learning. Encourage regular practice sessions, celebrate progress, and help children see math as an exciting challenge rather than a chore.
             </p>
             <p className="text-gray-700">
-              Creating a positive attitude toward mathematics is equally important. When children see math as fun and accessible through cool math games for kids, they&#39;re more likely to develop the confidence needed for mathematical success. Regular practice with educational games for children helps reinforce concepts learned in school while introducing new challenges in a supportive setting.
+              Creating a positive attitude toward mathematics starts with making it fun and accessible. Our collection of cool math games for kids transforms traditional math practice into engaging activities that children look forward to. Regular practice helps reinforce concepts, build confidence, and develop the strong mathematical foundation needed for academic success.
             </p>
           </div>
         </main>

@@ -13,11 +13,11 @@ const games = [
     description: "Learn to count numbers through fun interactive games",
     image: "/images/counting-game.png"
   },
-  { 
-    name: "Number Matching", 
+  {
+    name: "Number Matching",
     href: "/number-sense/games/matching",
-    description: "Match numbers with corresponding quantities",
-    image: "/images/matching-game.png"
+    description: "Count and match numbers with colorful themes",
+    image: "/images/matching-game.svg"
   },
   { 
     name: "Number Sequence", 

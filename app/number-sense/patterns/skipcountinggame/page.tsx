@@ -285,16 +285,10 @@ export default function SequencesGame() {
       <div className="mt-8 text-center  mb-8">
         <button
           onClick={resetGame}
-          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors mr-4"
+          className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
         >
           Restart
         </button>
-        <Link 
-          href="/number-sense"
-          className="inline-block bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700 transition-colors"
-        >
-          Back to Number Sense
-        </Link>
       </div>
 
 

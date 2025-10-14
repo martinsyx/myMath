@@ -6,37 +6,37 @@ const path = require('path');
 const games = [
   { 
     name: "counting", 
-    url: "http://localhost:3001/number-sense/games/counting",
+    url: "http://localhost:3003/number-sense/games/counting",
     output: "public/images/counting-game.png"
   },
   { 
     name: "matching", 
-    url: "http://localhost:3001/number-sense/games/matching",
+    url: "http://localhost:3003/number-sense/games/matching",
     output: "public/images/matching-game.png"
   },
   { 
     name: "sequence", 
-    url: "http://localhost:3001/number-sense/games/sequence",
+    url: "http://localhost:3003/number-sense/games/sequence",
     output: "public/images/sequence-game.png"
   },
   { 
     name: "odd-even", 
-    url: "http://localhost:3001/number-sense/patterns/odd-even",
+    url: "http://localhost:3003/number-sense/patterns/odd-even",
     output: "public/images/odd-even-game.png"
   },
   { 
     name: "skipcountinggame", 
-    url: "http://localhost:3001/number-sense/patterns/skipcountinggame",
+    url: "http://localhost:3003/number-sense/patterns/skipcountinggame",
     output: "public/images/skip-counting-game.png"
   },
   { 
     name: "comparison", 
-    url: "http://localhost:3001/number-sense/basics/comparison",
+    url: "http://localhost:3003/number-sense/basics/comparison",
     output: "public/images/comparison-game.png"
   },
   { 
     name: "estimation", 
-    url: "http://localhost:3001/number-sense/basics/estimation",
+    url: "http://localhost:3003/number-sense/basics/estimation",
     output: "public/images/estimation-game.png"
   },
 ];

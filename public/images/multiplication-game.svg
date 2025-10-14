@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="400" height="300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="300" fill="#ffffff"/>
+  <rect width="400" height="300" fill="none" stroke="#e0e0e0" stroke-width="2"/>
+
+  <!-- Title -->
+  <text x="200" y="40" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#1e40af" text-anchor="middle">Multiplication Practice</text>
+
+  <!-- Subtitle -->
+  <text x="200" y="65" font-family="Arial, sans-serif" font-size="14" fill="#6b7280" text-anchor="middle">Kids Math Game</text>
+
+  <!-- Problem -->
+  <text x="200" y="140" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#374151" text-anchor="middle">6 × 4 = ?</text>
+
+  <!-- Answer box -->
+  <rect x="150" y="160" width="100" height="50" fill="none" stroke="#f59e0b" stroke-width="3" rx="5"/>
+
+  <!-- Score -->
+  <text x="30" y="230" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#10b981" text-anchor="start">Score: 0/10</text>
+
+  <!-- Button -->
+  <rect x="130" y="240" width="140" height="40" fill="#f59e0b" rx="8"/>
+  <text x="200" y="265" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="#ffffff" text-anchor="middle">Check Answer</text>
+</svg>
