@@ -79,7 +79,8 @@ export default function CountingGame() {
 
   const playPopSound = () => {
     // Create a simple beep sound
-    const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+    const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    const audioContext = new AudioContextClass();
     const oscillator = audioContext.createOscillator();
     const gainNode = audioContext.createGain();
 
@@ -317,7 +318,7 @@ export default function CountingGame() {
             <h2 className="text-3xl font-bold text-red-600 mb-2">Oops!</h2>
             <p className="text-gray-700 mb-4">
               You clicked {count} items, but the target was {target}.
-              {timeLeft === 0 && <span className="block text-red-600 font-bold mt-2">⏰ Time's up!</span>}
+              {timeLeft === 0 && <span className="block text-red-600 font-bold mt-2">⏰ Time&apos;s up!</span>}
             </p>
             <button
               onClick={resetGame}
