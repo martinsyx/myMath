@@ -3,6 +3,7 @@
 import Script from "next/script";
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { FloatingElements } from "@/components/floating-elements"
 import { Metadata } from "@/components/Metadata"
 import { Header } from '@/components/header';
@@ -129,6 +130,8 @@ const games = [
 ];
 
 export default function HomePage() {
+  const [imageErrors, setImageErrors] = React.useState<Record<number, boolean>>({});
+
   return (
     <>
       <Metadata
@@ -170,20 +173,23 @@ export default function HomePage() {
                   <Link href={game.href} className="flex flex-col h-full">
                     {/* Game Image */}
                     <div className="w-full p-4 flex justify-center">
-                      <img
-                        src={game.image}
-                        alt={game.name}
-                        className="rounded-xl w-32 h-32 object-cover border-2 border-gray-200"
-                        onError={(e) => {
-                          // 如果图片加载失败，显示默认的占位符
-                          e.currentTarget.onerror = null;
-                          if (e.currentTarget.parentElement) {
-                            e.currentTarget.parentElement.innerHTML = '<div class="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32 flex items-center justify-center text-gray-500 text-xs">Game Image</div>';
+                      {imageErrors[index] ? (
+                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32 flex items-center justify-center text-gray-500 text-xs">
+                          Game Image
+                        </div>
+                      ) : (
+                        <Image
+                          src={game.image}
+                          alt={game.name}
+                          width={128}
+                          height={128}
+                          className="rounded-xl w-32 h-32 object-cover border-2 border-gray-200"
+                          onError={() =>
+                            setImageErrors(prev => ({ ...prev, [index]: true }))
                           }
-                        }}
-                    />
-                  </div>
-                  
+                        />
+                      )}
+                    </div>
 
                     {/* Game Info */}
                     <div className="flex-1 p-4 pt-0 text-center">
@@ -214,7 +220,7 @@ export default function HomePage() {
               </div>
               <div className="bg-purple-50 p-4 rounded-lg border border-purple-200">
                 <h4 className="text-lg font-semibold text-purple-800 mb-2">Basic Operations</h4>
-                <p className="text-gray-700">Practice addition and subtraction with customizable difficulty levels. Build computational fluency and mental math skills through unlimited practice problems that adapt to your child's learning pace.</p>
+                <p className="text-gray-700">Practice addition and subtraction with customizable difficulty levels. Build computational fluency and mental math skills through unlimited practice problems that adapt to your child&apos;s learning pace.</p>
               </div>
               <div className="bg-orange-50 p-4 rounded-lg border border-orange-200">
                 <h4 className="text-lg font-semibold text-orange-800 mb-2">Advanced Operations</h4>
@@ -228,7 +234,7 @@ export default function HomePage() {
             <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-6">
               <li>Comprehensive coverage of essential math skills from counting to division</li>
               <li>Interactive games that make learning fun and engaging for children</li>
-              <li>Customizable difficulty levels to match each child's learning pace</li>
+              <li>Customizable difficulty levels to match each child&apos;s learning pace</li>
               <li>Immediate feedback to help children learn from mistakes</li>
               <li>Build confidence and positive attitudes toward mathematics</li>
               <li>Strengthen problem-solving and critical thinking abilities</li>
@@ -248,3 +254,6 @@ export default function HomePage() {
     </>
   );
 }
+
+
+
