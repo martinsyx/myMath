@@ -105,7 +105,7 @@ export default function MatchingGame() {
   const startCountdown = useCallback(() => {
     if (countdownTimerRef.current) return;
 
-    countdownTimerRef.current = window.setInterval(() => {
+    countdownTimerRef.current = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
           cleanupTimers();
