@@ -235,7 +235,7 @@ export default function CountingGame() {
   };
 
   // Generate item elements with random positions
-  const itemElements: JSX.Element[] = [];
+  const itemElements: React.ReactElement[] = [];
   const activePositions = positionsRef.current.length ? positionsRef.current : itemPositions;
   const displayCount = Math.min(items.length, activePositions.length || items.length, 15);
 
