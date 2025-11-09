@@ -7,6 +7,7 @@ import Image from "next/image";
 import { FloatingElements } from "@/components/floating-elements"
 import { Metadata } from "@/components/Metadata"
 import { Header } from '@/components/header';
+import AdSense from '@/components/AdSense';
 
 const pageMetadata = {
   title: "Kids Math Games - Free Online Math Practice for Children",
@@ -121,12 +122,6 @@ const games = [
     description: "Develop division skills with interactive games",
     image: "/images/division-game.svg"
   },
-  {
-    name: "Number Visualization",
-    href: "/number-sense/basics/visualization",
-    description: "Visualize numbers and their relationships",
-    image: "/images/visualization-game.svg"
-  },
 ];
 
 export default function HomePage() {
@@ -140,6 +135,7 @@ export default function HomePage() {
         path={pageMetadata.path}
         schemaData={pageMetadata.schemaData}
       />
+      <AdSense enabled={true} />
       <Script src="https://www.googletagmanager.com/gtag/js?id=G-9QQG8FQB50" strategy="afterInteractive" />
       <Script id="gtag-init" strategy="afterInteractive">
         {`
@@ -165,16 +161,16 @@ export default function HomePage() {
             </p>
           </div>
 
-          {/* Game Cards Grid - Four per Row */}
+          {/* Game Cards Grid - Responsive Layout */}
           <div className="max-w-7xl mx-auto mb-12">
-            <div className="grid grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
               {games.map((game, index) => (
               <div key={index} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                   <Link href={game.href} className="flex flex-col h-full">
                     {/* Game Image */}
                     <div className="w-full p-4 flex justify-center">
                       {imageErrors[index] ? (
-                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-32 h-32 flex items-center justify-center text-gray-500 text-xs">
+                        <div className="bg-gray-200 border-2 border-dashed rounded-xl w-24 h-24 sm:w-32 sm:h-32 flex items-center justify-center text-gray-500 text-xs">
                           Game Image
                         </div>
                       ) : (
@@ -183,7 +179,7 @@ export default function HomePage() {
                           alt={game.name}
                           width={128}
                           height={128}
-                          className="rounded-xl w-32 h-32 object-cover border-2 border-gray-200"
+                          className="rounded-xl w-24 h-24 sm:w-32 sm:h-32 object-cover border-2 border-gray-200"
                           onError={() =>
                             setImageErrors(prev => ({ ...prev, [index]: true }))
                           }
@@ -193,8 +189,8 @@ export default function HomePage() {
 
                     {/* Game Info */}
                     <div className="flex-1 p-4 pt-0 text-center">
-                      <h3 className="text-lg font-bold text-gray-800 mb-2">{game.name}</h3>
-                      <p className="text-sm text-gray-600">{game.description}</p>
+                      <h3 className="text-base sm:text-lg font-bold text-gray-800 mb-2">{game.name}</h3>
+                      <p className="text-xs sm:text-sm text-gray-600">{game.description}</p>
                     </div>
                 </Link>
               </div>

@@ -1,4 +1,6 @@
 User-agent: *
 Allow: /
+# Disallow incomplete/under construction pages
+Disallow: /number-sense/basics/visualization
 
 Sitemap:https://kids-math.com/sitemap.xml
