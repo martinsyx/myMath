@@ -342,10 +342,14 @@ export default function KidsMathPage() {
                   <div className="flex items-center justify-center gap-3">
                     <Input
                       type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
                       value={problem.userAnswer}
                       onChange={(e) => handleAnswerChange(problem.id, e.target.value)}
+                      onFocus={(e) => e.target.placeholder = ""}
+                      onBlur={(e) => e.target.placeholder = "?"}
                       className="w-32 h-12 text-2xl text-center font-bold border-2 border-primary/30 focus:border-primary rounded-lg"
-                      placeholder="answer"
+                      placeholder="?"
                       maxLength={3}
                     />
                     <Button
