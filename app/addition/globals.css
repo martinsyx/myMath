@@ -38,6 +38,8 @@
   --sidebar-accent-foreground: oklch(0.35 0 0);
   --sidebar-border: oklch(0.85 0.02 270);
   --sidebar-ring: oklch(0.55 0.2 270 / 0.5);
+  --font-inter: "Inter", "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  --font-fredoka: "Fredoka", "Trebuchet MS", "Comic Sans MS", "Comic Neue", cursive, sans-serif;
   --font-sans: var(--font-inter);
   --font-serif: var(--font-fredoka);
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;

@@ -1,22 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
-import Link from "next/link"
-import { Inter, Fredoka } from "next/font/google"
 import "./globals.css"
-import LanguageSwitcher from "@/components/LanguageSwitcher";
 import Footer from "@/components/Footer";
-
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
-})
-
-const fredoka = Fredoka({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-fredoka",
-})
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://kids-math.com'),
@@ -37,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${fredoka.variable} antialiased`}>
+    <html lang="en" className="antialiased">
       <body className="font-sans">
         <main>
           {children}
