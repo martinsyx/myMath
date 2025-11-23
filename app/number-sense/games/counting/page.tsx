@@ -10,23 +10,91 @@ const EMOJI_SETS = [
   { name: 'flowers', emoji: '🌸', pop: '🌺', color: 'bg-purple-50' },
 ];
 
-type ItemPosition = { x: number; y: number; vx: number; vy: number };
+const POSITION_LIMITS = {
+  minX: 5,
+  maxX: 95,
+  minY: 5,
+  maxY: 90,
+};
 
-const createPositions = (count: number): ItemPosition[] =>
-  Array.from({ length: count }, (_, index) => {
-    const x = Math.random() * 100;
-    // Stagger the starting heights to spread out balloons vertically
-    const y = 100 + Math.random() * 50 + (index * 15); // More spread out vertically
-    const speed = 0.15 + Math.random() * 0.25; // Varied upward speed
-    const horizontalDrift = (Math.random() - 0.5) * 0.3; // More horizontal drift
+const MIN_DISTANCE_BETWEEN_ITEMS = 12;
 
-    return {
-      x,
-      y,
+type ItemPosition = {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+  waveOffset: number;
+  waveSpeed: number;
+};
+
+const clamp = (value: number, min: number, max: number) =>
+  Math.min(Math.max(value, min), max);
+
+const createRandomPosition = (existingPositions: ItemPosition[]): ItemPosition => {
+  let attempts = 0;
+  let candidate: ItemPosition = {
+    x: POSITION_LIMITS.minX,
+    y: POSITION_LIMITS.minY,
+    vx: 0,
+    vy: 0,
+    waveOffset: 0,
+    waveSpeed: 0.002,
+  };
+
+  while (attempts < 25) {
+    const horizontalDrift = (Math.random() - 0.5) * 0.6;
+    const verticalDirection = Math.random() > 0.5 ? 1 : -1;
+    const verticalSpeed = 0.05 + Math.random() * 0.25;
+
+    candidate = {
+      x: POSITION_LIMITS.minX + Math.random() * (POSITION_LIMITS.maxX - POSITION_LIMITS.minX),
+      y: POSITION_LIMITS.minY + Math.random() * (POSITION_LIMITS.maxY - POSITION_LIMITS.minY),
       vx: horizontalDrift,
-      vy: -speed, // Negative for upward movement
+      vy: verticalDirection * verticalSpeed,
+      waveOffset: Math.random() * Math.PI * 2,
+      waveSpeed: 0.001 + Math.random() * 0.003,
     };
-  });
+
+    const overlaps = existingPositions.some(
+      (pos) =>
+        Math.hypot(pos.x - candidate.x, pos.y - candidate.y) < MIN_DISTANCE_BETWEEN_ITEMS
+    );
+
+    if (!overlaps) {
+      break;
+    }
+
+    attempts += 1;
+  }
+
+  return candidate;
+};
+
+const createPositions = (count: number): ItemPosition[] => {
+  const positions: ItemPosition[] = [];
+  for (let i = 0; i < count; i += 1) {
+    positions.push(createRandomPosition(positions));
+  }
+  return positions;
+};
+
+const createFallbackPositions = (count: number): ItemPosition[] => {
+  const fallback: ItemPosition[] = [];
+  for (let i = 0; i < count; i += 1) {
+    const fallbackX = (i % 5) * 20;
+    const fallbackY = Math.floor(i / 5) * 33;
+    fallback.push({
+      x: fallbackX,
+      y: fallbackY,
+      vx: 0,
+      vy: 0,
+      waveOffset: 0,
+      waveSpeed: 0.002,
+    });
+  }
+  return fallback;
+};
 
 export default function CountingGame() {
   const [count, setCount] = useState(0);
@@ -44,10 +112,11 @@ export default function CountingGame() {
   const [lastClickTime, setLastClickTime] = useState(0);
 
   // Random positions for items with velocity
-  const [itemPositions, setItemPositions] = useState<ItemPosition[]>(() => createPositions(15));
+  const [itemPositions, setItemPositions] = useState<ItemPosition[]>(() => createFallbackPositions(15));
   const positionsRef = useRef<ItemPosition[]>(itemPositions);
   const itemNodesRef = useRef<Array<HTMLDivElement | null>>([]);
   const animationFrameRef = useRef<number | null>(null);
+  const itemsRef = useRef(items);
 
   const generateRandomPositions = useCallback((count: number) => {
     const positions = createPositions(count);
@@ -60,6 +129,14 @@ export default function CountingGame() {
   }, [itemPositions]);
 
   useEffect(() => {
+    itemsRef.current = items;
+  }, [items]);
+
+  useEffect(() => {
+    generateRandomPositions(itemsRef.current.length);
+  }, [generateRandomPositions]);
+
+  useEffect(() => {
     if (gameState !== 'playing') {
       if (animationFrameRef.current !== null) {
         cancelAnimationFrame(animationFrameRef.current);
@@ -69,33 +146,43 @@ export default function CountingGame() {
     }
 
     const animate = () => {
+      const now = performance.now();
       const nextPositions = positionsRef.current.map((pos, index) => {
-        let newX = pos.x + pos.vx;
-        let newY = pos.y + pos.vy;
+        const horizontalWave = Math.sin(now * pos.waveSpeed + pos.waveOffset) * 0.4;
+        let newVx = pos.vx;
+        let newVy = pos.vy;
+        let newX = pos.x + newVx + horizontalWave;
+        let newY = pos.y + newVy;
 
-        // Horizontal bounds with wrapping
-        if (newX < -5) newX = 105;
-        if (newX > 105) newX = -5;
+        if (newX <= POSITION_LIMITS.minX || newX >= POSITION_LIMITS.maxX) {
+          newX = clamp(newX, POSITION_LIMITS.minX, POSITION_LIMITS.maxX);
+          newVx = -newVx || (Math.random() - 0.5) * 0.6;
+        }
 
-        // Vertical movement: if goes off top, reset to bottom with new random x
-        if (newY < -10) {
-          // Check if item hasn't been clicked
-          if (items[index]) {
-            newY = 110 + Math.random() * 30; // Reset to bottom with random offset
-            newX = Math.random() * 100; // New random x position
-            // Generate new horizontal drift and speed variation
-            const newVx = (Math.random() - 0.5) * 0.3;
-            const newSpeed = 0.15 + Math.random() * 0.25;
-            return { x: newX, y: newY, vx: newVx, vy: -newSpeed };
-          }
+        if (newY <= POSITION_LIMITS.minY || newY >= POSITION_LIMITS.maxY) {
+          newY = clamp(newY, POSITION_LIMITS.minY, POSITION_LIMITS.maxY);
+          newVy = -newVy || (Math.random() > 0.5 ? 0.12 : -0.12);
+        }
+
+        if (itemsRef.current[index] && Math.random() < 0.01) {
+          newVx = (Math.random() - 0.5) * 0.6;
+          newVy = (Math.random() - 0.5) * 0.3;
         }
 
         const node = itemNodesRef.current[index];
         if (node) {
-          node.style.transform = `translate3d(${newX}%, ${newY}%, 0) translate3d(-50%, -50%, 0)`;
+          node.style.left = `${newX}%`;
+          node.style.top = `${newY}%`;
+          node.style.transform = "translate(-50%, -50%)";
         }
 
-        return { x: newX, y: newY, vx: pos.vx, vy: pos.vy };
+        return {
+          ...pos,
+          x: clamp(newX, POSITION_LIMITS.minX, POSITION_LIMITS.maxX),
+          y: clamp(newY, POSITION_LIMITS.minY, POSITION_LIMITS.maxY),
+          vx: newVx,
+          vy: newVy,
+        };
       });
 
       positionsRef.current = nextPositions;
@@ -242,7 +329,15 @@ export default function CountingGame() {
   for (let i = 0; i < displayCount; i++) {
     const fallbackX = (i % 5) * 20;
     const fallbackY = Math.floor(i / 5) * 33;
-    const pos = activePositions[i] || { x: fallbackX, y: fallbackY, vx: 0, vy: 0 };
+    const pos =
+      activePositions[i] || {
+        x: fallbackX,
+        y: fallbackY,
+        vx: 0,
+        vy: 0,
+        waveOffset: 0,
+        waveSpeed: 0.002,
+      };
     const isActive = items[i];
 
     itemElements.push(
@@ -253,7 +348,9 @@ export default function CountingGame() {
         }}
         className="absolute pointer-events-none will-change-transform"
         style={{
-          transform: `translate3d(${pos.x}%, ${pos.y}%, 0) translate3d(-50%, -50%, 0)`,
+          left: `${pos.x}%`,
+          top: `${pos.y}%`,
+          transform: "translate(-50%, -50%)",
         }}
       >
         <div
@@ -306,24 +403,20 @@ export default function CountingGame() {
         {/* Game area with stats inside */}
         <div className={`border-4 border-dashed border-gray-300 rounded-2xl mb-2 ${currentTheme.color} p-3 relative`} style={{ height: '400px' }}>
           {/* Game Stats - positioned inside game area */}
-          <div className="grid grid-cols-5 gap-1.5 mb-2 relative z-10">
-            <div className="bg-gradient-to-r from-green-400/80 to-green-600/80 backdrop-blur-sm text-white p-1 rounded-md text-center shadow-md">
-              <div className="text-[10px] font-semibold">Target</div>
-              <div className="text-lg font-bold leading-tight">{target}</div>
+          <div className="flex gap-1.5 mb-2 relative z-10">
+            <div className="bg-gradient-to-r from-green-400/80 to-green-600/80 backdrop-blur-sm text-white p-1 rounded-md text-center shadow-md min-w-[80px]">
+              <div className="text-[10px] font-semibold">Click/Target</div>
+              <div className="font-bold leading-tight">
+                <span className="text-lg">{count}</span>
+                <span className="text-base">/</span>
+                <span className="text-2xl">{target}</span>
+              </div>
             </div>
-            <div className="bg-gradient-to-r from-blue-400/80 to-blue-600/80 backdrop-blur-sm text-white p-1 rounded-md text-center shadow-md">
-              <div className="text-[10px] font-semibold">Clicked</div>
-              <div className="text-lg font-bold leading-tight">{count}</div>
-            </div>
-            <div className="bg-gradient-to-r from-purple-400/80 to-purple-600/80 backdrop-blur-sm text-white p-1 rounded-md text-center shadow-md">
+            <div className="bg-gradient-to-r from-purple-400/80 to-purple-600/80 backdrop-blur-sm text-white p-1 rounded-md text-center shadow-md min-w-[80px]">
               <div className="text-[10px] font-semibold">Score</div>
               <div className="text-base font-bold leading-tight">{score}</div>
             </div>
-            <div className="bg-gradient-to-r from-orange-400/80 to-orange-600/80 backdrop-blur-sm text-white p-1 rounded-md text-center shadow-md">
-              <div className="text-[10px] font-semibold">Level</div>
-              <div className="text-lg font-bold leading-tight">{level}</div>
-            </div>
-            <div className={`bg-gradient-to-r ${timeLeft > 10 ? 'from-cyan-400/80 to-cyan-600/80' : 'from-red-400/80 to-red-600/80'} backdrop-blur-sm text-white p-1 rounded-md text-center shadow-md`}>
+            <div className={`bg-gradient-to-r ${timeLeft > 10 ? 'from-cyan-400/80 to-cyan-600/80' : 'from-red-400/80 to-red-600/80'} backdrop-blur-sm text-white p-1 rounded-md text-center shadow-md min-w-[80px]`}>
               <div className="text-[10px] font-semibold">⏱️ Time</div>
               <div className="text-lg font-bold leading-tight">{timeLeft}s</div>
             </div>
