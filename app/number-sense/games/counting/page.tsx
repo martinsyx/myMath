@@ -414,23 +414,25 @@ export default function CountingBalloonsGame() {
           background: #555;
         }
 
-        :global(@keyframes floatUp) {
-          0% {
-            bottom: -150px;
-            transform: translateX(0);
-          }
-          25% {
-            transform: translateX(25px) rotate(5deg);
-          }
-          50% {
-            transform: translateX(-25px) rotate(-5deg);
-          }
-          75% {
-            transform: translateX(25px) rotate(5deg);
-          }
-          100% {
-            bottom: 110vh;
-            transform: translateX(0);
+        :global {
+          @keyframes floatUp {
+            0% {
+              bottom: -150px;
+              transform: translateX(0);
+            }
+            25% {
+              transform: translateX(25px) rotate(5deg);
+            }
+            50% {
+              transform: translateX(-25px) rotate(-5deg);
+            }
+            75% {
+              transform: translateX(25px) rotate(5deg);
+            }
+            100% {
+              bottom: 110vh;
+              transform: translateX(0);
+            }
           }
         }
 
@@ -444,14 +446,16 @@ export default function CountingBalloonsGame() {
           animation: particles-fly 0.6s ease-out forwards;
         }
 
-        :global(@keyframes particles-fly) {
-          0% {
-            transform: translate(0, 0) scale(1);
-            opacity: 1;
-          }
-          100% {
-            transform: translate(var(--tx), var(--ty)) scale(0);
-            opacity: 0;
+        :global {
+          @keyframes particles-fly {
+            0% {
+              transform: translate(0, 0) scale(1);
+              opacity: 1;
+            }
+            100% {
+              transform: translate(var(--tx), var(--ty)) scale(0);
+              opacity: 0;
+            }
           }
         }
 
