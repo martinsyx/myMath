@@ -1,530 +1,546 @@
 "use client";
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useEffect, useRef } from "react";
 import Head from "next/head";
 
-const EMOJI_SETS = [
-  { name: 'balloons', emoji: '🎈', pop: '💥', color: 'bg-blue-50' },
-  { name: 'fruits', emoji: '🍎', pop: '✨', color: 'bg-red-50' },
-  { name: 'stars', emoji: '⭐', pop: '💫', color: 'bg-yellow-50' },
-  { name: 'hearts', emoji: '❤️', pop: '💖', color: 'bg-pink-50' },
-  { name: 'flowers', emoji: '🌸', pop: '🌺', color: 'bg-purple-50' },
+const BALLOON_COLORS = [
+  "#FF5252",
+  "#FFEB3B",
+  "#4CAF50",
+  "#2196F3",
+  "#9C27B0",
+  "#FF9800",
+  "#00BCD4",
 ];
 
-const POSITION_LIMITS = {
-  minX: 5,
-  maxX: 95,
-  minY: 5,
-  maxY: 90,
-};
+const PARTICLE_COUNT = 12;
 
-const MIN_DISTANCE_BETWEEN_ITEMS = 12;
-
-type ItemPosition = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  waveOffset: number;
-  waveSpeed: number;
-};
-
-const clamp = (value: number, min: number, max: number) =>
-  Math.min(Math.max(value, min), max);
-
-const createRandomPosition = (existingPositions: ItemPosition[]): ItemPosition => {
-  let attempts = 0;
-  let candidate: ItemPosition = {
-    x: POSITION_LIMITS.minX,
-    y: POSITION_LIMITS.minY,
-    vx: 0,
-    vy: 0,
-    waveOffset: 0,
-    waveSpeed: 0.002,
-  };
-
-  while (attempts < 25) {
-    const horizontalDrift = (Math.random() - 0.5) * 0.6;
-    const verticalDirection = Math.random() > 0.5 ? 1 : -1;
-    const verticalSpeed = 0.05 + Math.random() * 0.25;
-
-    candidate = {
-      x: POSITION_LIMITS.minX + Math.random() * (POSITION_LIMITS.maxX - POSITION_LIMITS.minX),
-      y: POSITION_LIMITS.minY + Math.random() * (POSITION_LIMITS.maxY - POSITION_LIMITS.minY),
-      vx: horizontalDrift,
-      vy: verticalDirection * verticalSpeed,
-      waveOffset: Math.random() * Math.PI * 2,
-      waveSpeed: 0.001 + Math.random() * 0.003,
-    };
-
-    const overlaps = existingPositions.some(
-      (pos) =>
-        Math.hypot(pos.x - candidate.x, pos.y - candidate.y) < MIN_DISTANCE_BETWEEN_ITEMS
-    );
-
-    if (!overlaps) {
-      break;
-    }
-
-    attempts += 1;
-  }
-
-  return candidate;
-};
-
-const createPositions = (count: number): ItemPosition[] => {
-  const positions: ItemPosition[] = [];
-  for (let i = 0; i < count; i += 1) {
-    positions.push(createRandomPosition(positions));
-  }
-  return positions;
-};
-
-const createFallbackPositions = (count: number): ItemPosition[] => {
-  const fallback: ItemPosition[] = [];
-  for (let i = 0; i < count; i += 1) {
-    const fallbackX = (i % 5) * 20;
-    const fallbackY = Math.floor(i / 5) * 33;
-    fallback.push({
-      x: fallbackX,
-      y: fallbackY,
-      vx: 0,
-      vy: 0,
-      waveOffset: 0,
-      waveSpeed: 0.002,
-    });
-  }
-  return fallback;
-};
-
-export default function CountingGame() {
-  const [count, setCount] = useState(0);
-  const [target, setTarget] = useState(5);
-  const [score, setScore] = useState(0);
-  const [level, setLevel] = useState(1);
-  const [gameState, setGameState] = useState<'playing' | 'success' | 'failed'>('playing');
-  const [items, setItems] = useState(Array(15).fill(true));
-  const [currentTheme, setCurrentTheme] = useState(EMOJI_SETS[0]);
-  const [streak, setStreak] = useState(0);
-  const [showConfetti, setShowConfetti] = useState(false);
-  const [timeLeft, setTimeLeft] = useState(30);
-  const [isTimerActive, setIsTimerActive] = useState(true);
-  const [combo, setCombo] = useState(0);
-  const [lastClickTime, setLastClickTime] = useState(0);
-
-  // Random positions for items with velocity
-  const [itemPositions, setItemPositions] = useState<ItemPosition[]>(() => createFallbackPositions(15));
-  const positionsRef = useRef<ItemPosition[]>(itemPositions);
-  const itemNodesRef = useRef<Array<HTMLDivElement | null>>([]);
-  const animationFrameRef = useRef<number | null>(null);
-  const itemsRef = useRef(items);
-
-  const generateRandomPositions = useCallback((count: number) => {
-    const positions = createPositions(count);
-    positionsRef.current = positions;
-    setItemPositions(positions);
-  }, []);
+export default function CountingBalloonsGame() {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const modalRef = useRef<HTMLDivElement | null>(null);
+  const targetDisplayRef = useRef<HTMLDivElement | null>(null);
+  const currentDisplayRef = useRef<HTMLDivElement | null>(null);
+  const modalMessageRef = useRef<HTMLDivElement | null>(null);
+  const nextButtonRef = useRef<HTMLButtonElement | null>(null);
+  const checkButtonRef = useRef<HTMLButtonElement | null>(null);
+  const nextActionRef = useRef<() => void>(() => {});
 
   useEffect(() => {
-    positionsRef.current = itemPositions;
-  }, [itemPositions]);
+    const container = containerRef.current;
+    const modal = modalRef.current;
+    const targetDisplay = targetDisplayRef.current;
+    const currentDisplay = currentDisplayRef.current;
+    const modalMessage = modalMessageRef.current;
+    const nextBtn = nextButtonRef.current;
+    const checkBtn = checkButtonRef.current;
 
-  useEffect(() => {
-    itemsRef.current = items;
-  }, [items]);
-
-  useEffect(() => {
-    generateRandomPositions(itemsRef.current.length);
-  }, [generateRandomPositions]);
-
-  useEffect(() => {
-    if (gameState !== 'playing') {
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
-      }
+    if (!container || !modal || !targetDisplay || !currentDisplay || !modalMessage || !nextBtn || !checkBtn) {
       return;
     }
 
-    const animate = () => {
-      const now = performance.now();
-      const nextPositions = positionsRef.current.map((pos, index) => {
-        const horizontalWave = Math.sin(now * pos.waveSpeed + pos.waveOffset) * 0.4;
-        let newVx = pos.vx;
-        let newVy = pos.vy;
-        let newX = pos.x + newVx + horizontalWave;
-        let newY = pos.y + newVy;
+    let targetNumber = 0;
+    let currentCount = 0;
+    let gameActive = true;
+    let balloonInterval: ReturnType<typeof setInterval> | null = null;
 
-        if (newX <= POSITION_LIMITS.minX || newX >= POSITION_LIMITS.maxX) {
-          newX = clamp(newX, POSITION_LIMITS.minX, POSITION_LIMITS.maxX);
-          newVx = -newVx || (Math.random() - 0.5) * 0.6;
+    const AudioContextClass =
+      window.AudioContext || (window as typeof window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+    let audioCtx: AudioContext | null = null;
+
+    const getAudioContext = () => {
+      if (!AudioContextClass) {
+        return null;
+      }
+
+      if (!audioCtx) {
+        try {
+          audioCtx = new AudioContextClass();
+        } catch {
+          audioCtx = null;
         }
+      }
 
-        if (newY <= POSITION_LIMITS.minY || newY >= POSITION_LIMITS.maxY) {
-          newY = clamp(newY, POSITION_LIMITS.minY, POSITION_LIMITS.maxY);
-          newVy = -newVy || (Math.random() > 0.5 ? 0.12 : -0.12);
-        }
-
-        if (itemsRef.current[index] && Math.random() < 0.01) {
-          newVx = (Math.random() - 0.5) * 0.6;
-          newVy = (Math.random() - 0.5) * 0.3;
-        }
-
-        const node = itemNodesRef.current[index];
-        if (node) {
-          node.style.left = `${newX}%`;
-          node.style.top = `${newY}%`;
-          node.style.transform = "translate(-50%, -50%)";
-        }
-
-        return {
-          ...pos,
-          x: clamp(newX, POSITION_LIMITS.minX, POSITION_LIMITS.maxX),
-          y: clamp(newY, POSITION_LIMITS.minY, POSITION_LIMITS.maxY),
-          vx: newVx,
-          vy: newVy,
-        };
-      });
-
-      positionsRef.current = nextPositions;
-      animationFrameRef.current = requestAnimationFrame(animate);
+      return audioCtx;
     };
 
-    animationFrameRef.current = requestAnimationFrame(animate);
+    const setModalVisible = (visible: boolean) => {
+      modal.style.display = visible ? "flex" : "none";
+    };
 
-    return () => {
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
-        animationFrameRef.current = null;
+    const setNextAction = (label: string, action: () => void) => {
+      nextActionRef.current = action;
+      nextBtn.textContent = label;
+    };
+
+    const playSound = (type: "pop" | "win" | "wrong") => {
+      const ctx = getAudioContext();
+      if (!ctx) {
+        return;
+      }
+
+      if (ctx.state === "suspended") {
+        void ctx.resume();
+      }
+
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      if (type === "pop") {
+        osc.frequency.setValueAtTime(300, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(50, ctx.currentTime + 0.1);
+        gain.gain.setValueAtTime(0.5, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.1);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.1);
+      } else if (type === "win") {
+        osc.type = "triangle";
+        osc.frequency.setValueAtTime(440, ctx.currentTime);
+        osc.frequency.setValueAtTime(554, ctx.currentTime + 0.1);
+        osc.frequency.setValueAtTime(659, ctx.currentTime + 0.2);
+        gain.gain.setValueAtTime(0.3, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.6);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.6);
+      } else {
+        osc.type = "sawtooth";
+        osc.frequency.setValueAtTime(150, ctx.currentTime);
+        osc.frequency.linearRampToValueAtTime(100, ctx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.5, ctx.currentTime);
+        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.3);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.3);
       }
     };
-  }, [gameState]);
 
-  useEffect(() => {
+    const createParticles = (x: number, y: number, color: string) => {
+      for (let i = 0; i < PARTICLE_COUNT; i += 1) {
+        const particle = document.createElement("div");
+        particle.classList.add("particle");
+        particle.style.backgroundColor = color;
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 50 + Math.random() * 100;
+        const tx = Math.cos(angle) * velocity;
+        const ty = Math.sin(angle) * velocity;
+
+        particle.style.setProperty("--tx", `${tx}px`);
+        particle.style.setProperty("--ty", `${ty}px`);
+        document.body.appendChild(particle);
+
+        setTimeout(() => {
+          particle.remove();
+        }, 600);
+      }
+    };
+
+    const popBalloon = (balloon: HTMLDivElement) => {
+      if (balloon.style.pointerEvents === "none") {
+        return;
+      }
+
+      playSound("pop");
+      balloon.style.pointerEvents = "none";
+
+      const rect = balloon.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const balloonColor = balloon.dataset.color || "#FF5252";
+
+      createParticles(centerX, centerY, balloonColor);
+      balloon.style.visibility = "hidden";
+
+      currentCount += 1;
+      currentDisplay.textContent = String(currentCount);
+
+      setTimeout(() => {
+        balloon.remove();
+      }, 100);
+    };
+
+    const createBalloon = () => {
+      if (!gameActive) {
+        return;
+      }
+
+      const balloon = document.createElement("div");
+      balloon.className = "balloon";
+
+      const color = BALLOON_COLORS[Math.floor(Math.random() * BALLOON_COLORS.length)];
+      balloon.style.backgroundColor = color;
+      balloon.dataset.color = color;
+
+      const left = Math.random() * 84 + 8;
+      balloon.style.left = `${left}%`;
+      const scale = 0.8 + Math.random() * 0.4;
+      balloon.style.transform = `scale(${scale})`;
+      const duration = Math.random() * 5 + 6;
+      balloon.style.animationDuration = `${duration}s`;
+
+      balloon.onpointerdown = (event) => {
+        event.stopPropagation();
+        popBalloon(balloon);
+      };
+
+      container.appendChild(balloon);
+
+      balloon.addEventListener("animationend", () => {
+        balloon.remove();
+      });
+    };
+
+    const showModal = () => setModalVisible(true);
+
+    const startGame = () => {
+      targetNumber = Math.floor(Math.random() * 20) + 1;
+      currentCount = 0;
+      gameActive = true;
+      targetDisplay.textContent = String(targetNumber);
+      currentDisplay.textContent = String(currentCount);
+      setModalVisible(false);
+
+      container.querySelectorAll(".balloon").forEach((node) => node.remove());
+
+      if (balloonInterval) {
+        clearInterval(balloonInterval);
+      }
+      balloonInterval = setInterval(createBalloon, 700);
+      createBalloon();
+      setNextAction("下一局", () => startGame());
+    };
+
+    const checkResult = () => {
+      if (currentCount === targetNumber) {
+        playSound("win");
+        modalMessage.innerHTML = "🎉 <strong style='color:green'>太棒了！</strong><br/>答案正确！<br/>就是 " + targetNumber + " 个";
+        gameActive = false;
+        setNextAction("下一局", () => startGame());
+        showModal();
+        if (balloonInterval) {
+          clearInterval(balloonInterval);
+          balloonInterval = null;
+        }
+      } else if (currentCount < targetNumber) {
+        playSound("wrong");
+        const diff = targetNumber - currentCount;
+        modalMessage.innerHTML = "🤔 还没够哦<br/>还差 <strong style='color:#FF9800'>" + diff + "</strong> 个";
+        setNextAction("继续加油", () => setModalVisible(false));
+        showModal();
+      } else {
+        playSound("wrong");
+        modalMessage.innerHTML = "😲 哎呀多了<br/>现在有 <strong style='color:red'>" + currentCount + "</strong> 个<br/>重来一次吧";
+        setNextAction("重新开始", () => startGame());
+        showModal();
+      }
+    };
+
+    const handleCheck = () => {
+      if (gameActive) {
+        checkResult();
+      }
+    };
+
+    const handleNextClick = () => {
+      nextActionRef.current();
+    };
+
+    checkBtn.addEventListener("click", handleCheck);
+    nextBtn.addEventListener("click", handleNextClick);
+
+    startGame();
+
     return () => {
-      if (animationFrameRef.current !== null) {
-        cancelAnimationFrame(animationFrameRef.current);
+      if (balloonInterval) {
+        clearInterval(balloonInterval);
+      }
+      checkBtn.removeEventListener("click", handleCheck);
+      nextBtn.removeEventListener("click", handleNextClick);
+      if (audioCtx) {
+        audioCtx.close().catch(() => undefined);
       }
     };
   }, []);
 
-  // Timer countdown
-  useEffect(() => {
-    if (isTimerActive && gameState === 'playing' && timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timer);
-    } else if (timeLeft === 0 && gameState === 'playing') {
-      setGameState('failed');
-      setStreak(0);
-    }
-  }, [timeLeft, isTimerActive, gameState]);
-
-  const popItem = (index: number) => {
-    if (items[index] && gameState === 'playing') {
-      const newItems = [...items];
-      newItems[index] = false;
-      setItems(newItems);
-
-      const newCount = count + 1;
-      setCount(newCount);
-
-      // Combo system - clicking within 1 second
-      const now = Date.now();
-      if (now - lastClickTime < 1000) {
-        setCombo(combo + 1);
-      } else {
-        setCombo(0);
-      }
-      setLastClickTime(now);
-
-      // Play sound effect (optional, can add audio later)
-      playPopSound();
-    }
-  };
-
-  const playPopSound = () => {
-    // Create a simple beep sound
-    const AudioContextClass = window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    const audioContext = new AudioContextClass();
-    const oscillator = audioContext.createOscillator();
-    const gainNode = audioContext.createGain();
-
-    oscillator.connect(gainNode);
-    gainNode.connect(audioContext.destination);
-
-    oscillator.frequency.value = 800 + (Math.random() * 400);
-    oscillator.type = 'sine';
-
-    gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.1);
-
-    oscillator.start(audioContext.currentTime);
-    oscillator.stop(audioContext.currentTime + 0.1);
-  };
-
-  const handleCheck = () => {
-    if (count === target) {
-      setGameState('success');
-      const basePoints = 10;
-      const timeBonus = Math.floor(timeLeft / 2);
-      const comboBonus = combo * 2;
-      const totalPoints = basePoints + timeBonus + comboBonus;
-
-      setScore(score + totalPoints);
-      setStreak(streak + 1);
-      setShowConfetti(true);
-
-      setTimeout(() => setShowConfetti(false), 2000);
-    } else {
-      setGameState('failed');
-      setStreak(0);
-    }
-    setIsTimerActive(false);
-  };
-
-  const nextLevel = () => {
-    const newLevel = level + 1;
-    setLevel(newLevel);
-    setCount(0);
-
-    // Progressive difficulty
-    const maxItems = Math.min(15, 10 + newLevel);
-    const newTarget = Math.floor(Math.random() * Math.min(maxItems - 2, 12)) + 3;
-    setTarget(newTarget);
-
-    setItems(Array(maxItems).fill(true));
-    generateRandomPositions(maxItems);
-    setGameState('playing');
-
-    // Change theme every 3 levels
-    if (newLevel % 3 === 0) {
-      const newTheme = EMOJI_SETS[Math.floor(Math.random() * EMOJI_SETS.length)];
-      setCurrentTheme(newTheme);
-    }
-
-    setTimeLeft(30 + Math.floor(newLevel / 2) * 5); // More time for higher levels
-    setIsTimerActive(true);
-    setCombo(0);
-  };
-
-  const resetGame = () => {
-    setCount(0);
-    setTarget(5);
-    setScore(0);
-    setLevel(1);
-    setItems(Array(15).fill(true));
-    generateRandomPositions(15);
-    setGameState('playing');
-    setCurrentTheme(EMOJI_SETS[0]);
-    setStreak(0);
-    setCombo(0);
-    setTimeLeft(30);
-    setIsTimerActive(true);
-  };
-
-  // Generate item elements with random positions
-  const itemElements: React.ReactElement[] = [];
-  const activePositions = positionsRef.current.length ? positionsRef.current : itemPositions;
-  const displayCount = Math.min(items.length, activePositions.length || items.length, 15);
-
-  for (let i = 0; i < displayCount; i++) {
-    const fallbackX = (i % 5) * 20;
-    const fallbackY = Math.floor(i / 5) * 33;
-    const pos =
-      activePositions[i] || {
-        x: fallbackX,
-        y: fallbackY,
-        vx: 0,
-        vy: 0,
-        waveOffset: 0,
-        waveSpeed: 0.002,
-      };
-    const isActive = items[i];
-
-    itemElements.push(
-      <div
-        key={i}
-        ref={(el) => {
-          itemNodesRef.current[i] = el;
-        }}
-        className="absolute pointer-events-none will-change-transform"
-        style={{
-          left: `${pos.x}%`,
-          top: `${pos.y}%`,
-          transform: "translate(-50%, -50%)",
-        }}
-      >
-        <div
-          onClick={() => popItem(i)}
-          className={`pointer-events-auto cursor-pointer select-none text-5xl transform-gpu transition-all duration-150 ease-out ${
-            isActive
-              ? 'opacity-100 scale-100 hover:scale-125'
-              : 'opacity-0 scale-0 pointer-events-none'
-          }`}
-          style={{
-            filter: isActive ? 'drop-shadow(0 4px 6px rgba(0,0,0,0.1))' : 'none',
-          }}
-        >
-          {isActive ? currentTheme.emoji : currentTheme.pop}
-        </div>
-      </div>
-    );
-  }
-
   return (
     <>
-      <div className="max-w-5xl mx-auto mt-4 bg-white rounded-2xl shadow-2xl p-4 relative overflow-hidden min-h-screen flex flex-col">
-        {/* Confetti effect */}
-        {showConfetti && (
-          <div className="absolute inset-0 pointer-events-none z-50">
-            {[...Array(50)].map((_, i) => (
+      <Head>
+        <title>快乐数气球 - 精致版 | Easy Math</title>
+        <meta
+          name="description"
+          content="打爆彩色气球，准确数出目标数量的趣味数感游戏。"
+        />
+        <link rel="canonical" href="https://kids-math.com/number-sense/games/counting" />
+      </Head>
+      <div className="balloon-game-shell">
+        <div id="game-container" ref={containerRef}>
+          <div className="cloud" style={{ width: "200px", height: "60px", top: "10%", left: "10%" }} />
+          <div className="cloud" style={{ width: "150px", height: "50px", top: "20%", right: "15%" }} />
+          <div className="cloud" style={{ width: "180px", height: "70px", top: "50%", left: "30%" }} />
+          <div className="cloud" style={{ width: "120px", height: "40px", top: "70%", right: "10%" }} />
+
+          <div id="top-ui" className="ui-panel">
+            <h2>目标:</h2>
+            <div id="target-display" ref={targetDisplayRef} className="number-box">
+              ?
+            </div>
+          </div>
+
+          <div id="bottom-ui" className="ui-panel">
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <h2>已打爆:</h2>
               <div
-                key={i}
-                className="absolute text-2xl animate-ping"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 0.5}s`,
-                  animationDuration: `${1 + Math.random()}s`,
-                }}
+                id="current-display"
+                ref={currentDisplayRef}
+                className="number-box"
+                style={{ color: "#2196F3", borderColor: "#2196F3" }}
               >
-                {['🎉', '⭐', '✨', '🎊', '💫'][Math.floor(Math.random() * 5)]}
-              </div>
-            ))}
-          </div>
-        )}
-
-        <div className="text-center mb-3">
-          <h1 className="text-3xl font-bold text-blue-700 mb-1">
-            🎮 Super Counting Game!
-          </h1>
-          <p className="text-gray-600 text-sm">Click exactly {target} {currentTheme.name}!</p>
-        </div>
-
-        {/* Game area with stats inside */}
-        <div className={`border-4 border-dashed border-gray-300 rounded-2xl mb-2 ${currentTheme.color} p-3 relative`} style={{ height: '400px' }}>
-          {/* Game Stats - positioned inside game area */}
-          <div className="flex gap-1.5 mb-2 relative z-10">
-            <div className="bg-gradient-to-r from-green-400/80 to-green-600/80 backdrop-blur-sm text-white p-1 rounded-md text-center shadow-md min-w-[80px]">
-              <div className="text-[10px] font-semibold">Click/Target</div>
-              <div className="font-bold leading-tight">
-                <span className="text-lg">{count}</span>
-                <span className="text-base">/</span>
-                <span className="text-2xl">{target}</span>
+                0
               </div>
             </div>
-            <div className="bg-gradient-to-r from-purple-400/80 to-purple-600/80 backdrop-blur-sm text-white p-1 rounded-md text-center shadow-md min-w-[80px]">
-              <div className="text-[10px] font-semibold">Score</div>
-              <div className="text-base font-bold leading-tight">{score}</div>
-            </div>
-            <div className={`bg-gradient-to-r ${timeLeft > 10 ? 'from-cyan-400/80 to-cyan-600/80' : 'from-red-400/80 to-red-600/80'} backdrop-blur-sm text-white p-1 rounded-md text-center shadow-md min-w-[80px]`}>
-              <div className="text-[10px] font-semibold">⏱️ Time</div>
-              <div className="text-lg font-bold leading-tight">{timeLeft}s</div>
-            </div>
-          </div>
-
-          {/* Streak and Combo indicators */}
-          <div className="flex justify-center gap-2 mb-2 min-h-[20px] relative z-10">
-            {streak > 0 && (
-              <span className="bg-yellow-400/90 backdrop-blur-sm text-yellow-900 px-2 py-0.5 rounded-full font-bold text-[10px] shadow-md">
-                🔥 {streak} Win Streak!
-              </span>
-            )}
-            {combo > 0 && (
-              <span className="bg-pink-400/90 backdrop-blur-sm text-pink-900 px-2 py-0.5 rounded-full font-bold text-[10px] animate-pulse shadow-md">
-                ⚡ {combo}x Combo!
-              </span>
-            )}
-          </div>
-
-          {/* Game items */}
-          <div className="absolute inset-3 top-20" style={{ pointerEvents: 'none' }}>
-            <div className="relative w-full h-full" style={{ pointerEvents: 'auto' }}>
-              {itemElements}
-            </div>
+            <button id="check-btn" ref={checkButtonRef}>
+              检查
+            </button>
           </div>
         </div>
 
-        {gameState === 'playing' && (
-          <div className="text-center py-2">
-            <button
-              onClick={handleCheck}
-              className="bg-gradient-to-r from-green-500 to-green-600 text-white px-8 py-2.5 rounded-xl text-base font-bold hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-105 shadow-lg"
-            >
-              ✓ Check Answer
+        <div id="modal" ref={modalRef} className="modal">
+          <div className="modal-content">
+            <div id="modal-message" ref={modalMessageRef} />
+            <button id="next-btn" ref={nextButtonRef}>
+              下一局
             </button>
           </div>
-        )}
-
-        {gameState === 'success' && (
-          <div className="text-center bg-green-50 p-3 rounded-xl border-2 border-green-400">
-            <div className="text-3xl mb-1 animate-bounce">🎉</div>
-            <h2 className="text-xl font-bold text-green-600 mb-1">Perfect!</h2>
-            <p className="text-gray-700 text-xs mb-2">
-              You counted exactly {target} items!
-            </p>
-            <div className="flex justify-center gap-2 text-xs mb-2">
-              <span className="bg-white px-2 py-0.5 rounded-full">⏱️ +{Math.floor(timeLeft / 2)}</span>
-              {combo > 0 && <span className="bg-white px-2 py-0.5 rounded-full">⚡ +{combo * 2}</span>}
-            </div>
-            <div className="flex justify-center gap-2">
-              <button
-                onClick={nextLevel}
-                className="bg-gradient-to-r from-green-500 to-green-600 text-white px-5 py-2 rounded-lg text-sm font-bold hover:from-green-600 hover:to-green-700 transition-all transform hover:scale-105"
-              >
-                🚀 Next Level
-              </button>
-              <button
-                onClick={resetGame}
-                className="bg-gradient-to-r from-blue-500 to-blue-600 text-white px-5 py-2 rounded-lg text-sm font-bold hover:from-blue-600 hover:to-blue-700 transition-all transform hover:scale-105"
-              >
-                🔄 Restart
-              </button>
-            </div>
-          </div>
-        )}
-
-        {gameState === 'failed' && (
-          <div className="text-center bg-red-50 p-3 rounded-xl border-2 border-red-400">
-            <div className="text-3xl mb-1">😅</div>
-            <h2 className="text-xl font-bold text-red-600 mb-1">Oops!</h2>
-            <p className="text-gray-700 text-xs mb-2">
-              You clicked {count} items, but the target was {target}.
-              {timeLeft === 0 && <span className="block text-red-600 font-bold mt-1">⏰ Time&apos;s up!</span>}
-            </p>
-            <button
-              onClick={resetGame}
-              className="bg-gradient-to-r from-red-500 to-red-600 text-white px-5 py-2 rounded-lg text-sm font-bold hover:from-red-600 hover:to-red-700 transition-all transform hover:scale-105"
-            >
-              🔄 Try Again
-            </button>
-          </div>
-        )}
-
-        <Head>
-          <title>Super Counting Game - Fun Math for Kids | Easy Math</title>
-          <meta name="description" content="Play our super fun counting game! Click the right number of items, earn combos, and level up. Perfect for kids learning to count!" />
-          <link rel="canonical" href="https://kids-math.com/number-sense/games/counting" />
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "LearningResource",
-                "name": "Super Counting Game - Kids Math",
-                "description": "Interactive counting game with multiple themes, combos, and progressive difficulty. Perfect for kids learning to count!",
-                "educationalLevel": "Elementary",
-                "learningResourceType": "Game",
-                "interactivityType": "Interactive",
-                "audience": {
-                  "@type": "EducationalAudience",
-                  "educationalRole": "student",
-                  "ageRange": "5-12"
-                }
-              })
-            }}
-          />
-        </Head>
+        </div>
       </div>
+
+      <style jsx global>{`
+        .balloon-game-shell {
+          position: relative;
+          width: 100vw;
+          height: 100vh;
+          overflow: hidden;
+          background: linear-gradient(to bottom, #87ceeb, #e0f6ff);
+          font-family: "Mady", "Rounded Mplus 1c", "Microsoft YaHei", sans-serif;
+          user-select: none;
+          touch-action: manipulation;
+        }
+
+        #game-container {
+          position: relative;
+          width: 100%;
+          height: 100%;
+        }
+
+        .ui-panel {
+          position: absolute;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(255, 255, 255, 0.85);
+          border-radius: 15px;
+          padding: 8px 20px;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          z-index: 20;
+        }
+
+        #top-ui {
+          top: 15px;
+        }
+
+        #bottom-ui {
+          bottom: 15px;
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        h1,
+        h2 {
+          margin: 0;
+          color: #333;
+          font-size: 20px;
+        }
+
+        .number-box {
+          font-size: 32px;
+          font-weight: 900;
+          color: #ff4500;
+          background: #fff;
+          padding: 2px 15px;
+          border-radius: 8px;
+          border: 3px solid #ffd700;
+          min-width: 40px;
+          text-align: center;
+        }
+
+        :global(.balloon) {
+          position: absolute;
+          bottom: -150px;
+          width: 80px;
+          height: 100px;
+          background-color: red;
+          border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+          cursor: pointer;
+          box-shadow: inset -10px -10px 20px rgba(0, 0, 0, 0.1);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          animation: floatUp 8s linear forwards;
+          z-index: 5;
+          touch-action: none;
+        }
+
+        :global(.balloon::before) {
+          content: "";
+          position: absolute;
+          top: 15px;
+          left: 15px;
+          width: 20px;
+          height: 10px;
+          border-radius: 50%;
+          background: rgba(255, 255, 255, 0.4);
+          transform: rotate(45deg);
+        }
+
+        :global(.balloon::after) {
+          content: "";
+          position: absolute;
+          bottom: -20px;
+          width: 2px;
+          height: 20px;
+          background: #555;
+        }
+
+        :global(@keyframes floatUp) {
+          0% {
+            bottom: -150px;
+            transform: translateX(0);
+          }
+          25% {
+            transform: translateX(25px) rotate(5deg);
+          }
+          50% {
+            transform: translateX(-25px) rotate(-5deg);
+          }
+          75% {
+            transform: translateX(25px) rotate(5deg);
+          }
+          100% {
+            bottom: 110vh;
+            transform: translateX(0);
+          }
+        }
+
+        :global(.particle) {
+          position: absolute;
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          pointer-events: none;
+          z-index: 15;
+          animation: particles-fly 0.6s ease-out forwards;
+        }
+
+        :global(@keyframes particles-fly) {
+          0% {
+            transform: translate(0, 0) scale(1);
+            opacity: 1;
+          }
+          100% {
+            transform: translate(var(--tx), var(--ty)) scale(0);
+            opacity: 0;
+          }
+        }
+
+        #check-btn {
+          background-color: #4caf50;
+          border: none;
+          color: #fff;
+          padding: 8px 30px;
+          text-align: center;
+          font-size: 20px;
+          font-weight: bold;
+          border-radius: 30px;
+          cursor: pointer;
+          box-shadow: 0 4px #2e7d32;
+          transition: 0.1s;
+        }
+
+        #check-btn:active {
+          box-shadow: 0 2px #2e7d32;
+          transform: translateY(2px);
+        }
+
+        .modal {
+          display: none;
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.5);
+          z-index: 100;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .modal-content {
+          background: rgba(255, 255, 255, 0.95);
+          padding: 20px;
+          border-radius: 20px;
+          text-align: center;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+          animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+          width: 280px;
+          max-width: 80%;
+        }
+
+        @keyframes popIn {
+          from {
+            transform: scale(0.5);
+            opacity: 0;
+          }
+          to {
+            transform: scale(1);
+            opacity: 1;
+          }
+        }
+
+        #modal-message {
+          font-size: 22px;
+          margin-bottom: 20px;
+          color: #333;
+          line-height: 1.4;
+        }
+
+        #next-btn {
+          background-color: #2196f3;
+          color: #fff;
+          border: none;
+          padding: 10px 25px;
+          font-size: 18px;
+          border-radius: 10px;
+          cursor: pointer;
+          box-shadow: 0 4px #1976d2;
+        }
+
+        #next-btn:active {
+          transform: translateY(2px);
+          box-shadow: 0 2px #1976d2;
+        }
+
+        .cloud {
+          position: absolute;
+          background: #fff;
+          border-radius: 50px;
+          opacity: 0.8;
+          z-index: 0;
+        }
+      `}</style>
     </>
   );
 }
+

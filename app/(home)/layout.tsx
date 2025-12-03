@@ -1,11 +1,11 @@
 import type React from "react"
-import "./globals.css"
+import "../addition/globals.css"
 import { AdditionLayoutShell } from "@/components/addition/AdditionLayoutShell"
 
-interface AdditionLayoutProps {
+interface HomeLayoutProps {
   children: React.ReactNode
 }
 
-export default function AdditionLayout({ children }: AdditionLayoutProps) {
+export default function HomeLayout({ children }: HomeLayoutProps) {
   return <AdditionLayoutShell>{children}</AdditionLayoutShell>
 }

@@ -6,7 +6,9 @@
       "Bash(node read_excel.js:*)",
       "Bash(npm install:*)",
       "Bash(git add:*)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run build:*)"
     ],
     "deny": [],
     "ask": []
