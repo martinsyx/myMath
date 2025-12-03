@@ -91,14 +91,14 @@ export async function generateAIProblemSet({
 
   const response = await requestCodexResponse({
     model: DEFAULT_VISION_MODEL,
-    reasoning: { effort: "medium", summary: "Generate adaptive addition drills" },
+    reasoning: { effort: "medium", summary: "auto" },
     input: [
       {
         type: "message",
         role: "user",
         content: [
-          { type: "text", text: AI_PROMPT_TEMPLATE },
-          { type: "text", text: userPrompt },
+          { type: "input_text", text: AI_PROMPT_TEMPLATE },
+          { type: "input_text", text: userPrompt },
         ],
       },
     ],
