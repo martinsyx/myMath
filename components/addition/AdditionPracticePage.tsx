@@ -312,11 +312,11 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
       const fallback = data?.meta?.fallback
       let statusMessage = "New adaptive problems are ready!"
       if (fallback) {
-        statusMessage = "AI 服务暂不可用，已生成规则题目。"
+        statusMessage = "AI service unavailable, generated rule-based problems instead."
       } else if (source === "ai") {
-        statusMessage = "AI 已根据你的表现生成全新题目！"
+        statusMessage = "AI has generated new problems based on your performance!"
       } else if (source === "rule-based") {
-        statusMessage = "已生成自适应题目。"
+        statusMessage = "Adaptive problems generated."
       }
       setGenerationMessage(statusMessage)
     } catch (error) {
@@ -408,7 +408,7 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
               <div>
                 <h3 className="text-xl font-bold text-secondary mb-1">Adaptive Practice</h3>
                 <p className="text-sm text-muted-foreground">
-                  系统会根据最近的作答表现自动生成题目。当前推荐等级：
+                  Problems are automatically generated based on your recent performance. Current recommended level:
                   <span className="font-semibold text-primary ml-1">{levelLabel}</span>
                 </p>
               </div>
