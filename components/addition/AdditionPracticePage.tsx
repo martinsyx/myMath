@@ -13,7 +13,10 @@ import {
   SkillLevel,
   summarizePerformance,
   getLevelConfig,
+  SKILL_LEVELS,
 } from "@/lib/performance-metrics"
+import { LearningReport } from "@/components/LearningReport"
+import { logResponseAndUpdateAbility } from "@/lib/irt/assessment-service"
 
 type Problem = {
   id: number
@@ -56,9 +59,9 @@ export type AdditionPageMetadata = {
 }
 
 export const defaultAdditionPageMetadata: AdditionPageMetadata = {
-  title: "Addition Practice - Fun Math Games for Kids Learning Addition",
+  title: "加法练习 - 儿童学习加法的趣味数学游戏",
   description:
-    "Practice addition with our fun and interactive math games for kids. Free online addition games to help children learn and master basic addition skills up to 100.",
+    "通过我们有趣且互动的数学游戏让孩子们练习加法。免费的在线加法游戏，帮助儿童学习和掌握100以内的基础加法技能。",
   path: "/addition",
   canonical: "https://kids-math.com/addition",
   schemaData: {
@@ -74,7 +77,7 @@ export const defaultAdditionPageMetadata: AdditionPageMetadata = {
       "@type": "AlignmentObject",
       "alignmentType": "teaches",
       "educationalFramework": "Mathematics",
-      "targetName": "Addition Skills",
+      "targetName": "加法技能",
     },
   },
 }
@@ -85,7 +88,26 @@ type AdditionPracticePageProps = {
 
 const ATTEMPT_STORAGE_KEY = "additionPracticeAttempts"
 const MAX_ATTEMPT_LOGS = 50
+const BATCH_SIZE = 5
 const BASE_SKILL_TAGS = ["basic-addition"]
+
+const randomInt = (min: number, max: number, rng: () => number = Math.random) => {
+  const minClamped = Math.ceil(min)
+  const maxClamped = Math.floor(max)
+  if (maxClamped < minClamped) return minClamped
+  return Math.floor(rng() * (maxClamped - minClamped + 1)) + minClamped
+}
+
+const createSeededRng = (seed = 42) => {
+  let s = seed || 1
+  return () => {
+    // xorshift32
+    s ^= s << 13
+    s ^= s >>> 17
+    s ^= s << 5
+    return (s >>> 0) / 0x100000000
+  }
+}
 
 const createProblem = (
   id: number,
@@ -115,24 +137,77 @@ const createProblem = (
   }
 }
 
-const generateInitialProblems = (count = 10, maxNumber = 9, difficulty: SkillLevel = DEFAULT_LEVEL) => {
+const generateDiverseProblems = (
+  count = 10,
+  maxNumber = 9,
+  difficulty: SkillLevel = DEFAULT_LEVEL,
+  rng: () => number = Math.random,
+): Problem[] => {
   const problems: Problem[] = []
   for (let i = 0; i < count; i++) {
-    const num1 = (i % maxNumber) + 1
-    const num2 = Math.floor(i / maxNumber) + 1
-    problems.push(createProblem(i + 1, num1, num2, { difficulty }))
+    const pattern = pickPattern(difficulty, maxNumber, rng)
+    const { num1, num2, skillTags } = buildPatternedOperands(pattern, maxNumber, rng)
+    problems.push(createProblem(i + 1, num1, num2, { difficulty, skillTags }))
   }
   return problems
 }
 
-const generateRandomProblems = (count = 10, maxNumber = 9, difficulty: SkillLevel = DEFAULT_LEVEL) => {
-  const problems: Problem[] = []
-  for (let i = 0; i < count; i++) {
-    const num1 = Math.floor(Math.random() * maxNumber) + 1
-    const num2 = Math.floor(Math.random() * maxNumber) + 1
-    problems.push(createProblem(i + 1, num1, num2, { difficulty }))
+const pickPattern = (level: SkillLevel, maxNumber: number, rng: () => number = Math.random) => {
+  const patterns: Array<"single" | "bridgeTen" | "twoDigit" | "carrying" | "high"> = ["single"]
+  if (maxNumber >= 10) patterns.push("bridgeTen")
+  if (maxNumber >= 15) patterns.push("twoDigit")
+  if (maxNumber >= 15 && (level === "L2" || level === "L3")) patterns.push("carrying")
+  if (maxNumber >= 30 && level === "L3") patterns.push("high")
+  return patterns[randomInt(0, patterns.length - 1, rng)]
+}
+
+const buildPatternedOperands = (
+  pattern: "single" | "bridgeTen" | "twoDigit" | "carrying" | "high",
+  maxNumber: number,
+  rng: () => number = Math.random,
+) => {
+  const maxSafe = Math.max(5, Math.min(maxNumber, 99))
+
+  if (pattern === "bridgeTen" && maxSafe >= 10) {
+    const num1 = randomInt(1, Math.min(9, maxSafe - 1), rng)
+    const num2 = Math.min(10 - num1, maxSafe)
+    return { num1, num2, skillTags: [...BASE_SKILL_TAGS, "bridge-ten"] }
   }
-  return problems
+
+  if (pattern === "twoDigit" && maxSafe >= 15) {
+    const tries = 10
+    for (let i = 0; i < tries; i++) {
+      const num1 = randomInt(10, maxSafe, rng)
+      const num2 = randomInt(5, Math.min(maxSafe, num1), rng)
+      const onesSum = (num1 % 10) + (num2 % 10)
+      if (onesSum < 10 && num1 + num2 <= maxSafe) {
+        return { num1, num2, skillTags: [...BASE_SKILL_TAGS, "two-digit"] }
+      }
+    }
+  }
+
+  if (pattern === "carrying" && maxSafe >= 15) {
+    const tries = 10
+    for (let i = 0; i < tries; i++) {
+      const num1 = randomInt(10, maxSafe, rng)
+      const num2 = randomInt(10, maxSafe, rng)
+      const onesSum = (num1 % 10) + (num2 % 10)
+      if (onesSum >= 10 && num1 + num2 <= maxSafe) {
+        return { num1, num2, skillTags: [...BASE_SKILL_TAGS, "carrying"] }
+      }
+    }
+  }
+
+  if (pattern === "high" && maxSafe >= 30) {
+    const lower = Math.max(20, maxSafe - 20)
+    const num1 = randomInt(lower, maxSafe, rng)
+    const num2 = randomInt(lower, maxSafe, rng)
+    return { num1, num2, skillTags: [...BASE_SKILL_TAGS, "speed-challenge"] }
+  }
+
+  const num1 = randomInt(1, Math.min(12, maxSafe), rng)
+  const num2 = randomInt(1, Math.min(12, maxSafe), rng)
+  return { num1, num2, skillTags: [...BASE_SKILL_TAGS] }
 }
 
 const formatServerProblems = (items: RemoteProblemPayload[] = [], fallbackLevel: SkillLevel): Problem[] => {
@@ -162,8 +237,11 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
   }
 
   const [problemCount] = useState(10)
-  const [numberRange] = useState(9)
-  const [problems, setProblems] = useState<Problem[]>(() => generateInitialProblems(problemCount, numberRange))
+  const [numberRange] = useState(20)
+  const [problems, setProblems] = useState<Problem[]>(() => {
+    const seededRng = createSeededRng(20250101)
+    return generateDiverseProblems(problemCount, numberRange, DEFAULT_LEVEL, seededRng)
+  })
   const [score, setScore] = useState(0)
   const [completedCount, setCompletedCount] = useState(0)
   const [showCelebration, setShowCelebration] = useState(false)
@@ -171,6 +249,9 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
   const [problemTimers, setProblemTimers] = useState<Record<number, number>>({})
   const [isGenerating, setIsGenerating] = useState(false)
   const [generationMessage, setGenerationMessage] = useState<string | null>(null)
+  const [visibleBatch, setVisibleBatch] = useState(1)
+  const [activeLevel, setActiveLevel] = useState<SkillLevel>(DEFAULT_LEVEL)
+  const [showReport, setShowReport] = useState(false)
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -198,20 +279,48 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
 
   const performanceSummary = useMemo(() => summarizePerformance(problemAttempts), [problemAttempts])
   const recommendedLevel = performanceSummary.recommendedLevel ?? DEFAULT_LEVEL
+  const totalProblems = problems.length || problemCount
   const levelLabel = LEVEL_CONFIG[recommendedLevel]?.label ?? LEVEL_CONFIG[DEFAULT_LEVEL].label
 
-  const applyProblemSet = useCallback((nextProblems: Problem[]) => {
+  // 计算当前批次的题目（只显示当前批次，隐藏已完成批次）
+  const currentBatchStart = (visibleBatch - 1) * BATCH_SIZE
+  const currentBatchEnd = Math.min(visibleBatch * BATCH_SIZE, problems.length)
+  const currentBatchProblems = useMemo(
+    () => problems.slice(currentBatchStart, currentBatchEnd),
+    [problems, currentBatchStart, currentBatchEnd],
+  )
+
+  // 当前批次完成数
+  const currentBatchCompleted = useMemo(
+    () => currentBatchProblems.filter((p) => p.isCorrect !== null).length,
+    [currentBatchProblems],
+  )
+
+  // 当前批次正确数
+  const currentBatchCorrect = useMemo(
+    () => currentBatchProblems.filter((p) => p.isCorrect === true).length,
+    [currentBatchProblems],
+  )
+
+  const applyProblemSet = useCallback((nextProblems: Problem[], nextLevel?: SkillLevel) => {
     setProblems(nextProblems)
     setScore(0)
     setCompletedCount(0)
     setShowCelebration(false)
     setProblemTimers({})
+    setVisibleBatch(1)
+    if (nextLevel) {
+      setActiveLevel(nextLevel)
+    } else if (nextProblems.length) {
+      setActiveLevel(nextProblems[0].difficulty)
+    }
   }, [])
 
-  const fallbackProblems = useCallback(
-    () => generateRandomProblems(problemCount, numberRange, recommendedLevel),
-    [problemCount, numberRange, recommendedLevel],
-  )
+  const fallbackProblems = useCallback(() => {
+    const levelConfig = getLevelConfig(recommendedLevel)
+    const maxNumber = Math.max(numberRange, levelConfig.maxNumber)
+    return generateDiverseProblems(problemCount, maxNumber, recommendedLevel)
+  }, [problemCount, numberRange, recommendedLevel])
 
   const logAttempt = useCallback((attempt: ProblemAttempt) => {
     setProblemAttempts((prev) => {
@@ -277,12 +386,31 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
       timestamp: Date.now(),
       targetTimeMs: currentProblem.targetTimeMs,
     })
+
+    // 记录到 IRT 系统进行精确能力评估
+    logResponseAndUpdateAbility(
+      {
+        problemId: String(currentProblem.id),
+        difficulty: currentProblem.difficulty,
+        skillTags: currentProblem.skillTags,
+        isCorrect,
+        durationMs: typeof startTime === "number" ? Math.max(0, Date.now() - startTime) : currentProblem.targetTimeMs ?? 0,
+        attempts: currentProblem.attempts + 1,
+        timestamp: Date.now(),
+        targetTimeMs: currentProblem.targetTimeMs,
+      },
+      currentProblem.num1,
+      currentProblem.num2,
+      submittedAnswer
+    )
   }
 
   const requestAdaptiveProblems = useCallback(async () => {
     setIsGenerating(true)
-    setGenerationMessage("Generating personalized problems...")
+    setGenerationMessage("正在生成个性化题目...")
     const recentAttempts = problemAttempts.slice(-MAX_ATTEMPT_LOGS)
+    const levelConfig = getLevelConfig(recommendedLevel)
+    const effectiveRange = Math.max(numberRange, levelConfig.maxNumber)
 
     try {
       const response = await fetch("/api/problem-generator", {
@@ -291,7 +419,7 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
         cache: "no-store",
         body: JSON.stringify({
           problemCount,
-          numberRange,
+          numberRange: effectiveRange,
           attempts: recentAttempts,
         }),
       })
@@ -307,23 +435,23 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
         throw new Error("problem-generator returned empty list")
       }
 
-      applyProblemSet(remoteProblems)
+      applyProblemSet(remoteProblems, recommendedLevel)
       const source = data?.meta?.source
       const fallback = data?.meta?.fallback
-      let statusMessage = "New adaptive problems are ready!"
+      let statusMessage = "新的智能题目已准备就绪！"
       if (fallback) {
-        statusMessage = "AI service unavailable, generated rule-based problems instead."
+        statusMessage = "AI服务不可用，已生成基于规则的题目。"
       } else if (source === "ai") {
-        statusMessage = "AI has generated new problems based on your performance!"
+        statusMessage = "AI已根据您的表现生成新题目！"
       } else if (source === "rule-based") {
-        statusMessage = "Adaptive problems generated."
+        statusMessage = "智能题目已生成。"
       }
       setGenerationMessage(statusMessage)
     } catch (error) {
       console.error("[AdditionPracticePage] adaptive problem generation failed", error)
       const fallback = fallbackProblems()
-      applyProblemSet(fallback)
-      setGenerationMessage("Adaptive service unavailable, generated random practice instead.")
+      applyProblemSet(fallback, recommendedLevel)
+      setGenerationMessage("智能服务不可用，已生成随机练习题目。")
     } finally {
       setIsGenerating(false)
     }
@@ -338,14 +466,44 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
   }
 
   useEffect(() => {
-    const passingScore = Math.ceil(problemCount * 0.7)
-    if (completedCount === problemCount && score >= passingScore) {
+    const passingScore = Math.ceil(totalProblems * 0.7)
+    if (completedCount === totalProblems && totalProblems > 0 && score >= passingScore) {
       setShowCelebration(true)
       const timeout = setTimeout(() => setShowCelebration(false), 3000)
       return () => clearTimeout(timeout)
     }
     return undefined
-  }, [completedCount, score, problemCount])
+  }, [completedCount, score, totalProblems])
+
+  useEffect(() => {
+    setVisibleBatch((current) => {
+      const totalBatches = Math.ceil((problems.length || problemCount) / BATCH_SIZE)
+      if (completedCount >= current * BATCH_SIZE && current < totalBatches) {
+        return current + 1
+      }
+      return current
+    })
+  }, [completedCount, problemCount, problems.length])
+
+  useEffect(() => {
+    const hasEnoughSamples = performanceSummary.sampleSize >= 5
+    const finishedCurrentSet = completedCount >= totalProblems && totalProblems > 0
+    const currentIndex = SKILL_LEVELS.indexOf(activeLevel)
+    const recommendedIndex = SKILL_LEVELS.indexOf(performanceSummary.recommendedLevel)
+    const levelUp = recommendedIndex > currentIndex
+
+    if (!isGenerating && hasEnoughSamples && finishedCurrentSet && levelUp) {
+      void requestAdaptiveProblems()
+    }
+  }, [
+    activeLevel,
+    completedCount,
+    isGenerating,
+    performanceSummary.recommendedLevel,
+    performanceSummary.sampleSize,
+    requestAdaptiveProblems,
+    totalProblems,
+  ])
 
   const defaultSchema = {
     "@context": "https://schema.org",
@@ -398,17 +556,17 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
         <div className="max-w-4xl mx-auto mb-8">
           <div className="text-center mb-6">
             <h2 className="text-3xl md:text-4xl font-bold text-secondary mb-4 font-serif">
-              Addition Practice - Kids Math Game
+              加法练习 - 儿童加法能力提升测试
             </h2>
-            <p className="text-muted-foreground text-sm">Adaptive problem sets grow with every answer you submit.</p>
+            <p className="text-muted-foreground text-sm font-sans">智能题目集会根据您提交的每个答案不断增长。</p>
           </div>
 
           <Card className="p-6 mb-6 bg-card border border-border shadow-md">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <h3 className="text-xl font-bold text-secondary mb-1">Adaptive Practice</h3>
-                <p className="text-sm text-muted-foreground">
-                  Problems are automatically generated based on your recent performance. Current recommended level:
+                <h3 className="text-xl font-bold text-secondary mb-1 font-serif">智能练习</h3>
+                <p className="text-sm text-muted-foreground font-sans">
+                  题目会根据您最近的表现自动生成。当前推荐级别：
                   <span className="font-semibold text-primary ml-1">{levelLabel}</span>
                 </p>
               </div>
@@ -419,9 +577,9 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
                 disabled={isGenerating}
                 className="bg-secondary hover:bg-secondary/90 text-secondary-foreground px-8 py-3 text-lg font-bold rounded-xl shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {isGenerating ? "Adaptive problems incoming..." : "Generate Adaptive Problems"}
+                {isGenerating ? "智能题目正在生成中..." : "智能生成题目"}
               </Button>
-              {generationMessage && <p className="text-sm text-muted-foreground">{generationMessage}</p>}
+              {generationMessage && <p className="text-sm text-muted-foreground font-sans">{generationMessage}</p>}
             </div>
           </Card>
 
@@ -429,15 +587,15 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
             <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between text-center">
               <div className="flex-1">
                 <div className="text-2xl font-bold text-primary">
-                  {score}/{problemCount}
+                  {score}/{totalProblems}
                 </div>
-                <div className="text-sm text-muted-foreground">Correct Answers</div>
+                <div className="text-sm text-muted-foreground font-sans">正确答案</div>
               </div>
               <div className="flex-1">
                 <div className="text-2xl font-bold text-secondary">
-                  {completedCount}/{problemCount}
+                  {completedCount}/{totalProblems}
                 </div>
-                <div className="text-sm text-muted-foreground">Completed</div>
+                <div className="text-sm text-muted-foreground font-sans">已完成</div>
               </div>
               <div className="flex-1">
                 <Button
@@ -445,7 +603,7 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
                   disabled={isGenerating}
                   className="bg-primary hover:bg-primary/90 text-primary-foreground px-4 py-2 text-base font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {isGenerating ? "..." : "Adaptive Restart"}
+                  {isGenerating ? "..." : "智能重启"}
                 </Button>
               </div>
             </div>
@@ -453,16 +611,26 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center mt-6">
               <div>
                 <div className="text-lg font-semibold text-primary">{accuracyPercent}%</div>
-                <div className="text-sm text-muted-foreground">Recent Accuracy</div>
+                <div className="text-sm text-muted-foreground font-sans">最近准确率</div>
               </div>
               <div>
                 <div className="text-lg font-semibold text-secondary">{avgSeconds}s</div>
-                <div className="text-sm text-muted-foreground">Avg Time</div>
+                <div className="text-sm text-muted-foreground font-sans">平均时间</div>
               </div>
               <div>
                 <div className="text-lg font-semibold text-primary">{levelLabel}</div>
-                <div className="text-sm text-muted-foreground">Recommended Level</div>
+                <div className="text-sm text-muted-foreground font-sans">推荐级别</div>
               </div>
+            </div>
+
+            <div className="text-center mt-6">
+              <Button
+                onClick={() => setShowReport(true)}
+                variant="outline"
+                className="border-primary text-primary hover:bg-primary/10"
+              >
+                查看学习报告
+              </Button>
             </div>
           </Card>
         </div>
@@ -471,15 +639,45 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
           <div className="fixed inset-0 bg-primary/20 flex items-center justify-center z-50 backdrop-blur-sm">
             <div className="bg-card p-8 rounded-3xl shadow-2xl text-center celebrate border-4 border-primary">
               <div className="text-6xl mb-4">🎉</div>
-              <h2 className="text-3xl font-bold text-primary mb-2">Awesome!</h2>
-              <p className="text-xl text-muted-foreground">You got {score} problems correct!</p>
+              <h2 className="text-3xl font-bold text-primary mb-2">太棒了！</h2>
+              <p className="text-xl text-muted-foreground font-sans">您答对了 {score} 道题！</p>
+            </div>
+          </div>
+        )}
+
+        {showReport && (
+          <div className="fixed inset-0 bg-black/50 z-50 overflow-auto">
+            <div className="max-w-4xl mx-auto my-8 p-4">
+              <LearningReport onClose={() => setShowReport(false)} />
             </div>
           </div>
         )}
 
         <div className="max-w-4xl mx-auto">
+          {/* 批次进度指示器 */}
+          <div className="flex items-center justify-between mb-4 px-2">
+            <div className="text-sm text-muted-foreground font-sans">
+              第 {visibleBatch} 批 · {currentBatchCompleted}/{currentBatchProblems.length} 题已完成
+            </div>
+            <div className="flex gap-1">
+              {Array.from({ length: Math.ceil(totalProblems / BATCH_SIZE) }).map((_, i) => (
+                <div
+                  key={i}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    i + 1 < visibleBatch
+                      ? "bg-green-500"
+                      : i + 1 === visibleBatch
+                      ? "bg-primary"
+                      : "bg-muted"
+                  }`}
+                  title={`第 ${i + 1} 批`}
+                />
+              ))}
+            </div>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {problems.map((problem) => (
+            {currentBatchProblems.map((problem) => (
               <Card
                 key={problem.id}
                 className={`p-6 border transition-all duration-300 hover:shadow-md ${
@@ -495,8 +693,8 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
                     <div className="text-2xl font-bold text-secondary mb-2 font-mono">
                       {problem.num1} + {problem.num2} =
                     </div>
-                    <p className="text-xs text-muted-foreground">
-                      Target time: {problem.targetTimeMs ? Math.round(problem.targetTimeMs / 1000) : 7}s · Level {problem.difficulty}
+                    <p className="text-xs text-muted-foreground font-sans">
+                      目标时间：{problem.targetTimeMs ? Math.round(problem.targetTimeMs / 1000) : 7}秒 · 级别 {problem.difficulty}
                     </p>
 
                     <div className="flex items-center justify-center gap-3 mt-3">
@@ -533,12 +731,12 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
                         {problem.isCorrect ? (
                           <div className="flex items-center justify-center gap-2">
                             <span className="text-lg">🌟</span>
-                            <span className="font-semibold">Correct!</span>
+                            <span className="font-semibold">正确！</span>
                           </div>
                         ) : (
                           <div className="flex items-center justify-center gap-2">
                             <span className="text-lg">💡</span>
-                            <span className="font-semibold">The correct answer is {problem.answer}</span>
+                            <span className="font-semibold">正确答案是 {problem.answer}</span>
                           </div>
                         )}
                       </div>
@@ -560,21 +758,21 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
 
         <div className="max-w-4xl mx-auto mt-8">
           <Card className="p-6 mb-6 bg-card border border-border shadow-md">
-            <h3 className="text-xl font-bold text-secondary mb-4">Learning Addition</h3>
+            <h3 className="text-xl font-bold text-secondary mb-4 font-serif">学习加法</h3>
             <p className="text-gray-700 mb-4">
               Addition is one of the fundamental operations in mathematics. It involves combining two or more numbers to find their total. Practicing
               addition helps children develop number sense and builds a foundation for more advanced math concepts. Mastering addition skills early on
               is crucial for mathematical success throughout a child&apos;s academic journey.
             </p>
-            <h4 className="text-lg font-semibold text-secondary mb-2">Addition Tips:</h4>
-            <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
-              <li>Start with smaller numbers and gradually work your way up to larger ones</li>
-              <li>Use visual aids like fingers or objects to help understand the concept</li>
-              <li>Practice regularly to build fluency and speed</li>
-              <li>Look for patterns, like adding zero (any number plus zero equals itself)</li>
-              <li>Remember that addition is commutative (2+3 equals 3+2)</li>
-              <li>Use strategies like counting on from the larger number</li>
-              <li>Break down larger problems into smaller, manageable parts</li>
+            <h4 className="text-lg font-semibold text-secondary mb-2 font-serif">加法技巧：</h4>
+            <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4 font-sans">
+              <li>从较小的数字开始，逐步过渡到较大的数字</li>
+              <li>使用手指或物体等视觉辅助工具来帮助理解概念</li>
+              <li>定期练习以建立流畅度和速度</li>
+              <li>寻找规律，比如加零（任何数加零等于它本身）</li>
+              <li>记住加法是可交换的（2+3等于3+2）</li>
+              <li>使用从较大数字开始计数的策略</li>
+              <li>将较大的问题分解成更小、可管理的部分</li>
             </ul>
             <p className="text-gray-700">
               Our addition practice game generates random problems to help reinforce these concepts. You can adjust the difficulty by changing the
@@ -584,37 +782,35 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
           </Card>
 
           <Card className="p-6 bg-card border border-border shadow-md">
-            <h3 className="text-xl font-bold text-secondary mb-4">Why Practice Addition?</h3>
+            <h3 className="text-xl font-bold text-secondary mb-4 font-serif">为什么要练习加法？</h3>
             <p className="text-gray-700 mb-4">
               Addition is a fundamental math skill that children use throughout their lives. Whether they&apos;re counting money, measuring ingredients
               for a recipe, or calculating scores in games, addition is an essential skill that builds confidence in mathematical thinking. Strong
               addition skills form the foundation for more complex mathematical operations including subtraction, multiplication, and division.
             </p>
-            <p className="text-gray-700 mb-4">Regular practice with addition helps children:</p>
-            <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4">
-              <li>Develop mental math skills for quick calculations in daily life</li>
-              <li>Build a strong foundation for more complex math operations</li>
-              <li>Improve problem-solving abilities through numerical reasoning</li>
-              <li>Gain confidence in their mathematical abilities and academic performance</li>
-              <li>Prepare for standardized tests and classroom assessments</li>
+            <p className="text-gray-700 mb-4 font-sans">定期练习加法有助于孩子们：</p>
+            <ul className="list-disc pl-6 text-gray-700 space-y-2 mb-4 font-sans">
+              <li>培养心算技能，以便在日常生活中快速计算</li>
+              <li>为更复杂的数学运算打下坚实基础</li>
+              <li>通过数值推理提高解决问题的能力</li>
+              <li>增强对数学能力和学业表现的信心</li>
+              <li>为标准化测试和课堂评估做好准备</li>
             </ul>
             <p className="text-gray-700 mb-4">
               Our interactive addition game makes learning fun and engaging. With customizable difficulty levels, it&apos;s perfect for children at
               different stages of learning addition. These cool math games for kids transform traditional math practice into an enjoyable experience
               that encourages regular practice. Keep practicing, and you&apos;ll see improvement in your math skills!
             </p>
-            <h4 className="text-lg font-semibold text-secondary mb-2">Benefits of Online Addition Practice:</h4>
-            <p className="text-gray-700">
-              Online math games for kids offer several advantages over traditional worksheets. They provide immediate feedback, adapt to individual
-              learning paces, and make practice sessions more engaging. Our educational games for children help develop both computational fluency and
-              conceptual understanding, creating well-rounded mathematical thinkers who are prepared for future academic challenges.
+            <h4 className="text-lg font-semibold text-secondary mb-2 font-serif">在线加法练习的好处：</h4>
+            <p className="text-gray-700 font-sans">
+              与传统练习册相比，儿童在线数学游戏有几个优势。它们提供即时反馈，适应个人学习节奏，并使练习过程更加引人入胜。我们的儿童教育游戏有助于培养计算流畅性和概念理解，创造全面发展的数学思考者，为未来的学术挑战做好准备。
             </p>
           </Card>
         </div>
 
         <div className="max-w-4xl mx-auto mt-8 text-center">
           <Card className="p-4 bg-gradient-to-r from-primary/10 to-secondary/10 border border-border">
-            <p className="text-base text-muted-foreground">Keep going, little mathematician!</p>
+            <p className="text-base text-muted-foreground font-sans">继续努力，小数学家！</p>
           </Card>
         </div>
       </div>
