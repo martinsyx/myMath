@@ -10,14 +10,26 @@ export function Metadata({ title, description, path, canonical, schemaData }: Me
   const siteUrl = "https://kids-math.com";
   const canonicalUrl = canonical || `${siteUrl}${path}`;
   const imageUrl = `${siteUrl}/og-image.jpg`;
+  const baseKeywords = [
+    "EasyMath AI",
+    "kids math games",
+    "adaptive math practice",
+    "math learning analytics",
+    "addition games",
+    "number sense activities",
+    "bilingual math practice",
+  ];
 
   const defaultSchema = {
     "@context": "https://schema.org",
     "@type": ["WebSite", "WebApplication"],
     "name": title,
+    "alternateName": "EasyMath AI",
     "description": description,
-    "inLanguage": "en",
+    "inLanguage": ["zh-CN", "en-US"],
+    "url": canonicalUrl,
     "applicationCategory": "EducationalApplication",
+    "isFamilyFriendly": true,
     "offers": {
       "@type": "Offer",
       "price": "0",
@@ -37,7 +49,8 @@ export function Metadata({ title, description, path, canonical, schemaData }: Me
     ],
     "publisher": {
       "@type": "Organization",
-      "name": "EasyMath"
+      "name": "EasyMath",
+      "url": siteUrl
     }
   };
 
@@ -47,9 +60,12 @@ export function Metadata({ title, description, path, canonical, schemaData }: Me
     <>
       <title>{title}</title>
       <meta name="description" content={description} />
-      <meta name="keywords" content="kids math games, math practice, number sense, addition games, subtraction games, multiplication games, division games, educational games" />
+      <meta name="keywords" content={baseKeywords.join(", ")} />
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       <meta name="robots" content="index, follow" />
+      <meta name="author" content="EasyMath AI Team" />
+      <meta name="publisher" content="EasyMath AI" />
+      <meta name="theme-color" content="#2563eb" />
       
       {/* Open Graph / Facebook */}
       <meta property="og:type" content="website" />
@@ -57,6 +73,8 @@ export function Metadata({ title, description, path, canonical, schemaData }: Me
       <meta property="og:title" content={title} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={imageUrl} />
+      <meta property="og:site_name" content="EasyMath AI" />
+      <meta property="og:locale" content="zh_CN" />
 
       {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />

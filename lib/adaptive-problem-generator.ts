@@ -1,4 +1,9 @@
-import { DEFAULT_VISION_MODEL, extractResponseText, requestCodexResponse } from "./openai-client"
+import {
+  DEFAULT_VISION_MODEL,
+  extractResponseText,
+  requestBigModelChatText,
+  requestCodexResponse,
+} from "./openai-client"
 import { DEFAULT_LEVEL, PerformanceSummary, ProblemAttempt, SkillLevel, getLevelConfig } from "./performance-metrics"
 
 export type GeneratedProblem = {
@@ -90,23 +95,39 @@ export async function generateAIProblemSet({
     "请综合考虑准确率与用时，生成下一批更科学的练习题。",
   ].join("\n")
 
-  const response = await requestCodexResponse({
-    model: DEFAULT_VISION_MODEL,
-    reasoning: { effort: "medium", summary: "auto" },
-    input: [
-      {
-        type: "message",
-        role: "user",
-        content: [
-          { type: "input_text", text: AI_PROMPT_TEMPLATE },
-          { type: "input_text", text: userPrompt },
-        ],
-      },
-    ],
-    max_output_tokens: MAX_AI_OUTPUT_TOKENS,
-  })
+  let text: string | null = null
 
-  const text = extractResponseText(response)
+  // 优先使用 BigModel，旧的 Codex 请求保留为备用方案
+  try {
+    text = await requestBigModelChatText({
+      systemPrompt: AI_PROMPT_TEMPLATE,
+      userPrompt,
+      stream: true,
+    })
+  } catch (error) {
+    console.warn("[adaptive-generator] BigModel request failed, fallback to Codex", error)
+  }
+
+  if (!text) {
+    const response = await requestCodexResponse({
+      model: DEFAULT_VISION_MODEL,
+      reasoning: { effort: "low", summary: "auto" },
+      input: [
+        {
+          type: "message",
+          role: "user",
+          content: [
+            { type: "input_text", text: AI_PROMPT_TEMPLATE },
+            { type: "input_text", text: userPrompt },
+          ],
+        },
+      ],
+      max_output_tokens: MAX_AI_OUTPUT_TOKENS,
+    })
+
+    text = extractResponseText(response)
+  }
+
   if (!text) return []
   const jsonPayload = extractJsonBlock(text)
   if (!jsonPayload) return []

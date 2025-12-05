@@ -239,7 +239,7 @@ export function calibrateItemBank(
 
 /**
  * 生成加法题的初始参数估计
- * 基于题目特征（数��大小、是否需要进位等）设置合理的初始值
+ * 基于题目特征（数字大小、是否需要进位等）设置合理的初始值
  */
 export function generateInitialItemParameters(
   num1: number,

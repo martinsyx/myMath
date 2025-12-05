@@ -59,25 +59,51 @@ export type AdditionPageMetadata = {
 }
 
 export const defaultAdditionPageMetadata: AdditionPageMetadata = {
-  title: "加法练习 - 儿童学习加法的趣味数学游戏",
+  title: "AI 加法练习 - EasyMath 自适应儿童数学游戏",
   description:
-    "通过我们有趣且互动的数学游戏让孩子们练习加法。免费的在线加法游戏，帮助儿童学习和掌握100以内的基础加法技能。",
+    "EasyMath AI 加法练习结合实时难度调节、IRT 能力评估和学习报告，帮助 5-12 岁孩子夯实 100 以内加法基础，并通过数据洞察持续进阶。",
   path: "/addition",
   canonical: "https://kids-math.com/addition",
   schemaData: {
-    "@type": ["WebSite", "WebApplication"],
+    "@type": ["WebSite", "WebApplication", "EducationalGame"],
+    "name": "EasyMath AI Addition Practice",
+    "alternateName": ["AI 加法练习", "EasyMath AI Coach"],
+    "url": "https://kids-math.com/addition",
+    "image": "https://kids-math.com/og-image.jpg",
+    "inLanguage": ["zh-CN", "en-US"],
     "alternateType": "EducationalApplication",
     "applicationCategory": "Education",
+    "isAccessibleForFree": true,
     "gamePlatform": ["Web Browser", "Mobile Web"],
-    "educationalUse": ["Practice", "Assessment"],
-    "interactivityType": "Interactive",
-    "learningResourceType": "Game",
+    "operatingSystem": ["Web"],
+    "audience": {
+      "@type": "EducationalAudience",
+      "educationalRole": "student",
+      "typicalAgeRange": "5-12",
+    },
+    "educationalUse": ["Practice", "Assessment", "Instruction"],
+    "interactivityType": "Mixed",
+    "learningResourceType": ["Game", "Assessment", "InteractiveExercise"],
     "skillLevel": ["Beginner", "Intermediate"],
+    "about": ["Addition fluency", "Math facts", "Number sense", "IRT assessment"],
     "educationalAlignment": {
       "@type": "AlignmentObject",
       "alignmentType": "teaches",
       "educationalFramework": "Mathematics",
-      "targetName": "加法技能",
+      "targetName": "加法基础与心算",
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "EasyMath",
+      "url": "https://kids-math.com",
+    },
+    "potentialAction": {
+      "@type": "PlayAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://kids-math.com/addition",
+        "inLanguage": ["zh-CN", "en-US"],
+      },
     },
   },
 }
@@ -507,11 +533,18 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
 
   const defaultSchema = {
     "@context": "https://schema.org",
-    "@type": ["WebSite", "WebApplication"],
+    "@type": ["WebApplication", "EducationalGame"],
     name: metadata.title,
+    alternateName: ["EasyMath AI Addition Practice", "AI 加法练习"],
     description: metadata.description,
-    inLanguage: "en",
+    url: metadata.canonical,
+    mainEntityOfPage: metadata.canonical,
+    inLanguage: ["zh-CN", "en-US"],
     applicationCategory: "EducationalApplication",
+    operatingSystem: "Web",
+    isAccessibleForFree: true,
+    isFamilyFriendly: true,
+    image: "https://kids-math.com/og-image.jpg",
     offers: {
       "@type": "Offer",
       price: "0",
@@ -522,10 +555,27 @@ export function AdditionPracticePage({ metadataOverrides }: AdditionPracticePage
       educationalRole: "student",
       ageRange: "5-12",
     },
-    teaches: ["Number Sense", "Addition", "Subtraction", "Multiplication", "Division"],
+    educationalUse: ["Practice", "Assessment", "Instruction"],
+    interactivityType: "Mixed",
+    learningResourceType: ["Game", "Assessment", "InteractiveExercise"],
+    teaches: ["Number Sense", "Addition", "Mental math", "Problem solving"],
+    about: ["Addition fluency", "Number sense", "Math facts"],
     publisher: {
       "@type": "Organization",
       name: "EasyMath",
+      url: "https://kids-math.com",
+      logo: {
+        "@type": "ImageObject",
+        url: "https://kids-math.com/og-image.jpg",
+      },
+    },
+    potentialAction: {
+      "@type": "PlayAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: metadata.canonical,
+        inLanguage: ["zh-CN", "en-US"],
+      },
     },
   }
 

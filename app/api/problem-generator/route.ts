@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server"
 
 import type { GeneratedProblem } from "@/lib/adaptive-problem-generator"
-import { generateAIProblemSet, generateRuleBasedProblemSet } from "@/lib/adaptive-problem-generator"
+import { generateRuleBasedProblemSet } from "@/lib/adaptive-problem-generator"
+import { generateSmartProblemSet } from "@/lib/enhanced-local-generator"
 import {
   DEFAULT_LEVEL,
   ProblemAttempt,
@@ -28,27 +29,34 @@ export async function POST(request: Request) {
     const summary = summarizePerformance(attempts.slice(-MAX_ATTEMPTS_LOOKBACK))
 
     let problems: GeneratedProblem[] = []
-    let source: "ai" | "rule-based" = "ai"
+    let source: "smart-local" | "rule-based" = "smart-local"
     let fallback = false
+
     try {
-      problems = await generateAIProblemSet({
+      // 优先使用新的本地智能生成器
+      problems = generateSmartProblemSet({
         summary,
         attempts,
         problemCount,
         numberRange,
       })
+      console.log(`[problem-generator] Generated ${problems.length} problems using smart local generator`)
     } catch (error) {
-      console.warn("[problem-generator] AI generation failed", error)
+      console.warn("[problem-generator] Smart local generation failed, falling back to rule-based", error)
     }
 
-    if (!problems.length) {
-      problems = generateRuleBasedProblemSet({
+    // 如果智能生成失败或数量不足，使用基础规则生成
+    if (!problems.length || problems.length < problemCount) {
+      const remainingCount = problemCount - problems.length
+      const fallbackProblems = generateRuleBasedProblemSet({
         summary,
-        problemCount,
+        problemCount: remainingCount,
         numberRange,
       })
+      problems.push(...fallbackProblems)
       source = "rule-based"
       fallback = true
+      console.log(`[problem-generator] Added ${fallbackProblems.length} fallback problems`)
     }
 
     return NextResponse.json({

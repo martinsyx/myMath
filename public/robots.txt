@@ -1,6 +1,10 @@
 User-agent: *
 Allow: /
-# Disallow incomplete/under construction pages
+Allow: /api/problem-generator
+# Block build artifacts and unfinished experiments
+Disallow: /_next/
+Disallow: /drafts
 Disallow: /number-sense/basics/visualization
+Crawl-delay: 2
 
 Sitemap:https://kids-math.com/sitemap.xml

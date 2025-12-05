@@ -539,7 +539,7 @@ export function LearningReport({ onClose }: LearningReportProps) {
   )
 }
 
-// AI 报告视图组��
+// AI 报告视图组件
 function AIReportView({
   report,
   onClose,
@@ -875,7 +875,7 @@ function getSkillDisplayName(skillTag: string): string {
 function getErrorPatternName(patternType: string): string {
   const names: Record<string, string> = {
     "off-by-one": "计数差1错误",
-    "carrying-error": "进位错���",
+    "carrying-error": "进位错误",
     "digit-reversal": "数位颠倒",
     "place-value-error": "位值混淆",
     "operation-confusion": "运算混淆",

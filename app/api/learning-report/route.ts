@@ -8,7 +8,7 @@ const AI_REPORT_PROMPT = `
 
 ## 评估维度
 
-1. **年龄水平��估**：
+1. **年龄水平评估**：
    - 基于加法技能发展的心理学研究，判断学生达到了什么年龄段的典型水平
    - 参考标准：4岁(数数)、5岁(5以内加法)、6岁(10以内加法)、7岁(20以内/过十法)、8岁(两位数加法)、9岁(进位加法)、10岁+(多位数熟练)
 
@@ -105,7 +105,7 @@ export async function POST(request: Request) {
 
     const response = await requestCodexResponse({
       model: DEFAULT_VISION_MODEL,
-      reasoning: { effort: "high", summary: "auto" },
+      reasoning: { effort: "low", summary: "auto" },
       input: [
         {
           type: "message",
